@@ -11,10 +11,10 @@
  * This file is modified by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  *
- * $Author: ewan.msn@gmail.com $
- * $Date: 2011-10-12 00:12:44 -0400 (Wed, 12 Oct 2011) $
- * $Rev: 33 $
- * $HeadURL: https://comp6471.googlecode.com/svn/Project2/src/Project2Main.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  *
  */
 
@@ -25,22 +25,23 @@
 #include <windows.h>
 
 #include "client.h"
+#include "../common/syslogger.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
 void TcpClient::run(int argc, char * argv[]) {
 	if (argc != 4)
-		err_sys("usage: client servername filename size/time");
+		SysLogger::inst()->err("usage: client servername filename size/time");
 
 	//initilize winsocket
 	if (WSAStartup(0x0202, &wsadata) != 0) {
 		WSACleanup();
-		err_sys("Error in starting WSAStartup()\n");
+		SysLogger::inst()->err("Error in starting WSAStartup()\n");
 	}
 
 	//Display name of local host and copy it to the req
 	if (gethostname(req.hostname, HOSTNAME_LENGTH) != 0) //get the hostname
-		err_sys("can not get the host name,program exit");
+		SysLogger::inst()->err("can not get the host name,program exit");
 	printf("%s%s\n", "Client starting at host:", req.hostname);
 
 	memmove(req.filename, argv[2], strlen(argv[2]));
@@ -50,10 +51,10 @@ void TcpClient::run(int argc, char * argv[]) {
 	else if (strcmp(argv[3], "size") == 0)
 		smsg.type = REQ_SIZE;
 	else
-		err_sys("Wrong request type\n");
+		SysLogger::inst()->err("Wrong request type\n");
 	//Create the socket
 	if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) //create the socket 
-		err_sys("Socket Creating Error");
+		SysLogger::inst()->err("Socket Creating Error");
 
 	//connect to the server
 	ServPort = REQUEST_PORT;
@@ -62,18 +63,18 @@ void TcpClient::run(int argc, char * argv[]) {
 	ServAddr.sin_addr.s_addr = resolve_name(argv[1]); /* Server IP address */
 	ServAddr.sin_port = htons(ServPort); /* Server port */
 	if (connect(sock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0)
-		err_sys("Socket Creating Error");
+		SysLogger::inst()->err("Socket Creating Error");
 
 	//send out the message
 	memcpy(smsg.buffer, &req, sizeof(req)); //copy the request to the msg's buffer
 	smsg.length = sizeof(req);
 	fprintf(stdout, "Send reqest to %s\n", argv[1]);
 	if (msg_send(sock, &smsg) != sizeof(req))
-		err_sys("Sending req packet error.,exit");
+		SysLogger::inst()->err("Sending req packet error.,exit");
 
 	//receive the response
 	if (msg_recv(sock, &rmsg) != rmsg.length)
-		err_sys("recv response error,exit");
+		SysLogger::inst()->err("recv response error,exit");
 
 	//cast it to the response structure
 	respp = (PMSGRESPONSE) rmsg.buffer;
@@ -88,23 +89,11 @@ TcpClient::~TcpClient() {
 	WSACleanup();
 }
 
-void TcpClient::err_sys(char * fmt, ...) //from Richard Stevens's source code
-		{
-	perror(NULL);
-	va_list args;
-	va_start(args, fmt);
-	fprintf(stderr, "error: ");
-	vfprintf(stderr, fmt, args);
-	fprintf(stderr, "\n");
-	va_end(args);
-	exit(1);
-}
-
 unsigned long TcpClient::resolve_name(char name[]) {
 	struct hostent *host; /* Structure containing host information */
 
 	if ((host = gethostbyname(name)) == NULL)
-		err_sys("gethostbyname() failed");
+		SysLogger::inst()->err("gethostbyname() failed");
 
 	/* Return the binary, network byte ordered address */
 	return *((unsigned long *) host->h_addr_list[0]);
@@ -119,12 +108,12 @@ int TcpClient::msg_recv(int sock, PMSGFMT msg_ptr) {
 	for (rbytes = 0; rbytes < MSGHDRSIZE; rbytes += n)
 		if ((n = recv(sock, (char *) msg_ptr + rbytes, MSGHDRSIZE - rbytes, 0))
 				<= 0)
-			err_sys("Recv MSGHDR Error");
+			SysLogger::inst()->err("Recv MSGHDR Error");
 
 	for (rbytes = 0; rbytes < msg_ptr->length; rbytes += n)
 		if ((n = recv(sock, (char *) msg_ptr->buffer + rbytes,
 				msg_ptr->length - rbytes, 0)) <= 0)
-			err_sys("Recevier Buffer Error");
+			SysLogger::inst()->err("Recevier Buffer Error");
 
 	return msg_ptr->length;
 }
@@ -135,13 +124,17 @@ int TcpClient::msg_send(int sock, PMSGFMT msg_ptr) {
 	int n;
 	if ((n = send(sock, (char *) msg_ptr, MSGHDRSIZE + msg_ptr->length, 0))
 			!= (MSGHDRSIZE + msg_ptr->length))
-		err_sys("Send MSGHDRSIZE+length Error");
+		SysLogger::inst()->err("Send MSGHDRSIZE+length Error");
 	return (n - MSGHDRSIZE);
 
 }
 
-int main(int argc, char *argv[]) //argv[1]=servername argv[2]=filename argv[3]=time/size
-		{
+//argv[1]=servername argv[2]=filename argv[3]=time/size
+int main(int argc, char *argv[]) {
+	// create logger
+	SysLogger::inst()->log("Wellcome to COMP6461 assignment 1.");
+	SysLogger::inst()->log("Developed by Yuan Tao & Xiaodong Zhang.");
+
 	TcpClient * tc = new TcpClient();
 	tc->run(argc, argv);
 	return 0;

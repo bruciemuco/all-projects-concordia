@@ -4,10 +4,10 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  *
- * $Author: ewan.msn@gmail.com $
- * $Date: 2011-10-12 00:12:44 -0400 (Wed, 12 Oct 2011) $
- * $Rev: 33 $
- * $HeadURL: https://comp6471.googlecode.com/svn/Project2/src/Project2Main.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  *
  */
 #ifndef __PROTOCOL_H__
