@@ -10,10 +10,10 @@
  * This file is modified by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  *
- * $Author: ewan.msn@gmail.com $
- * $Date: 2011-10-12 00:12:44 -0400 (Wed, 12 Oct 2011) $
- * $Rev: 33 $
- * $HeadURL: https://comp6471.googlecode.com/svn/Project2/src/Project2Main.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  *
  */
 
@@ -85,16 +85,7 @@ void TcpServer::start() {
 }
 
 //////////////////////////////TcpThread Class //////////////////////////////////////////
-void TcpThread::err_sys(char * fmt, ...) {
-	perror(NULL);
-	va_list args;
-	va_start(args, fmt);
-	fprintf(stderr, "error: ");
-	vfprintf(stderr, fmt, args);
-	fprintf(stderr, "\n");
-	va_end(args);
-	exit(1);
-}
+
 unsigned long TcpThread::resolve_name(char name[]) {
 	struct hostent *host; /* Structure containing host information */
 
