@@ -25,9 +25,12 @@ private:
 public:
 	static SysLogger *inst();
 	
-	void err(char *fmt, ...);
+	int set(char *filename);
 
+	void err(char *fmt, ...);
 	void log(char *fmt, ...);
+
+	void wellcome();
 };
 
 
