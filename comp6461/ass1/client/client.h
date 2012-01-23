@@ -16,8 +16,6 @@
 #include <winsock.h>
 #include "../common/protocol.h"
 
-#define TRACE 0
-#define MSGHDRSIZE 8 //Message Header Size
 
 class TcpClient {
 	int sock; /* Socket descriptor */
@@ -34,10 +32,13 @@ public:
 	}
 	~TcpClient();
 
-	void run(int argc, char * argv[]);
-	int msg_recv(int, PMSGFMT);
-	int msg_send(int, PMSGFMT);
-	unsigned long resolve_name(char name[]);
+	int init(const char *servername);
+	int msg_recv(char *buf, int length);
+	int msg_send(const char *filename, const char *opname);
+	unsigned long resolve_name(const char *name);
+
+	int sock_send(char *data, int length);
+	int sock_recv(char *buf, int length);
 };
 
 

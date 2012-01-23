@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <windows.h>
 
 #include "client.h"
@@ -29,113 +29,172 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-void TcpClient::run(int argc, char * argv[]) {
-	if (argc != 4)
-		SysLogger::inst()->err("usage: client servername filename size/time");
+using namespace std;
+
+int TcpClient::init(const char *servername) {
+	if (servername == 0) {
+		SysLogger::inst()->err("init params error");
+		return -1;
+	}
 
 	//initilize winsocket
 	if (WSAStartup(0x0202, &wsadata) != 0) {
-		WSACleanup();
 		SysLogger::inst()->err("Error in starting WSAStartup()\n");
+		return -1;
 	}
 
 	//Display name of local host and copy it to the req
-	if (gethostname(req.hostname, HOSTNAME_LENGTH) != 0) //get the hostname
+	if (gethostname(req.hostname, HOSTNAME_LENGTH) != 0) {
 		SysLogger::inst()->err("can not get the host name,program exit");
-	printf("%s%s\n", "Client starting at host:", req.hostname);
+		WSACleanup();
+		return -1;
+	}
 
-	memmove(req.filename, argv[2], strlen(argv[2]));
+	SysLogger::inst()->log("ftp_tcp starting on host: %s", req.hostname);
 
-	if (strcmp(argv[3], "time") == 0)
-		smsg.type = REQ_TIME;
-	else if (strcmp(argv[3], "size") == 0)
-		smsg.type = REQ_SIZE;
-	else
-		SysLogger::inst()->err("Wrong request type\n");
 	//Create the socket
-	if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) //create the socket 
+	if ((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET) {
 		SysLogger::inst()->err("Socket Creating Error");
+		WSACleanup();
+		return -1;
+	}
 
 	//connect to the server
 	ServPort = REQUEST_PORT;
 	memset(&ServAddr, 0, sizeof(ServAddr)); /* Zero out structure */
 	ServAddr.sin_family = AF_INET; /* Internet address family */
-	ServAddr.sin_addr.s_addr = resolve_name(argv[1]); /* Server IP address */
+	ServAddr.sin_addr.s_addr = resolve_name(servername); /* Server IP address */
 	ServAddr.sin_port = htons(ServPort); /* Server port */
-	if (connect(sock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0)
-		SysLogger::inst()->err("Socket Creating Error");
+	if (connect(sock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0) {
+		SysLogger::inst()->err("Faild to connect to server: %s", servername);
+		closesocket(sock);
+		WSACleanup();
+		return -1;
+	}
 
-	//send out the message
-	memcpy(smsg.buffer, &req, sizeof(req)); //copy the request to the msg's buffer
-	smsg.length = sizeof(req);
-	fprintf(stdout, "Send reqest to %s\n", argv[1]);
-	if (msg_send(sock, &smsg) != sizeof(req))
-		SysLogger::inst()->err("Sending req packet error.,exit");
 
-	//receive the response
-	if (msg_recv(sock, &rmsg) != rmsg.length)
-		SysLogger::inst()->err("recv response error,exit");
-
-	//cast it to the response structure
-	respp = (PMSGRESPONSE) rmsg.buffer;
-	printf("Response:%s\n\n\n", respp->response);
-
-	//close the client socket
-	closesocket(sock);
-
+	return 0;
 }
+
 TcpClient::~TcpClient() {
 	/* When done uninstall winsock.dll (WSACleanup()) and exit */
+	closesocket(sock);
 	WSACleanup();
 }
 
-unsigned long TcpClient::resolve_name(char name[]) {
+unsigned long TcpClient::resolve_name(const char *name) {
 	struct hostent *host; /* Structure containing host information */
 
-	if ((host = gethostbyname(name)) == NULL)
+	if ((host = gethostbyname(name)) == NULL) {
 		SysLogger::inst()->err("gethostbyname() failed");
+		return 0;
+	}
 
 	/* Return the binary, network byte ordered address */
 	return *((unsigned long *) host->h_addr_list[0]);
 }
 
-/*
- msg_recv returns the length of bytes in the msg_ptr->buffer,which have been recevied successfully.
- */
-int TcpClient::msg_recv(int sock, PMSGFMT msg_ptr) {
-	int rbytes, n;
-
-	for (rbytes = 0; rbytes < MSGHDRSIZE; rbytes += n)
-		if ((n = recv(sock, (char *) msg_ptr + rbytes, MSGHDRSIZE - rbytes, 0))
-				<= 0)
-			SysLogger::inst()->err("Recv MSGHDR Error");
-
-	for (rbytes = 0; rbytes < msg_ptr->length; rbytes += n)
-		if ((n = recv(sock, (char *) msg_ptr->buffer + rbytes,
-				msg_ptr->length - rbytes, 0)) <= 0)
-			SysLogger::inst()->err("Recevier Buffer Error");
-
-	return msg_ptr->length;
+int TcpClient::msg_recv(char *buf, int length) {
+	return 0;
 }
 
-/* msg_send returns the length of bytes in msg_ptr->buffer,which have been sent out successfully
- */
-int TcpClient::msg_send(int sock, PMSGFMT msg_ptr) {
-	int n;
-	if ((n = send(sock, (char *) msg_ptr, MSGHDRSIZE + msg_ptr->length, 0))
-			!= (MSGHDRSIZE + msg_ptr->length))
-		SysLogger::inst()->err("Send MSGHDRSIZE+length Error");
-	return (n - MSGHDRSIZE);
+int TcpClient::sock_recv(char *buf, int length) {
+	int ret = SOCKET_ERROR;
 
+	do {
+		ret = recv(sock, buf, length, 0);
+		if (ret == 0) {
+			SysLogger::inst()->err("msg_recv connection closed");
+			return -1;
+		}
+		else {
+			SysLogger::inst()->err("msg_recv recv error");
+			return -1;
+		}
+	} while (length - ret > 0);
 }
 
-//argv[1]=servername argv[2]=filename argv[3]=time/size
+int TcpClient::sock_send(char *data, int length) {
+	int ret = SOCKET_ERROR;
+
+	do {
+		ret = send(sock, (char *)data, length, 0);
+		if (ret == SOCKET_ERROR) {
+			SysLogger::inst()->err("sock_send, len = %d", length);
+			return -1;
+		}
+	} while (length - ret > 0);
+
+	return 0;
+}
+
+int TcpClient::msg_send(const char *filename, const char *opname) {
+	if (filename == 0 || opname == 0) {
+		SysLogger::inst()->err("msg_send params error");
+		return -1;
+	}
+
+	// construct the header of the msg
+	MSGHEADER header;
+	if (strcmp(opname, MSGTYPE_STRGET) == 0)
+		header.type = MSGTYPE_REQ_GET;
+	else if (strcmp(opname, MSGTYPE_STRPUT) == 0)
+		header.type = MSGTYPE_REQ_PUT;
+	else {
+		SysLogger::inst()->err("Wrong request type\n");
+		return -1;
+	}
+
+	//send out the header
+	sock_send((char *)&header, sizeof(header));
+
+	//receive the response
+	MSGHEADER header_resp;
+	if (sock_recv((char *)&header_resp, sizeof(header_resp))) {
+		SysLogger::inst()->err("failed to get header of response");
+		return -1;
+	}
+
+	if (header_resp.type != MSGTYPE_RESP_OK) {
+		SysLogger::inst()->err("Response ERROR: %d. ", header_resp.type);
+		return -1;
+	}
+
+	SysLogger::inst()->log("Response OK: %d. ", header_resp.type);
+
+	// start to send file
+}
+
+
 int main(int argc, char *argv[]) {
 	// create logger
 	SysLogger::inst()->log("Wellcome to COMP6461 assignment 1.");
 	SysLogger::inst()->log("Developed by Yuan Tao & Xiaodong Zhang.");
 
+	//get input
+	string servername, filename, opname;
+
+	SysLogger::inst()->log("Type name of ftp server: ");
+	cin >> servername;
+	SysLogger::inst()->log("Type name of file to be transferred: ");
+	cin >> filename;
+	SysLogger::inst()->log("Type direction of transfer: ");
+	cin >> opname;
+
+	//start to connect to the server
 	TcpClient * tc = new TcpClient();
-	tc->run(argc, argv);
+
+	if (tc->init(servername.c_str())) {
+		goto ERR;
+	}
+	SysLogger::inst()->log("Sent request to %s, waiting...", servername);
+
+	if (tc->msg_send(filename.c_str(), opname.c_str())) {
+		goto ERR;
+	}
+
 	return 0;
+ERR:
+	delete tc;
+	return -1;
 }

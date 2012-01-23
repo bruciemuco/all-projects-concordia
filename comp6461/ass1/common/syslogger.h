@@ -18,7 +18,7 @@
 
 class SysLogger {
 private:
-	static SysLogger *pInst;
+	static SysLogger *pInst;		// TODO: delete
 	static FILE *pLogFile;
 	SysLogger() {
 	}
@@ -45,15 +45,19 @@ public:
 		if (pLogFile == NULL) {
 			return;
 		}
-		//perror(NULL);
 		va_list args;
 		va_start(args, fmt);
-		fprintf(pLogFile, "error: ");
 		vfprintf(pLogFile, fmt, args);
 		fprintf(pLogFile, "\n");
+		vfprintf(stdout, fmt, args);
+		fprintf(stdout, "\n");
 		va_end(args);
-		exit(1);		// TODO: memory leak.
+
+		fprintf(pLogFile, "WSAGetLastError:%d\n", WSAGetLastError());
+		fprintf(stdout, "WSAGetLastError:%d\n", WSAGetLastError());
+		fflush(pLogFile);
 	}
+
 	void log(char *fmt, ...) {
 		if (pLogFile == NULL) {
 			return;
@@ -62,7 +66,10 @@ public:
 		va_start(args, fmt);
 		vfprintf(pLogFile, fmt, args);
 		fprintf(pLogFile, "\n");
+		vfprintf(stdout, fmt, args);
+		fprintf(stdout, "\n");
 		va_end(args);
+		fflush(pLogFile);
 	}
 };
 
