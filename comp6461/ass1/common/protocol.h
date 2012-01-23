@@ -16,14 +16,21 @@
 #define HOSTNAME_LENGTH 20
 #define RESP_LENGTH 40
 #define FILENAME_LENGTH 20
-#define BUFFER_LENGTH 1024 
+#define BUFFER_LENGTH 8196
 #define REQUEST_PORT 5001
 
 
-typedef enum {
-	REQ_SIZE = 1, REQ_TIME, RESP
 //Message type
-} MSGTYPE;
+// request
+#define MSGTYPE_STRGET		"get"
+#define MSGTYPE_STRPUT		"put"
+#define MSGTYPE_REQ_GET		1
+#define MSGTYPE_REQ_PUT		2
+
+// response
+#define MSGTYPE_RESP_OK		1
+#define MSGTYPE_RESP_ERR	2
+
 
 typedef struct {
 	char hostname[HOSTNAME_LENGTH];
@@ -34,11 +41,17 @@ typedef struct {
 	char response[RESP_LENGTH];
 } MSGRESPONSE, *PMSGRESPONSE; //response
 
+// msg header
 typedef struct {
-	MSGTYPE type;
-	int length; //length of effective bytes in the buffer
-	char buffer[BUFFER_LENGTH];
-} MSGFMT, *PMSGFMT; //message format used for sending and receiving
+	char type;
+} MSGHEADER, PMSGHEADER;
+
+//message format used for sending and receiving
+typedef struct {
+	MSGHEADER header;
+	int length; 					//length of msg body
+	char body[BUFFER_LENGTH];		// msg body
+} MSGFMT, *PMSGFMT;
 
 
 
