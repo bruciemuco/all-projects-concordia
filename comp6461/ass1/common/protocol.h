@@ -13,7 +13,6 @@
 #ifndef __PROTOCOL_H__
 #define __PROTOCOL_H__
 
-#define HOSTNAME_LENGTH 20
 #define RESP_LENGTH 40
 #define FILENAME_LENGTH 20
 #define BUFFER_LENGTH 8196
@@ -32,14 +31,14 @@
 #define MSGTYPE_RESP_ERR	2
 
 
-typedef struct {
-	char hostname[HOSTNAME_LENGTH];
-	char filename[FILENAME_LENGTH];
-} MSGREQUEST, *PMSGREQUEST; //request
-
-typedef struct {
-	char response[RESP_LENGTH];
-} MSGRESPONSE, *PMSGRESPONSE; //response
+//typedef struct {
+//	char hostname[HOSTNAME_LENGTH];
+//	char filename[FILENAME_LENGTH];
+//} MSGREQUEST, *PMSGREQUEST; //request
+//
+//typedef struct {
+//	char response[RESP_LENGTH];
+//} MSGRESPONSE, *PMSGRESPONSE; //response
 
 // msg header
 typedef struct {
