@@ -144,11 +144,13 @@ void TcpThread::run() //cs: Server socket
 
 		pFile = fopen(filename.c_str(), "rb");
 		if (pFile == NULL) {
-			SysLogger::inst()->err("No such a file:%s\n", filename);
+			SysLogger::inst()->err("No such a file:%s\n", filename.c_str());
 			header_resp.type = MSGTYPE_RESP_NOFILE;
+		} else {
+			fseek(pFile, 0, SEEK_END);
+			header_resp.len = ftell(pFile);
+			fclose(pFile);
 		}
-		header_resp.len = fseek(pFile, 0, SEEK_END);
-		fclose(pFile);
 	}
 
 	// send header

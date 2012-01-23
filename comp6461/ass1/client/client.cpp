@@ -59,7 +59,8 @@ int TcpClient::start(const char *filename, const char *opname) {
 			SysLogger::inst()->err("No such a file:%s\n", filefullname.c_str());
 			return -1;
 		}
-		header.len += fseek(pFile, 0, SEEK_END);
+		fseek(pFile, 0, SEEK_END);
+		header.len += ftell(pFile);
 		fclose(pFile);
 	}
 	else {
@@ -120,7 +121,7 @@ int main(int argc, char *argv[]) {
 	SysLogger::inst()->wellcome();
 
 	//get input
-	string servername, filename, opname = "get";
+	string servername, filename, opname = "put";
 
 /*
 	SysLogger::inst()->log("Type name of ftp server: ");
