@@ -15,12 +15,18 @@
 
 #include <windows.h>
 
-#define HOSTNAME_LENGTH 20
+#define MAXPENDING 10
+
 
 class TcpLib {
-	int sock; /* Socket descriptor */
-	struct sockaddr_in ServAddr; /* server socket address */
-	unsigned short ServPort; /* server port */
+protected:
+	int sock; 		// client socket or server listening socket
+	int client_sock; // sockets that accepted by server
+
+	struct sockaddr_in ServerAddr; 		/* server socket address */
+	struct sockaddr_in ClientAddr;
+
+	//unsigned short ServPort; /* server port */
 	WSADATA wsadata;
 
 	char hostname[HOSTNAME_LENGTH];
@@ -32,14 +38,16 @@ public:
 
 	int init();
 	int client_init(const char *servername);
-	int server_init(const char *servername);
+	int server_init();
+	//void server_start();
 
-	int msg_recv(char *buf, int length);
-	int msg_send(const char *filename, const char *opname);
 	unsigned long resolve_name(const char *name);
 
-	int sock_send(char *data, int length);
-	int sock_recv(char *buf, int length);
+	static int sock_send(int sock, char *buf, int length);
+	static int sock_recv(int sock, char *buf, int length);
+
+	static int send_file(int sock, const char *filename, int len);
+	static int recv_file(int sock, const char *filename, int len);
 };
 
 

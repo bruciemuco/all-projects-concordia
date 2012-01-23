@@ -20,6 +20,13 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+
+TcpLib::~TcpLib() {
+	/* When done uninstall winsock.dll (WSACleanup()) and exit */
+	closesocket(sock);
+	WSACleanup();
+}
+
 int TcpLib::init() {
 	//initilize winsocket
 	if (WSAStartup(0x0202, &wsadata) != 0) {
@@ -30,16 +37,14 @@ int TcpLib::init() {
 	//Display name of local host and copy it to the req
 	if (gethostname(hostname, HOSTNAME_LENGTH) != 0) {
 		SysLogger::inst()->err("can not get the host name,program exit");
-		WSACleanup();
+		//WSACleanup();
 		return -1;
 	}
-
-	SysLogger::inst()->log("ftp_tcp starting on host: %s", hostname);
 
 	//Create the socket
 	if ((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET) {
 		SysLogger::inst()->err("Socket Creating Error");
-		WSACleanup();
+		//WSACleanup();
 		return -1;
 	}
 
@@ -56,17 +61,18 @@ int TcpLib::client_init(const char *servername) {
 		SysLogger::inst()->err("socket init error");
 		return -1;
 	}
+
+	SysLogger::inst()->log("ftp_tcp starting on host: %s", hostname);
 	
 	//connect to the server
-	ServPort = REQUEST_PORT;
-	memset(&ServAddr, 0, sizeof(ServAddr)); /* Zero out structure */
-	ServAddr.sin_family = AF_INET; /* Internet address family */
-	ServAddr.sin_addr.s_addr = resolve_name(servername); /* Server IP address */
-	ServAddr.sin_port = htons(ServPort); /* Server port */
-	if (connect(sock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0) {
+	memset(&ServerAddr, 0, sizeof(ServerAddr)); /* Zero out structure */
+	ServerAddr.sin_family = AF_INET; /* Internet address family */
+	ServerAddr.sin_addr.s_addr = resolve_name(servername); /* Server IP address */
+	ServerAddr.sin_port = htons(REQUEST_PORT); /* Server port */
+	if (connect(sock, (struct sockaddr *) &ServerAddr, sizeof(ServerAddr)) < 0) {
 		SysLogger::inst()->err("Faild to connect to server: %s", servername);
-		closesocket(sock);
-		WSACleanup();
+		//closesocket(sock);
+		//WSACleanup();
 		return -1;
 	}
 
@@ -74,10 +80,35 @@ int TcpLib::client_init(const char *servername) {
 	return 0;
 }
 
-TcpLib::~TcpLib() {
-	/* When done uninstall winsock.dll (WSACleanup()) and exit */
-	closesocket(sock);
-	WSACleanup();
+int TcpLib::server_init() {
+	if (init()) {
+		SysLogger::inst()->err("socket init error");
+		return -1;
+	}
+
+	//Fill-in Server Port and Address info.
+	memset(&ServerAddr, 0, sizeof(ServerAddr)); /* Zero out structure */
+	ServerAddr.sin_family = AF_INET; /* Internet address family */
+	ServerAddr.sin_addr.s_addr = htonl(INADDR_ANY); /* Any incoming interface */
+	ServerAddr.sin_port = htons(REQUEST_PORT); /* Local port */
+
+	//Bind the server socket
+	if (bind(sock, (struct sockaddr *) &ServerAddr, sizeof(ServerAddr))	== SOCKET_ERROR) {
+		SysLogger::inst()->err("bind error");
+		//closesocket(sock);
+		//WSACleanup();
+		return -1;
+	}
+
+	//Successfull bind, now listen for Server requests.
+	if (listen(sock, MAXPENDING) == SOCKET_ERROR) {
+		SysLogger::inst()->err("listen error");
+		//closesocket(sock);
+		//WSACleanup();
+		return -1;
+	}
+
+	return 0;
 }
 
 unsigned long TcpLib::resolve_name(const char *name) {
@@ -92,74 +123,93 @@ unsigned long TcpLib::resolve_name(const char *name) {
 	return *((unsigned long *) host->h_addr_list[0]);
 }
 
-int TcpLib::msg_recv(char *buf, int length) {
-	return 0;
-}
-
-int TcpLib::sock_recv(char *buf, int length) {
-	int ret = SOCKET_ERROR;
+int TcpLib::sock_recv(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR, left = length;
+	char *p = buf;
 
 	do {
-		ret = recv(sock, buf, length, 0);
+		ret = recv(sock, p, left, 0);
 		if (ret == 0) {
 			SysLogger::inst()->err("msg_recv connection closed");
 			return -1;
-		}
-		else {
+		} else if (ret < 0) {
 			SysLogger::inst()->err("msg_recv recv error");
 			return -1;
 		}
-	} while (length - ret > 0);
+		left -= ret;
+		p += ret;
+		ret = SOCKET_ERROR;
+
+	} while (left > 0);
+
+	return left;
 }
 
-int TcpLib::sock_send(char *data, int length) {
-	int ret = SOCKET_ERROR;
+int TcpLib::sock_send(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR, left = length;
+	char *p = buf;
 
 	do {
-		ret = send(sock, (char *)data, length, 0);
+		ret = send(sock, p, left, 0);
 		if (ret == SOCKET_ERROR) {
 			SysLogger::inst()->err("sock_send, len = %d", length);
 			return -1;
 		}
-	} while (length - ret > 0);
+		left -= ret;
+		p += ret;
+		ret = SOCKET_ERROR;
+
+	} while (left > 0);
+
+	return left;
+}
+
+int TcpLib::send_file(int sock, const char *filename, int len) {
+	FILE *pFile = 0;
+	char buf[BUFFER_LENGTH + 1];
+
+	pFile = fopen(filename, "rb");
+	if (pFile == NULL) {
+		SysLogger::inst()->err("No such a file:%s\n", filename);
+		return -1;
+	}
+	while (!feof(pFile)) {
+		memset((void *)buf, 0, BUFFER_LENGTH + 1);
+		fgets(buf, BUFFER_LENGTH, pFile);
+		if (sock_send(sock, buf, strlen(buf)) != 0) {
+			SysLogger::inst()->err("sock_send error. buf.len:%d, file_len:%d\n", strlen(buf), len);
+			return -1;
+		}
+	}
+	fclose(pFile);
 
 	return 0;
 }
 
-int TcpLib::msg_send(const char *filename, const char *opname) {
-	if (filename == 0 || opname == 0) {
-		SysLogger::inst()->err("msg_send params error");
+int TcpLib::recv_file(int sock, const char *filename, int len) {
+	FILE *pFile = 0;
+	char buf[BUFFER_LENGTH + 1];
+
+	pFile = fopen(filename, "wb");
+	if (pFile == NULL) {
+		SysLogger::inst()->err("No such a file:%s\n", filename);
 		return -1;
 	}
+	int left = len, recv_len = 0;
 
-	// construct the header of the msg
-	MSGHEADER header;
-	if (strcmp(opname, MSGTYPE_STRGET) == 0)
-		header.type = MSGTYPE_REQ_GET;
-	else if (strcmp(opname, MSGTYPE_STRPUT) == 0)
-		header.type = MSGTYPE_REQ_PUT;
-	else {
-		SysLogger::inst()->err("Wrong request type\n");
-		return -1;
+	while (left > 0) {
+		recv_len = left > BUFFER_LENGTH ? BUFFER_LENGTH : left;
+		memset((void *)buf, 0, BUFFER_LENGTH + 1);
+		if (sock_recv(sock, buf, recv_len)) {
+			SysLogger::inst()->err("failed to recv. %d, %d, %d", recv_len, left, len);
+			return -1;
+		}
+		fputs(buf, pFile);
+		left -= recv_len;
 	}
+	fclose(pFile);
 
-	//send out the header
-	sock_send((char *)&header, sizeof(header));
-
-	//receive the response
-	MSGHEADER header_resp;
-	if (sock_recv((char *)&header_resp, sizeof(header_resp))) {
-		SysLogger::inst()->err("failed to get header of response");
-		return -1;
-	}
-
-	if (header_resp.type != MSGTYPE_RESP_OK) {
-		SysLogger::inst()->err("Response ERROR: %d. ", header_resp.type);
-		return -1;
-	}
-
-	SysLogger::inst()->log("Response OK: %d. ", header_resp.type);
-
-	// start to send file
 	return 0;
 }
+
+

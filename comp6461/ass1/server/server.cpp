@@ -25,151 +25,172 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <process.h>
-#include "Thread.h"
+#include <string>
+
+#include "../common/syslogger.h"
+#include "../common/protocol.h"
+#include "../common/tcplib.h"
 #include "server.h"
 
-#pragma comment(lib, "ws2_32.lib")
 
-TcpServer::TcpServer() {
-	WSADATA wsadata;
-	if (WSAStartup(0x0202, &wsadata) != 0)
-		TcpThread::err_sys("Starting WSAStartup() error\n");
+using namespace std;
 
-	//Display name of local host
-	if (gethostname(servername, HOSTNAME_LENGTH) != 0) //get the hostname
-		TcpThread::err_sys("Get the host name error,exit");
 
-	printf("Server: %s waiting to be contacted for time/size request...\n",
-			servername);
-
-	//Create the server socket
-	if ((serverSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-		TcpThread::err_sys("Create socket error,exit");
-
-	//Fill-in Server Port and Address info.
-	ServerPort = REQUEST_PORT;
-	memset(&ServerAddr, 0, sizeof(ServerAddr)); /* Zero out structure */
-	ServerAddr.sin_family = AF_INET; /* Internet address family */
-	ServerAddr.sin_addr.s_addr = htonl(INADDR_ANY); /* Any incoming interface */
-	ServerAddr.sin_port = htons(ServerPort); /* Local port */
-
-	//Bind the server socket
-	if (bind(serverSock, (struct sockaddr *) &ServerAddr, sizeof(ServerAddr))
-			< 0)
-		TcpThread::err_sys("Bind socket error,exit");
-
-	//Successfull bind, now listen for Server requests.
-	if (listen(serverSock, MAXPENDING) < 0)
-		TcpThread::err_sys("Listen socket error,exit");
-}
-
-TcpServer::~TcpServer() {
-	WSACleanup();
-}
-
-void TcpServer::start() {
+int TcpServer::start() {
 	for (;;) /* Run forever */
 	{
 		/* Set the size of the result-value parameter */
-		clientLen = sizeof(ServerAddr);
+		int clientLen = sizeof(ServerAddr);
 
 		/* Wait for a Server to connect */
-		if ((clientSock = accept(serverSock, (struct sockaddr *) &ClientAddr,
-				&clientLen)) < 0)
-			TcpThread::err_sys("Accept Failed ,exit");
+		if ((client_sock = accept(sock, (struct sockaddr *)&ClientAddr, &clientLen)) == INVALID_SOCKET) {
+			SysLogger::inst()->err("accept error");
+			return -1;
+		}
 
 		/* Create a Thread for this new connection and run*/
-		TcpThread * pt = new TcpThread(clientSock);
+		TcpThread * pt = new TcpThread(client_sock);
 		pt->start();
 	}
+
+	return 0;
 }
 
 //////////////////////////////TcpThread Class //////////////////////////////////////////
 
-unsigned long TcpThread::resolve_name(char name[]) {
-	struct hostent *host; /* Structure containing host information */
-
-	if ((host = gethostbyname(name)) == NULL)
-		err_sys("gethostbyname() failed");
-
-	/* Return the binary, network byte ordered address */
-	return *((unsigned long *) host->h_addr_list[0]);
+TcpThread::~TcpThread() {
+	closesocket(cs);
 }
 
-/*
- msg_recv returns the length of bytes in the msg_ptr->buffer,which have been recevied successfully.
- */
-int TcpThread::msg_recv(int sock, PMSGFMT msg_ptr) {
-	int rbytes, n;
-
-	for (rbytes = 0; rbytes < MSGHDRSIZE; rbytes += n)
-		if ((n = recv(sock, (char *) msg_ptr + rbytes, MSGHDRSIZE - rbytes, 0))
-				<= 0)
-			err_sys("Recv MSGHDR Error");
-
-	for (rbytes = 0; rbytes < msg_ptr->length; rbytes += n)
-		if ((n = recv(sock, (char *) msg_ptr->buffer + rbytes,
-				msg_ptr->length - rbytes, 0)) <= 0)
-			err_sys("Recevier Buffer Error");
-
-	return msg_ptr->length;
+int TcpThread::msg_recv(int sock, char *buf, int length) {
+	return TcpLib::sock_recv(sock, buf, length);
 }
 
-/* msg_send returns the length of bytes in msg_ptr->buffer,which have been sent out successfully
- */
-int TcpThread::msg_send(int sock, PMSGFMT msg_ptr) {
-	int n;
-	if ((n = send(sock, (char *) msg_ptr, MSGHDRSIZE + msg_ptr->length, 0))
-			!= (MSGHDRSIZE + msg_ptr->length))
-		err_sys("Send MSGHDRSIZE+length Error");
-	return (n - MSGHDRSIZE);
+int TcpThread::msg_send(int sock, char *buf, int length) {
+	return TcpLib::sock_send(sock, buf, length);
+}
 
+int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
+	int sock = cs;
+
+	SysLogger::inst()->log("accept sock: %d", sock);
+
+	// began to receive the request header
+	string type;
+
+	if (msg_recv(sock, (char *)&header, sizeof(MSGHEADER))) {
+		SysLogger::inst()->err("failed to get header of response");
+		return MSGTYPE_RESP_FAILTOGETHEADER;
+	}
+	header.len = ntohl(header.len);
+	if (header.type == MSGTYPE_REQ_GET) {
+		type = MSGTYPE_STRGET;
+		if (header.len != sizeof(MSGREQUEST)) {
+			SysLogger::inst()->err("header.len != sizeof(request). %d, %d", header.len, sizeof(MSGREQUEST));
+			return MSGTYPE_RESP_WRONGHEADER;
+		}
+	} else if (header.type == MSGTYPE_REQ_PUT) {
+		type = MSGTYPE_STRPUT;
+	} else {
+		SysLogger::inst()->err("unknown request type");
+		return MSGTYPE_RESP_UNKNOWNTYPE;
+	}
+	SysLogger::inst()->log("Received a request(type: %s, len: %d)", type.c_str(), header.len);
+
+	// get the filename and host name
+	if (header.len > 0) {
+		if (msg_recv(sock, (char *)&request, sizeof(MSGREQUEST))) {
+			SysLogger::inst()->err("failed to get request info.");
+			return MSGTYPE_RESP_FAILTOGETINFO;
+		}
+		SysLogger::inst()->log("hostname: %s, filename: %s", request.hostname, request.filename);
+	}
+
+	// send back the response
+	string filename = FILE_DIR_ROOT;
+	filename += request.filename;
+
+	if (header.type == MSGTYPE_REQ_PUT) {
+		// continue to receive the file before sending response
+		if (TcpLib::recv_file(sock, filename.c_str(), header.len - sizeof(MSGREQUEST))) {
+			return MSGTYPE_RESP_FAILTORECVFILE;
+		}
+		SysLogger::inst()->log("Received a file");
+	}
+
+	return MSGTYPE_RESP_OK;
 }
 
 void TcpThread::run() //cs: Server socket
 {
-	MSGRESPONSE resp; //response
-	PMSGREQUEST reqp; //a pointer to the Request Packet
-	MSGFMT smsg, rmsg; //send_message receive_message
-	struct _stat stat_buf;
-	int result;
+	int sock = cs;
+	MSGHEADER header;
+	MSGREQUEST request;
+	MSGHEADER header_resp;
 
-	if (msg_recv(cs, &rmsg) != rmsg.length)
-		err_sys("Receive Req error,exit");
+	// handle request
+	memset((void *)&header, 0, sizeof(MSGHEADER));
+	memset((void *)&request, 0, sizeof(MSGREQUEST));
+	header_resp.type = recv_data(header, request);
 
-	//cast it to the request packet structure		
-	reqp = (PMSGREQUEST) rmsg.buffer;
-	printf("Receive a request from client:%s\n", reqp->hostname);
-	//contruct the response and send it out
-	smsg.type = RESP;
-	smsg.length = sizeof(MSGRESPONSE);
+	// send back the response
+	header_resp.len = 0;
+	string filename = FILE_DIR_ROOT;
+	filename += request.filename;
 
-	if ((result = _stat(reqp->filename, &stat_buf)) != 0)
-		sprintf_s(resp.response, "No such a file");
-	else {
-		memset(resp.response, 0, sizeof(resp));
-		if (rmsg.type == REQ_TIME)
-			sprintf_s(resp.response, "%s", ctime(&stat_buf.st_ctime));
-		else if (rmsg.type == REQ_SIZE)
-			sprintf_s(resp.response, "File size:%ld", stat_buf.st_size);
+	if (header.type == MSGTYPE_REQ_GET) {
+		// get the file size
+		FILE *pFile = 0;
+
+		pFile = fopen(filename.c_str(), "rb");
+		if (pFile == NULL) {
+			SysLogger::inst()->err("No such a file:%s\n", filename);
+			header_resp.type = MSGTYPE_RESP_NOFILE;
+		}
+		header_resp.len = fseek(pFile, 0, SEEK_END);
+		fclose(pFile);
 	}
 
-	memcpy(smsg.buffer, &resp, sizeof(resp));
+	// send header
+	if (msg_send(sock, (char *)&header_resp, sizeof(header_resp)) != 0) {
+		SysLogger::inst()->err("sock_send error. header.type:%d\n", header.type);
+		return;
+	}
+	SysLogger::inst()->log("Send response: header.type: %d, len: %d", header_resp.type, header_resp.len);
 
-	if (msg_send(cs, &smsg) != smsg.length)
-		err_sys("send Respose failed,exit");
-	printf("Response for %s has been sent out \n\n\n", reqp->hostname);
+	// send file
+	if (header.type == MSGTYPE_REQ_GET) {
+		if (TcpLib::send_file(sock, filename.c_str(), header_resp.len)) {
+			return;
+		}
+	}
+	SysLogger::inst()->log("Send response: file: %s ", filename.c_str());
 
-	closesocket(cs);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
 int main(void) {
+	// create logger
+	if (SysLogger::inst()->set("../logs/server_log.txt")) {
+		return -1;
+	}
+	SysLogger::inst()->wellcome();
 
-	TcpServer ts;
-	ts.start();
+	TcpServer *ts = new TcpServer();
+
+	if (ts->server_init()) {
+		goto ERR;
+	}
+	SysLogger::inst()->log("Sent reques");
+	if (ts->start()) {
+		goto ERR;
+	}
 
 	return 0;
+
+ERR:
+	delete ts;
+	return -1;
 }
 

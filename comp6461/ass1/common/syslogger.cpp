@@ -28,18 +28,24 @@ SysLogger::~SysLogger() {
 
 SysLogger *SysLogger::inst() {
 	if (pInst == NULL) {
-		// open log file.
-		pLogFile = fopen ("../logs/log.txt" , "w");
-		if (pLogFile == NULL) {
-			printf("Failed to fopen\n");
-			exit(1);
-		}
-
 		pInst = new SysLogger();
 	}
 	return pInst;
 }
 	
+// set a log file.
+int SysLogger::set(char *filename) {
+	if (filename == NULL) {
+		return -1;
+	}
+	pLogFile = fopen (filename , "w");
+	if (pLogFile == NULL) {
+		printf("Failed to fopen\n");
+		return -1;
+	}
+	return 0;
+}
+
 void SysLogger::err(char *fmt, ...) {
 	if (pLogFile == NULL) {
 		return;
@@ -69,6 +75,11 @@ void SysLogger::log(char *fmt, ...) {
 	fprintf(stdout, "\n");
 	va_end(args);
 	fflush(pLogFile);
+}
+
+void SysLogger::wellcome() {
+	log("Wellcome to COMP6461 assignment 1.");
+	log("Developed by Yuan Tao & Xiaodong Zhang.\n");
 }
 
 
