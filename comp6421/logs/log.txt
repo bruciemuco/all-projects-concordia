@@ -1,4 +1,0 @@
-SEVERE: 2012-01-26 16:47:57
-The result is:
-
-SEVERE: Too many files under directory: 
