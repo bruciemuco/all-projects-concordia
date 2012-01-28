@@ -7,10 +7,10 @@
  * Compiler Design (COMP 442/642) Winter 2012 
  * Assignment 1, Lexical Analyzer
  *  
- * $Author: ewan.msn@gmail.com $
- * $Date: 2011-11-16 01:13:08 -0500 (Wed, 16 Nov 2011) $
- * $Rev: 60 $
- * $HeadURL: https://comp6471.googlecode.com/svn/Project6/src/utils/SysLogger.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  * 
  */
 
