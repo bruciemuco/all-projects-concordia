@@ -37,6 +37,8 @@ class OutputTextFormat extends Formatter {
 public class SysLogger {
 	public static Logger log = Logger.getLogger("COMP6421Project");
 	public static Logger result = Logger.getLogger("COMP6421ProjectResult");
+	
+	private static FileHandler fhLast = null;
 		
 	// initialization: e.g. create log files
 	public static void init() {
@@ -49,7 +51,7 @@ public class SysLogger {
 		FileHandler fileHandle;
 		try {
 			fileHandle = new FileHandler(path);
-			fileHandle.setLevel(Level.SEVERE);
+			fileHandle.setLevel(Level.ALL);
 			fileHandle.setFormatter(new LoggerTextFormat());
 			log.addHandler(fileHandle);
 		} catch (IOException e) {
@@ -66,36 +68,29 @@ public class SysLogger {
 			fileHandle = new FileHandler(path);
 			fileHandle.setLevel(Level.ALL);
 			fileHandle.setFormatter(new OutputTextFormat());
+			if (fhLast != null) {
+				result.removeHandler(fhLast);
+			}
 			result.addHandler(fileHandle);
+			fhLast = fileHandle;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	public static void log(String msg) {
+		log.info(msg);
+	}
 
 	public static void info(String msg) {
 		log.info(msg);
+		result.info(msg);
 	}
 	
 	public static void err(String msg) {
 		log.severe(msg);
-	}
-	
-	public static void output(String msg) {
-		result.info(msg);
-		log.severe(msg);
-	}
-	
-	public static void parserErr(String file, String msg) {
-		String strMsg = "File: " + file + " " + "Syntax Error: " + msg; 
-		result.info(strMsg);
-		log.severe(strMsg);
-	}
-
-	public static void solutionErr(String file, String msg) {
-		String strMsg = "File: " + file + " " + "Syntax Right. " + msg; 
-		result.info(strMsg);
-		log.severe(strMsg);
+		result.severe(msg);
 	}
 }
 
