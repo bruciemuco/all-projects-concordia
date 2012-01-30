@@ -117,14 +117,6 @@ public class LexicalAnalyzer {
 		return 0;
 	}
 	
-	private int errorHandler() {
-		// skip to next char
-		String err = "Line: " +  curLine + ", column: " + curLinePos;
-		SysLogger.err(err + ". Unknown character " + curChar + " (ASCII: " + (int)curChar + ").");
-		curChar = nextChar();
-		return 0;
-	}
-	
 	private int checkTokenValidation(Token tk) {
 		if (tk.token == null) {
 			return -1;
@@ -136,9 +128,16 @@ public class LexicalAnalyzer {
 				SysLogger.err(err + ". Identifier length > " + ID_MAX_LEN);
 				return -1;
 			}
+			
+			// check the type
+			if (StateMachineDriver.ifKeyword(tk.token)) {
+				tk.type = StateMachineDriver.TOKEN_TYPE_KEYWORD;
+			} else if (StateMachineDriver.ifPunctuation(tk.token)) {
+				tk.type = StateMachineDriver.TOKEN_TYPE_PUNCTUATION;
+			}
 		}
 		
-		if (tk.type == StateMachineDriver.TOKEN_TYPE_NUM) {
+		if (tk.type == StateMachineDriver.TOKEN_TYPE_INT) {
 			try {
 				Integer.parseInt(tk.token);
 			} catch (NumberFormatException e) {				
@@ -160,9 +159,11 @@ public class LexicalAnalyzer {
 			}
 		}
 		
+		
 		return 0;
 	}
 
+	// get next valid token from the stream.
 	public Token nextToken() {
 		int curState = StateMachineDriver.INIT_STATE;
 		Token tk = new Token();
@@ -177,32 +178,54 @@ public class LexicalAnalyzer {
 					+ ", " + curChar + ", " + (int)curChar);
 			curState = StateMachineDriver.nextState(curState, curChar, tk);
 			SysLogger.log("next state: " + curState);
-			
-			if (curState == StateMachineDriver.F) {
+
+			// final state without backing up
+			if (curState == StateMachineDriver.N) {
 				addChar((char) curChar);
 				curChar = nextChar();
 				break;
 			}
+			// back up
 			if (curState == StateMachineDriver.B) {
 				break;
 			}
+
+			// error
 			if (curState == StateMachineDriver.E) {
 				SysLogger.err("Fatal error. State machine goes to wrong state. ");				
 				fatalerrorHandler();
 				tk = null;
 				return tk;
 			}
-			if (curState == StateMachineDriver.NE) {
-				errorHandler();				
+			// find an invalid character
+			if (curState == StateMachineDriver.EC) {
+				String err = "Line: " +  curLine + ", column: " + curLinePos;
+				
+				SysLogger.err(err + ". Unknown character " + curChar + " (ASCII: " + (int)curChar + ").");
+				
+				// skip to next char
+				curChar = nextChar();
+				
+				// still output the part of token has been analyzed
 				if (curToken != null) {
-					// still output the part of token has been analyzed
-					tk.error = true;		
+					tk.error = true;
 					break;
 				}
 				
 				curState = StateMachineDriver.INIT_STATE;
 				continue;
 			}
+			// find a valid but unexpected character
+			if (curState == StateMachineDriver.ES) {
+				String err = "Line: " +  curLine + ", column: " + curLinePos;
+				
+				SysLogger.err(err + ". Unexpected character " + curChar + " (ASCII: " 
+					+ (int)curChar + "), when analyzing " + curToken);
+				
+				curState = StateMachineDriver.INIT_STATE;
+				continue;
+			}
+			
 			if (curState != StateMachineDriver.INIT_STATE) {
 				addChar((char) curChar);
 			}

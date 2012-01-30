@@ -19,22 +19,22 @@ public class StateMachineDriver {
 	private static final int ROW_SIZE = 50;
 	private static final int COL_SIZE = 255;
 	
-	public static final int INIT_STATE = 2;	
+	public static final int INIT_STATE = 3;	
 	
-	public static final int SN = 0;		// normal state
-	public static final int SF = 1;		// final state
-	public static final int SE = 2;		// error state
+	public static final int C = 0;		// normal state, continue running state machine
+	public static final int V = 1;		// final state, stop and exit state machine
 	
 	// return value of state
-	public static final int NE = 0;		// state machine goes to error state
 	public static final int E = -1;		// fatal error. state machine goes to wrong state.
-	public static final int F = -2;		// no back up
+	public static final int N = -2;		// no back up
 	public static final int B = -3;		// back up
+	public static final int EC = -4;	// error character
+	public static final int ES = -5;	// state machine goes to error state
 
 	public static final int TOKEN_TYPE_UNKNOWN = 0;
 	public static final int TOKEN_TYPE_KEYWORD = 1; 
 	public static final int TOKEN_TYPE_ID = 2;
-	public static final int TOKEN_TYPE_NUM = 3;
+	public static final int TOKEN_TYPE_INT = 3;
 	public static final int TOKEN_TYPE_FLOAT = 4;
 	public static final int TOKEN_TYPE_OPERATOR = 5;
 	public static final int TOKEN_TYPE_PUNCTUATION = 6;
@@ -43,7 +43,7 @@ public class StateMachineDriver {
 		"Unknown",
 		"Keyword",
 		"Identifier",
-		"Number",
+		"Integer",
 		"Float",
 		"Operator",
 		"Punctuation"
@@ -56,16 +56,44 @@ public class StateMachineDriver {
 		// 0. not a final state row. 1. final state. 2. error state.
 		// final state row: 0. no back up, 1. back up
 		
+		// please refer to the design doc for more information about how this table is generated.
+		
 		// first row defines the input chars
-		{0, ' ', 'a', 'A', '0', '1', '_', '.' },
+		{0, ' ', 'a', 'A', '0', '1', '_', '.', '<', '=', '>', '/', '*', ';', ',', '+', '-', '(', ')', '{', '}', '[', ']' },
 		
-		// second row defines the error states
-		{SE,  },
+		// second row defines the state for all unknown characters
+		{EC,  },
 		
-		// [a..z][A..Z] ([a..z][A..Z] | [0..9] | _)*
-		{SN, 2,   3,   3,   1,   1,   1,   1 },
-		{SN, 4,   3,   3,   3,   3,   3,   4 },
-		{SF, B,   E,   E,   E,   E,   E,   F },
+		// state machine goes to error state
+		{ES, },
+		
+		// Identifier: [a-z][A-Z] ([a-z][A-Z] | [0-9] | _)*
+		{C,  3,   4,   4,   12,  15,  1,   6},
+		{C,  5,   4,   4,   4,   4,   4,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 },
+		// final state for identifier
+/*5*/	{V,  B,   E,   E,   E,   E,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B, },
+		
+		// Fraction & .: . | .0 | .[0-9] [1-9]*
+		{C,  7,   7,   7,   8,   9,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7},
+		// final state for .
+		{V,  B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+		{C,  11,  11,  11,  10,  9,   11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11},
+		{C,  11,  11,  11,  10,  9,   11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11},
+/*10*/	{C,  2,   2,   2,   10,  9,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2},
+		// final state for fraction
+		{V,  B,   B,   B,   E,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+		
+		// Fraction & 0: 0 | 0.0 | 0.[0-9] [1-9]*
+		{C,  13,  13,  13,  13,  13,  13,  14,  13,  13,  13,  13,  13,  13,  13,  13,  13,  13,  13,  13,  13,  13,  13},
+		// final state for 0
+		{V,  B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+		{C,  2,   2,   2,   8,   9,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2},
+		
+		// [1-9][0-9]* | [1-9][0-9]*.0 | [1-9][0-9]*.[0-9] [1-9]*
+/*15*/	{C,  16,  16,  16,  15,  15,  16,  14,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16},
+		// final state for number
+		{V,  B,   B,   B,   E,   E,   B,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+
 	};
 	
 	private static int stateTable[][] = new int[ROW_SIZE][COL_SIZE];		// the table used to look up state
@@ -77,7 +105,7 @@ public class StateMachineDriver {
 		// set initial value to all the states of stateTable
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
-				stateTable[i][j] = 1;
+				stateTable[i][j] = 1;		// invalid character
 			}
 		}
 
@@ -157,23 +185,87 @@ public class StateMachineDriver {
 			return E;
 		}
 
-		if (stateTable[st][0] == SF) {
+		if (stateTable[st][0] == V) {
 			token.type = getType(st);
 			return stateTable[st][ch];
 		}
-		if (stateTable[st][0] == SE) {
+		if (stateTable[st][0] == EC) {
 			token.type = getType(curState);
-			return NE;
+			return EC;
+		}
+		if (stateTable[st][0] == ES) {
+			token.type = getType(curState);
+			return ES;
 		}
 		return stateTable[curState][ch];
 	}
-
+	
 	public static int getType(int curState) {
 		int ret = TOKEN_TYPE_UNKNOWN;
 		
-		if (curState > 1 && curState <= 4) {
+		if (curState >= 4 && curState <= 5) {
 			ret = TOKEN_TYPE_ID;
+		}
+		if (curState >= 12 && curState <= 16 && curState != 14) {
+			ret = TOKEN_TYPE_INT;
+		}
+		if (curState >= 6 && curState <= 7) {
+			ret = TOKEN_TYPE_PUNCTUATION;
+		}
+		if (curState >= 8 && curState <= 11 || curState == 14) {
+			ret = TOKEN_TYPE_FLOAT;
 		}
 		return ret;
 	}
+	
+	public static boolean ifKeyword(String token) {
+		if (token.equals("if")) {
+			return true;
+		}
+		if (token.equals("then")) {
+			return true;
+		}
+		if (token.equals("else")) {
+			return true;
+		}
+		if (token.equals("while")) {
+			return true;
+		}
+		if (token.equals("do")) {
+			return true;
+		}
+		if (token.equals("class")) {
+			return true;
+		}
+		if (token.equals("integer")) {
+			return true;
+		}
+		if (token.equals("real")) {
+			return true;
+		}
+		if (token.equals("read")) {
+			return true;
+		}
+		if (token.equals("write")) {
+			return true;
+		}
+		if (token.equals("return")) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean ifPunctuation(String token) {
+		if (token.equals("And")) {
+			return true;
+		}
+		if (token.equals("Not")) {
+			return true;
+		}
+		if (token.equals("Or")) {
+			return true;
+		}
+		return false;
+	}
+
 }
