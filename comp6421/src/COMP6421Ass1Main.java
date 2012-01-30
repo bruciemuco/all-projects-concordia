@@ -61,12 +61,13 @@ public class COMP6421Ass1Main {
 		// begin to lexical analyze for each file
 		for (int i = 0; i < testFilesLoader.lstFiles.size(); i++) {
 			//create output file first
-	    	SysLogger.setResultFilename(testFilesLoader.lstResultFiles.get(i));
+	    	SysLogger.setOutputFilenames(testFilesLoader.lstResultFiles.get(i), 
+	    			testFilesLoader.lstErrFiles.get(i));
 	    	
 			// write time stamp to output files
 			SimpleDateFormat tmpDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String datetimeNow = tmpDate.format(new java.util.Date());
-			SysLogger.info(datetimeNow + "\nThe following is the result:");
+			//SysLogger.info(datetimeNow + "\nThe following is the result:");
 			
 			// create a lexical analyzer
 			LexicalAnalyzer scanner = new LexicalAnalyzer();

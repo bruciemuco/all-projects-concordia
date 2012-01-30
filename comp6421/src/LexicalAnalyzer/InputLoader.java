@@ -29,7 +29,8 @@ public class InputLoader {
 	public static final int MAX_FILE_SIZE = 2*1024*1024;	// 2M bytes
 	
 	public ArrayList<String> lstFiles = new ArrayList<String>();			// input files
-	public ArrayList<String> lstResultFiles = new ArrayList<String>();		// output files
+	public ArrayList<String> lstResultFiles = new ArrayList<String>();		// result files
+	public ArrayList<String> lstErrFiles = new ArrayList<String>();		// error msg files
 	
 	// load all files under a directory
 	public int loadTextFiles(String dirPath) {
@@ -56,7 +57,10 @@ public class InputLoader {
 				}
             	
             	lstFiles.add(inputDir + list[i].getName());
-            	lstResultFiles.add(outputDir + list[i].getName());
+            	
+            	String name = list[i].getName();
+            	lstResultFiles.add(outputDir + name.substring(0, name.length() - 4) + "_result.txt");
+            	lstErrFiles.add(outputDir + name.substring(0, name.length() - 4) + "_error.txt");
             }
         }
 		return 0;

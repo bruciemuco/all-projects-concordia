@@ -37,14 +37,17 @@ class OutputTextFormat extends Formatter {
 public class SysLogger {
 	public static Logger log = Logger.getLogger("COMP6421Project");
 	public static Logger result = Logger.getLogger("COMP6421ProjectResult");
+	public static Logger err = Logger.getLogger("COMP6421ProjectError");
 	
 	private static FileHandler fhLast = null;
+	private static FileHandler fhErrLast = null;
 		
 	// initialization: e.g. create log files
 	public static void init() {
 		// disable console logging
 		log.setUseParentHandlers(false);
 		result.setUseParentHandlers(false);
+		err.setUseParentHandlers(false);
 		
 		// add a file handler
 		String path = System.getProperty("user.dir") + "\\logs\\log.txt";
@@ -60,7 +63,7 @@ public class SysLogger {
 		}
 	}
 
-	public static void setResultFilename(String filename) {
+	public static void setOutputFilenames(String filename, String errFilename) {
 		// create a logger to show the results of the program.
 		String path = filename;
 		FileHandler fileHandle;
@@ -76,9 +79,24 @@ public class SysLogger {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}	
+		
+		path = errFilename;
+		try {
+			fileHandle = new FileHandler(path);
+			fileHandle.setLevel(Level.ALL);
+			fileHandle.setFormatter(new OutputTextFormat());
+			if (fhErrLast != null) {
+				err.removeHandler(fhErrLast);
+			}
+			err.addHandler(fileHandle);
+			fhErrLast = fileHandle;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
-	
+
 	public static void log(String msg) {
 		log.info(msg);
 	}
@@ -90,7 +108,7 @@ public class SysLogger {
 	
 	public static void err(String msg) {
 		log.severe(msg);
-		result.severe(msg);
+		err.info(msg);
 	}
 }
 
