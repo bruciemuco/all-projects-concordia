@@ -30,6 +30,26 @@ public class StateMachineDriver {
 	public static final int E = -1;		// fatal error. state machine goes to wrong state.
 	public static final int F = -2;		// no back up
 	public static final int B = -3;		// back up
+
+	public static final int TOKEN_TYPE_UNKNOWN = 0;
+	public static final int TOKEN_TYPE_KEYWORD = 1; 
+	public static final int TOKEN_TYPE_ID = 2;
+	public static final int TOKEN_TYPE_NUM = 3;
+	public static final int TOKEN_TYPE_FLOAT = 4;
+	public static final int TOKEN_TYPE_OPERATOR = 5;
+	public static final int TOKEN_TYPE_PUNCTUATION = 6;
+	
+	public static String[] TOKEN_STR_TYPE = {
+		"Unknown",
+		"Keyword",
+		"Identifier",
+		"Number",
+		"Float",
+		"Operator",
+		"Punctuation"
+	};
+	
+
 	
 	private static int stateInputTable[][] = {					// state table for displaying
 		// first column defines if the row is final state row: 
@@ -43,9 +63,9 @@ public class StateMachineDriver {
 		{SE,  },
 		
 		// [a..z][A..Z] ([a..z][A..Z] | [0..9] | _)*
-		{SN,  2,   3,   3,   1,   1,   1,   1 },
-		{SN,  4,   3,   3,   3,   3,   3,   4 },
-		{SF,  B,   E,   E,   E,   E,   E,   F },
+		{SN, 2,   3,   3,   1,   1,   1,   1 },
+		{SN, 4,   3,   3,   3,   3,   3,   4 },
+		{SF, B,   E,   E,   E,   E,   E,   F },
 	};
 	
 	private static int stateTable[][] = new int[ROW_SIZE][COL_SIZE];		// the table used to look up state
@@ -124,7 +144,7 @@ public class StateMachineDriver {
 		System.out.print(stateTable[3]['_'] + " \n");
 	}
 	
-	public static int nextState(int curState, char ch) {
+	public static int nextState(int curState, char ch, Token token) {
 		if (curState < 1 || curState >= ROW_SIZE || ch <= 0 || ch >= COL_SIZE) {
 			SysLogger.err("Unkown state or ch: " + curState + ", " + ch);
 			return E;
@@ -138,12 +158,22 @@ public class StateMachineDriver {
 		}
 
 		if (stateTable[st][0] == SF) {
+			token.type = getType(st);
 			return stateTable[st][ch];
 		}
 		if (stateTable[st][0] == SE) {
+			token.type = getType(curState);
 			return NE;
 		}
 		return stateTable[curState][ch];
 	}
 
+	public static int getType(int curState) {
+		int ret = TOKEN_TYPE_UNKNOWN;
+		
+		if (curState > 1 && curState <= 4) {
+			ret = TOKEN_TYPE_ID;
+		}
+		return ret;
+	}
 }

@@ -30,8 +30,8 @@ public class LexicalAnalyzer {
 	private int curPos = 0;
 	private int curLine = 1;
 	private int curLinePos = 0;
+	private int lastLinePos = 0;		// the position of last line
 	private String curToken = null;
-	private boolean isKeyword = false;
 	
 	public int init(String filename) {
 		if (filename == null) {
@@ -84,8 +84,11 @@ public class LexicalAnalyzer {
 		}        
 		curPos++;
 		curLinePos++;
-		if (ret == 10) {
-			curLine++;
+		if (ret == '\r' || ret == '\n') {
+			if (ret == '\n') {
+				curLine++;
+			}
+			lastLinePos = curLinePos;
 			curLinePos = 0;
 		}
 		
@@ -116,63 +119,87 @@ public class LexicalAnalyzer {
 	
 	private int errorHandler() {
 		// skip to next char
-		SysLogger.err("Unknown character " + curChar + " (ASCII: " + (int)curChar 
-				+ ") found at line: " +  curLine + ", column: " + curLinePos 
-				+ ". Automatically skiped to next character.");
+		String err = "Line: " +  curLine + ", column: " + curLinePos;
+		SysLogger.err(err + ". Unknown character " + curChar + " (ASCII: " + (int)curChar + ").");
 		curChar = nextChar();
 		return 0;
 	}
 	
-	private String checkTokenValidation(String token) {
-		if (token == null) {
-			return null;
+	private int checkTokenValidation(Token tk) {
+		if (tk.token == null) {
+			return -1;
 		}
 		
-		char ch = token.charAt(0);
-		if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
-			if (token.length() > ID_MAX_LEN) {
-				SysLogger.err("Warning: Identifier length > " + ID_MAX_LEN);
-				return token;
+		if (tk.type == StateMachineDriver.TOKEN_TYPE_ID) {
+			if (tk.token.length() > ID_MAX_LEN) {
+				String err = "Line: " +  tk.line + ", column: " + tk.column;
+				SysLogger.err(err + ". Identifier length > " + ID_MAX_LEN);
+				return -1;
 			}
 		}
 		
-		return token;
+		if (tk.type == StateMachineDriver.TOKEN_TYPE_NUM) {
+			try {
+				Integer.parseInt(tk.token);
+			} catch (NumberFormatException e) {				
+				e.printStackTrace();
+				String err = "Line: " +  tk.line + ", column: " + tk.column;
+				SysLogger.err(err + ". Number is too big");
+				return -1;
+			}
+		}
+		
+		if (tk.type == StateMachineDriver.TOKEN_TYPE_FLOAT) {
+			try {
+				Float.parseFloat(tk.token);
+			} catch (NumberFormatException e) {				
+				e.printStackTrace();
+				String err = "Line: " +  tk.line + ", column: " + tk.column;
+				SysLogger.err(err + ". Float is too big");
+				return -1;
+			}
+		}
+		
+		return 0;
 	}
 
-	public String nextToken() {
+	public Token nextToken() {
 		int curState = StateMachineDriver.INIT_STATE;
-		String token = null;
+		Token tk = new Token();
 		
+		tk.error = false;
 		while (true) {
 			if (curChar == 0) {
 				return null;
 			}
 			
-			//dump();
-			SysLogger.log("curstate: " + curState + ", " + curChar + ", " + (int)curChar);
-			curState = StateMachineDriver.nextState(curState, curChar);
+			SysLogger.log("Line(" + curLine + "," + curLinePos + ")curstate: " + curState 
+					+ ", " + curChar + ", " + (int)curChar);
+			curState = StateMachineDriver.nextState(curState, curChar, tk);
 			SysLogger.log("next state: " + curState);
 			
 			if (curState == StateMachineDriver.F) {
 				addChar((char) curChar);
 				curChar = nextChar();
-				token = curToken;
-				curToken = null;
 				break;
 			}
 			if (curState == StateMachineDriver.B) {
-				token = curToken;
-				curToken = null;
 				break;
 			}
 			if (curState == StateMachineDriver.E) {
 				SysLogger.err("Fatal error. State machine goes to wrong state. ");				
 				fatalerrorHandler();
-				token = null;
-				break;
+				tk = null;
+				return tk;
 			}
 			if (curState == StateMachineDriver.NE) {
-				errorHandler();
+				errorHandler();				
+				if (curToken != null) {
+					// still output the part of token has been analyzed
+					tk.error = true;		
+					break;
+				}
+				
 				curState = StateMachineDriver.INIT_STATE;
 				continue;
 			}
@@ -181,21 +208,37 @@ public class LexicalAnalyzer {
 			}
 			curChar = nextChar();
 		}
-		
-		if (checkTokenValidation(token) == null) {
-			return null;
+
+		tk.token = curToken;
+		curToken = null;
+		tk.file = strFile;
+		tk.line = curChar == '\n' ? curLine - 1 : curLine;
+		tk.column = (curLinePos == 0 ? lastLinePos : curLinePos) - tk.token.length();
+
+		if (tk.error) {
+			tk.column--;		// nextChar was called in errorHandler()			
 		}
+
+		if (checkTokenValidation(tk) == -1) {
+			return null;
+		}		
 		
-		return token;
+		return tk;
 	}
 	
 	public int getAllTokens() {
-		String token = nextToken();
+		Token tk = nextToken();
+		String msg = null;
 		
-		while (token != null) {
-			SysLogger.info(token);
+		while (tk != null) {	
+			msg = "Line: " + tk.line + ", Column: " + tk.column + ", Type: " 
+					+ StateMachineDriver.TOKEN_STR_TYPE[tk.type];
+			if (tk.error) {
+				msg += ", By Error Recovery";
+			}
+			SysLogger.info(msg + ", Lexeme/Value: " + tk.token);
 			//System.out.println(token);
-			token = nextToken();
+			tk = nextToken();
 		}
 		return 0;
 	}
