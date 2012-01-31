@@ -38,6 +38,7 @@ public class StateMachineDriver {
 	public static final int TOKEN_TYPE_FLOAT = 4;
 	public static final int TOKEN_TYPE_OPERATOR = 5;
 	public static final int TOKEN_TYPE_PUNCTUATION = 6;
+	public static final int TOKEN_TYPE_COMMENT = 7;
 	
 	public static String[] TOKEN_STR_TYPE = {
 		"Unknown",
@@ -46,7 +47,8 @@ public class StateMachineDriver {
 		"Integer",
 		"Float",
 		"Operator",
-		"Punctuation"
+		"Punctuation",
+		"Comment",
 	};
 	
 
@@ -68,7 +70,7 @@ public class StateMachineDriver {
 		{ES, },
 		
 		// Identifier: [a-z][A-Z] ([a-z][A-Z] | [0-9] | _)*
-		{C,  3,   4,   4,   12,  15,  1,   6},
+		{C,  3,   4,   4,   12,  15,  1,   6,   17,  21,  23,  25,  29,  31,  31,  32,  32,  31,  31,  31,  31,  31,  31},
 		{C,  5,   4,   4,   4,   4,   4,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 },
 		// final state for identifier
 /*5*/	{V,  B,   E,   E,   E,   E,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B, },
@@ -93,7 +95,39 @@ public class StateMachineDriver {
 /*15*/	{C,  16,  16,  16,  15,  15,  16,  14,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16,  16},
 		// final state for number
 		{V,  B,   B,   B,   E,   E,   B,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+		
+		// operator: <= | <> | <
+		{C,  18,  18,  18,  18,  18,  18,  18,  18,  19,  20,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18},
+		// final state for <
+		{V,  B,   B,   B,   B,   B,   B,   B,   B,   E,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+		// final state for <= | == | >=
+		{V,  E,   E,   E,   E,   E,   E,   E,   E,   N,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E},
+		// final state for <>
+/*20*/	{V,  E,   E,   E,   E,   E,   E,   E,   E,   E,   N,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E},
 
+//		{0, ' ', 'a', 'A', '0', '1', '_', '.', '<', '=', '>', '/', '*', ';', ',', '+', '-', '(', ')', '{', '}', '[', ']' },
+
+		// operator: = | ==
+		{C,  22,  22,  22,  22,  22,  22,  22,  22,  19,  22,  22,  22,  22,  22,  22,  22,  22,  22,  22,  22,  22,  22},
+		{V,  B,   B,   B,   B,   B,   B,   B,   B,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+		
+		// operator: > | >=
+		{C,  24,  24,  24,  24,  24,  24,  24,  24,  19,  24,  24,  24,  24,  24,  24,  24,  24,  24,  24,  24,  24,  24},
+		{V,  B,   B,   B,   B,   B,   B,   B,   B,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+		
+		// operator & comment: / | // | /*
+/*25*/	{C,  26,  26,  26,  26,  26,  26,  26,  26,  26,  26,  27,  28,  26,  26,  26,  26,  26,  26,  26,  26,  26,  26},
+		{V,  B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   E,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+		{V,  E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   N,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E},
+		{V,  E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E,   N,   E,   E,   E,   E,   E,   E,   E,   E,   E,   E},
+		
+		// operator & comment: * | */
+		{C,  30,  30,  30,  30,  30,  30,  30,  30,  30,  30,  27,  30,  30,  30,  30,  30,  30,  30,  30,  30,  30,  30},
+/*30*/	{V,  B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   E,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B},
+
+		{V,  B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   N,   N,   B,   B,   N,   N,   N,   N,   N,   N},
+		{V,  B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   B,   N,   N,   B,   B,   B,   B,   B,   B},
+		
 	};
 	
 	private static int stateTable[][] = new int[ROW_SIZE][COL_SIZE];		// the table used to look up state
@@ -209,11 +243,18 @@ public class StateMachineDriver {
 		if (curState >= 12 && curState <= 16 && curState != 14) {
 			ret = TOKEN_TYPE_INT;
 		}
-		if (curState >= 6 && curState <= 7) {
+		if (curState == 31) {
 			ret = TOKEN_TYPE_PUNCTUATION;
 		}
 		if (curState >= 8 && curState <= 11 || curState == 14) {
 			ret = TOKEN_TYPE_FLOAT;
+		}
+		if ((curState >= 6 && curState <= 7) || (curState >= 17 && curState <= 24) 
+				|| curState == 26 || curState == 30 || curState ==32) {
+			ret = TOKEN_TYPE_OPERATOR;
+		}
+		if (curState >= 27 && curState <= 28) {
+			ret = TOKEN_TYPE_COMMENT;
 		}
 		return ret;
 	}
@@ -255,7 +296,7 @@ public class StateMachineDriver {
 		return false;
 	}
 	
-	public static boolean ifPunctuation(String token) {
+	public static boolean ifOperator(String token) {
 		if (token.equals("And")) {
 			return true;
 		}

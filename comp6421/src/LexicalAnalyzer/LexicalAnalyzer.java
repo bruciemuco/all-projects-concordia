@@ -124,16 +124,17 @@ public class LexicalAnalyzer {
 		
 		if (tk.type == StateMachineDriver.TOKEN_TYPE_ID) {
 			if (tk.token.length() > ID_MAX_LEN) {
-				String err = "Line: " +  tk.line + ", column: " + tk.column;
-				SysLogger.err(err + ". Identifier length > " + ID_MAX_LEN);
+				String err = "Line: " +  tk.line + ", Column: " + tk.column;
+				SysLogger.err(err + ". Identifier length > " + ID_MAX_LEN + ". " + tk.token);
+				tk.token = null;
 				return -1;
 			}
 			
 			// check the type
 			if (StateMachineDriver.ifKeyword(tk.token)) {
 				tk.type = StateMachineDriver.TOKEN_TYPE_KEYWORD;
-			} else if (StateMachineDriver.ifPunctuation(tk.token)) {
-				tk.type = StateMachineDriver.TOKEN_TYPE_PUNCTUATION;
+			} else if (StateMachineDriver.ifOperator(tk.token)) {
+				tk.type = StateMachineDriver.TOKEN_TYPE_OPERATOR;
 			}
 		}
 		
@@ -142,8 +143,9 @@ public class LexicalAnalyzer {
 				Integer.parseInt(tk.token);
 			} catch (NumberFormatException e) {				
 				e.printStackTrace();
-				String err = "Line: " +  tk.line + ", column: " + tk.column;
-				SysLogger.err(err + ". Number is too big");
+				String err = "Line: " +  tk.line + ", Column: " + tk.column;
+				SysLogger.err(err + ". Integer is too big. " + tk.token);
+				tk.token = null;
 				return -1;
 			}
 		}
@@ -153,8 +155,9 @@ public class LexicalAnalyzer {
 				Float.parseFloat(tk.token);
 			} catch (NumberFormatException e) {				
 				e.printStackTrace();
-				String err = "Line: " +  tk.line + ", column: " + tk.column;
-				SysLogger.err(err + ". Float is too big");
+				String err = "Line: " +  tk.line + ", Column: " + tk.column;
+				SysLogger.err(err + ". Float is too big. " + tk.token);
+				tk.token = null;
 				return -1;
 			}
 		}
@@ -167,11 +170,16 @@ public class LexicalAnalyzer {
 	public Token nextToken() {
 		int curState = StateMachineDriver.INIT_STATE;
 		Token tk = new Token();
+		boolean bExit = false;
 		
 		tk.error = false;
-		while (true) {
+		while (!bExit) {
 			if (curChar == 0) {
-				return null;
+				// before exit, adding a '\n' to the end of file.
+				bExit = true;
+				curChar = '\n';
+				curLinePos++;
+				//return null;		// exit;
 			}
 			
 			SysLogger.log("Line(" + curLine + "," + curLinePos + ")curstate: " + curState 
@@ -182,7 +190,9 @@ public class LexicalAnalyzer {
 			// final state without backing up
 			if (curState == StateMachineDriver.N) {
 				addChar((char) curChar);
-				curChar = nextChar();
+				if (!bExit) {
+					curChar = nextChar();
+				}
 				break;
 			}
 			// back up
@@ -204,7 +214,9 @@ public class LexicalAnalyzer {
 				SysLogger.err(err + ". Unknown character " + curChar + " (ASCII: " + (int)curChar + ").");
 				
 				// skip to next char
-				curChar = nextChar();
+				if (!bExit) {
+					curChar = nextChar();
+				}
 				
 				// still output the part of token has been analyzed
 				if (curToken != null) {
@@ -229,9 +241,17 @@ public class LexicalAnalyzer {
 			if (curState != StateMachineDriver.INIT_STATE) {
 				addChar((char) curChar);
 			}
-			curChar = nextChar();
+			if (!bExit) {
+				curChar = nextChar();
+			}
 		}
 
+		if (curToken == null) {
+			if (!bExit) {
+				SysLogger.err("Fatal error. curToken == null");		// last line
+			}
+			return null;
+		}
 		tk.token = curToken;
 		curToken = null;
 		tk.file = strFile;
@@ -243,24 +263,34 @@ public class LexicalAnalyzer {
 		}
 
 		if (checkTokenValidation(tk) == -1) {
-			return null;
+			//return tk;		// exit only when tk.token = null;
 		}		
 		
 		return tk;
 	}
 	
+	public void printToken(Token tk) {
+		if (tk == null || (tk != null && tk.token == null)) {
+			return;
+		}
+		
+		String msg = String.format("Line: %4s,\tCol: %3s,\tType: %11s", tk.line, tk.column, 
+			StateMachineDriver.TOKEN_STR_TYPE[tk.type]);
+//		msg = "Line: " + tk.line + ", Column: " + tk.column + ", Type: " 
+//			+ StateMachineDriver.TOKEN_STR_TYPE[tk.type];
+		
+		if (tk.error) {
+			msg += ", Invoke Error Recovery";
+		}
+		msg += ",\tLexeme/Value: " + tk.token;
+		SysLogger.info(msg);
+	}
+	
 	public int getAllTokens() {
 		Token tk = nextToken();
-		String msg = null;
 		
 		while (tk != null) {	
-			msg = "Line: " + tk.line + ", Column: " + tk.column + ", Type: " 
-					+ StateMachineDriver.TOKEN_STR_TYPE[tk.type];
-			if (tk.error) {
-				msg += ", By Error Recovery";
-			}
-			SysLogger.info(msg + ", Lexeme/Value: " + tk.token);
-			//System.out.println(token);
+			printToken(tk);
 			tk = nextToken();
 		}
 		return 0;
