@@ -37,7 +37,7 @@ public class StateMachineDriver {
 	public static final int TOKEN_TYPE_INT = 3;
 	public static final int TOKEN_TYPE_FLOAT = 4;
 	public static final int TOKEN_TYPE_OPERATOR = 5;
-	public static final int TOKEN_TYPE_PUNCTUATION = 6;
+	public static final int TOKEN_TYPE_PUNCTUATOR = 6;
 	public static final int TOKEN_TYPE_COMMENT = 7;
 	
 	public static String[] TOKEN_STR_TYPE = {
@@ -47,7 +47,7 @@ public class StateMachineDriver {
 		"Integer",
 		"Float",
 		"Operator",
-		"Punctuation",
+		"Punctuator",
 		"Comment",
 	};
 	
@@ -244,7 +244,7 @@ public class StateMachineDriver {
 			ret = TOKEN_TYPE_INT;
 		}
 		if (curState == 31) {
-			ret = TOKEN_TYPE_PUNCTUATION;
+			ret = TOKEN_TYPE_PUNCTUATOR;
 		}
 		if (curState >= 8 && curState <= 11 || curState == 14) {
 			ret = TOKEN_TYPE_FLOAT;

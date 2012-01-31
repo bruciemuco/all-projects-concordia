@@ -35,15 +35,16 @@ public class COMP6421Ass1Main {
 		// show greetings
 		System.out.println("Wellcome to COMP 6421 Project. v0.1");
 		System.out.println("Developed by Yuan Tao.\n");
+		System.out.println("Please read $ThisProgram\\readme.pdf first.");
 		System.out.println("Please put all the test files under the root directoy of $ThisProgram\\input\\, which already has some sample files.");
 		System.out.println("The result of the progrom will be stored accordingly in the files under $ThisProgram\\output\\ \n");
 		System.out.println("Press any key to begin...\n");
 		
-//		try {
-//			System.in.read();
-//		} catch (IOException e) {
-//			
-//		}
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			
+		}
 	
 		// load all test input files
 		InputLoader testFilesLoader = new InputLoader();
