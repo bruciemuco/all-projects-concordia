@@ -59,11 +59,24 @@ void SysLogger::err(char *fmt, ...) {
 	va_end(args);
 
 	fprintf(pLogFile, "WSAGetLastError:%d\n", WSAGetLastError());
-	fprintf(stdout, "WSAGetLastError:%d\n", WSAGetLastError());
+	//fprintf(stdout, "WSAGetLastError:%d\n", WSAGetLastError());
 	fflush(pLogFile);
 }
 
 void SysLogger::log(char *fmt, ...) {
+	if (pLogFile == NULL) {
+		return;
+	}
+	va_list args;
+	va_start(args, fmt);
+	vfprintf(pLogFile, fmt, args);
+	fprintf(pLogFile, "\n");
+	va_end(args);
+	fflush(pLogFile);
+}
+
+// messages showing to the users
+void SysLogger::out(char *fmt, ...) {
 	if (pLogFile == NULL) {
 		return;
 	}
@@ -78,8 +91,12 @@ void SysLogger::log(char *fmt, ...) {
 }
 
 void SysLogger::wellcome() {
-	log("Wellcome to COMP6461 assignment 1.");
-	log("Developed by Yuan Tao & Xiaodong Zhang.\n");
+	out("Wellcome to COMP6461 assignment 1.");
+	out("Developed by Yuan Tao & Xiaodong Zhang.\n");
+	out("Root directory of testing files for Client side is $ThisProgram\\client_files_root\\, which already has two sample files: test.txt & test.bin.");
+	out("Root directory of testing files for Server side is $ThisProgram\\server_files_root\\, which already has two sample files: tests.txt & tests.bin.");
+	out("If any error of Client or Server happens, please check the logs frist, which are placed under $ThisProgram\\logs\\. ");
+	out("");
 }
 
 

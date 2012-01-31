@@ -34,16 +34,26 @@
 
 
 // response
-#define MSGTYPE_RESP_OK		1
+#define MSGTYPE_RESP_FAILTOGETHEADER	1
+#define MSGTYPE_RESP_WRONGHEADER		2
+#define MSGTYPE_RESP_UNKNOWNTYPE		3
+#define MSGTYPE_RESP_FAILTOGETINFO		4
+#define MSGTYPE_RESP_FAILTORECVFILE		5
+#define MSGTYPE_RESP_NOFILE				6
 
 #define MSGTYPE_RESP_ERR_BASE 			100
-#define MSGTYPE_RESP_FAILTOGETHEADER	MSGTYPE_RESP_ERR_BASE + 1
-#define MSGTYPE_RESP_WRONGHEADER		MSGTYPE_RESP_ERR_BASE + 2
-#define MSGTYPE_RESP_UNKNOWNTYPE		MSGTYPE_RESP_ERR_BASE + 3
-#define MSGTYPE_RESP_FAILTOGETINFO		MSGTYPE_RESP_ERR_BASE + 4
-#define MSGTYPE_RESP_FAILTORECVFILE		MSGTYPE_RESP_ERR_BASE + 5
-#define MSGTYPE_RESP_NOFILE				MSGTYPE_RESP_ERR_BASE + 6
+#define MSGTYPE_RESP_OK					MSGTYPE_RESP_ERR_BASE + 1
 
+
+//const char *ERROR_MSG[] = {
+//	"NULL",
+//	"Fail to receive the request header",
+//	"Wrong request header",
+//	"Unknown request type",
+//	"Fail to receive the request data",
+//	"Fail to receive the file",
+//	"No such a file",
+//};
 
 
 typedef struct {

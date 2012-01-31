@@ -97,7 +97,17 @@ int TcpClient::start(const char *filename, const char *opname) {
 	}
 
 	if (header_resp.type != MSGTYPE_RESP_OK) {
-		SysLogger::inst()->err("Response ERROR: %d. ", header_resp.type);
+		const char *ERROR_MSG[] = {
+			"NULL",
+			"Fail to receive the request header",
+			"Wrong request header",
+			"Unknown request type",
+			"Fail to receive the request data",
+			"Fail to receive the file",
+			"No such a file",
+		};
+
+		SysLogger::inst()->err("Response ERROR: %d. %s", header_resp.type, ERROR_MSG[header_resp.type]);
 		return -1;
 	}
 
@@ -121,18 +131,18 @@ int main(int argc, char *argv[]) {
 	SysLogger::inst()->wellcome();
 
 	//get input
-	string servername, filename, opname = "put";
+	string servername, filename, opname = "";
 
-/*
-	SysLogger::inst()->log("Type name of ftp server: ");
+
+	SysLogger::inst()->out("Type name of ftp server: ");
 	cin >> servername;
-	SysLogger::inst()->log("Type name of file to be transferred: ");
+	SysLogger::inst()->out("Type name of file to be transferred: ");
 	cin >> filename;
-	SysLogger::inst()->log("Type direction of transfer: (default is 'get')");
+	SysLogger::inst()->out("Type direction of transfer: ");
 	cin >> opname;
-*/
+
 	servername = "Ewan-PC";
-	filename = "client_test_file.txt";
+//	filename = "client_test_file.txt";
 
 	//start to connect to the server
 	TcpClient * tc = new TcpClient();
@@ -140,15 +150,20 @@ int main(int argc, char *argv[]) {
 	if (tc->client_init(servername.c_str())) {
 		goto ERR;
 	}
-	SysLogger::inst()->log("Sent request to %s, waiting...", servername.c_str());
+	SysLogger::inst()->out("Sent request to %s, waiting...", servername.c_str());
 
 	if (tc->start(filename.c_str(), opname.c_str())) {
 		goto ERR;
 	}
 
+	SysLogger::inst()->out("Type exit to exit the program: ");
+	cin >> opname;
 	return 0;
 
 ERR:
+	SysLogger::inst()->out("\nType exit to exit the program: ");
+	cin >> opname;
+
 	delete tc;
 	return -1;
 }
