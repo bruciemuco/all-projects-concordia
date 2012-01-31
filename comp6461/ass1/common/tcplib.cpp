@@ -62,7 +62,7 @@ int TcpLib::client_init(const char *servername) {
 		return -1;
 	}
 
-	SysLogger::inst()->log("ftp_tcp starting on host: %s", hostname);
+	SysLogger::inst()->out("ftp_tcp starting on host: [%s]", hostname);
 	
 	//connect to the server
 	memset(&ServerAddr, 0, sizeof(ServerAddr)); /* Zero out structure */
@@ -86,6 +86,8 @@ int TcpLib::server_init() {
 		return -1;
 	}
 
+	SysLogger::inst()->out("ftpd_tcp starting at host: [%s]", hostname);
+
 	//Fill-in Server Port and Address info.
 	memset(&ServerAddr, 0, sizeof(ServerAddr)); /* Zero out structure */
 	ServerAddr.sin_family = AF_INET; /* Internet address family */
@@ -107,6 +109,7 @@ int TcpLib::server_init() {
 		//WSACleanup();
 		return -1;
 	}
+	SysLogger::inst()->out("waiting to be contacted for transferring files...\n");
 
 	return 0;
 }
@@ -137,9 +140,9 @@ int TcpLib::sock_recv(int sock, char *buf, int length) {
 			return -1;
 		}
 		left -= ret;
+		SysLogger::inst()->log("Recv %d bytes, left: %d", ret, left);
 		p += ret;
 		ret = SOCKET_ERROR;
-
 	} while (left > 0);
 
 	return left;
@@ -156,6 +159,7 @@ int TcpLib::sock_send(int sock, char *buf, int length) {
 			return -1;
 		}
 		left -= ret;
+		SysLogger::inst()->log("Send %d bytes, left: %d", ret, left);
 		p += ret;
 		ret = SOCKET_ERROR;
 
@@ -170,13 +174,14 @@ int TcpLib::send_file(int sock, const char *filename, int len) {
 
 	pFile = fopen(filename, "rb");
 	if (pFile == NULL) {
-		SysLogger::inst()->err("No such a file:%s\n", filename);
+		SysLogger::inst()->err("No such a file: %s\n", filename);
 		return -1;
 	}
 	while (!feof(pFile)) {
 		memset((void *)buf, 0, BUFFER_LENGTH + 1);
-		fgets(buf, BUFFER_LENGTH, pFile);
-		if (sock_send(sock, buf, strlen(buf)) != 0) {
+		//fgets(buf, BUFFER_LENGTH, pFile);
+		int cnt = fread(buf, 1, BUFFER_LENGTH, pFile);
+		if (sock_send(sock, buf, cnt) != 0) {
 			SysLogger::inst()->err("sock_send error. buf.len:%d, file_len:%d\n", strlen(buf), len);
 			return -1;
 		}
@@ -204,7 +209,8 @@ int TcpLib::recv_file(int sock, const char *filename, int len) {
 			SysLogger::inst()->err("failed to recv. %d, %d, %d", recv_len, left, len);
 			return -1;
 		}
-		fputs(buf, pFile);
+		fwrite(buf, 1, recv_len, pFile);
+		//fputs(buf, pFile);
 		left -= recv_len;
 	}
 	fclose(pFile);

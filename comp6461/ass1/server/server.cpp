@@ -79,7 +79,7 @@ int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 	string type;
 
 	if (msg_recv(sock, (char *)&header, sizeof(MSGHEADER))) {
-		SysLogger::inst()->err("failed to get header of response");
+		SysLogger::inst()->err("failed to get header of request");
 		return MSGTYPE_RESP_FAILTOGETHEADER;
 	}
 	header.len = ntohl(header.len);
@@ -91,6 +91,7 @@ int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 		}
 	} else if (header.type == MSGTYPE_REQ_PUT) {
 		type = MSGTYPE_STRPUT;
+		SysLogger::inst()->out("User \"%s\" requested file %s to be Received.", request.hostname, request.filename);
 	} else {
 		SysLogger::inst()->err("unknown request type");
 		return MSGTYPE_RESP_UNKNOWNTYPE;
@@ -112,10 +113,11 @@ int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 
 	if (header.type == MSGTYPE_REQ_PUT) {
 		// continue to receive the file before sending response
+		SysLogger::inst()->out("Receiving file from %s, waiting...", request.hostname);
 		if (TcpLib::recv_file(sock, filename.c_str(), header.len - sizeof(MSGREQUEST))) {
 			return MSGTYPE_RESP_FAILTORECVFILE;
 		}
-		SysLogger::inst()->log("Received a file");
+		SysLogger::inst()->out("Successfully receive the file: %s", request.filename);
 	}
 
 	return MSGTYPE_RESP_OK;
@@ -139,12 +141,14 @@ void TcpThread::run() //cs: Server socket
 	filename += request.filename;
 
 	if (header.type == MSGTYPE_REQ_GET) {
+		SysLogger::inst()->out("User \"%s\" requested file %s to be sent.", request.hostname, request.filename);
+
 		// get the file size
 		FILE *pFile = 0;
 
 		pFile = fopen(filename.c_str(), "rb");
 		if (pFile == NULL) {
-			SysLogger::inst()->err("No such a file:%s\n", filename.c_str());
+			SysLogger::inst()->err("No such a file: %s\n", filename.c_str());
 			header_resp.type = MSGTYPE_RESP_NOFILE;
 		} else {
 			fseek(pFile, 0, SEEK_END);
@@ -161,13 +165,15 @@ void TcpThread::run() //cs: Server socket
 	SysLogger::inst()->log("Send response: header.type: %d, len: %d", header_resp.type, header_resp.len);
 
 	// send file
-	if (header.type == MSGTYPE_REQ_GET) {
+	if (header.type == MSGTYPE_REQ_GET && header_resp.type == MSGTYPE_RESP_OK) {
+		SysLogger::inst()->out("Sending file to %s, waiting...", request.hostname);
 		if (TcpLib::send_file(sock, filename.c_str(), header_resp.len)) {
 			return;
 		}
+		SysLogger::inst()->out("Successfully send the file: %s", request.filename);
 	}
 	SysLogger::inst()->log("Send response: file: %s ", filename.c_str());
-
+	SysLogger::inst()->out("\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -184,7 +190,7 @@ int main(void) {
 	if (ts->server_init()) {
 		goto ERR;
 	}
-	SysLogger::inst()->log("Sent reques");
+	
 	if (ts->start()) {
 		goto ERR;
 	}
