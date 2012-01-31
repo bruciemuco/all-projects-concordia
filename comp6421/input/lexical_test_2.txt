@@ -1,1 +1,47 @@
-lexical_test_1.txtlexical_test_1.txtlexical_test_1.txt
+== + ( if 
+<> - ) then
+< * { else
+> / } while
+<= = [ do
+>= And ] class
+; Not /* integer
+, Or */ real
+. // read
+write
+return
+
+wrITe Return
+
+<< >> === 
+++ -- ** ///
+/**/ /***/ /++/
+
+23443value
+
+int.
+0000
+0001
+.....
+
+34.1234
+sfs3234.6789
+
+0 	0.0 	0.000001
+. 	.0 		.0000001
+1 	1.0 	1.000001
+
+@# $ "'" ' |
+
+abc@hotmail.com
+0.1e+1
+.@
+1.1#
+.1%
+
+TooooooooooooooooooooooooLooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooongStringTooooooooooooooooooooooooLooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooongString
+
+2147483647
+2147483648
+.
+.888888888888888888888888888888888888888888888888888888888888888888888888888888
+99999999999999999999999999912222222229999999999999999999999999999999999999122222222222222222222222222222222222222222222.33333333333333333333333333333333333333333333333333333333

@@ -1,1 +1,36 @@
-lexical_test_1.txt
+
+/* class implementing rational numbers and their multiplication */
+/* Author : Joey Paquet */ 
+/* Date : October 1, 2001 */ 
+class Rational { 
+  integer numerator; 
+  integer denominator; 
+  integer setNumerator(integer newNumerator) 
+  { 
+    numerator = newNumerator; 
+  }; 
+  integer setDenominator(integer newDenominator) 
+  { 
+    denominator = newDenominator; 
+  }; 
+  Rational multiply(Rational a) 
+  { 
+    Rational result; 
+    result.setNumerator(a.numerator * this.numerator); 
+    result.setDenominator(a.denominator * this.denominator);  
+    return result; 
+  }; 
+}; 
+program { 
+  Rational A; 
+  Rational B; 
+  Rational C; 
+  A.setNumerator(2); 
+  A.setDenominator(3); 
+  B.setNumerator(4); 
+  B.setDenominator(7); 
+  C = A.multiply(B); 
+  write(C.numerator); 
+  write(C.denominator); 
+}
+

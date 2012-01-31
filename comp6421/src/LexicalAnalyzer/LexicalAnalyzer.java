@@ -142,7 +142,7 @@ public class LexicalAnalyzer {
 			try {
 				Integer.parseInt(tk.token);
 			} catch (NumberFormatException e) {				
-				e.printStackTrace();
+				//e.printStackTrace();
 				String err = "Line: " +  tk.line + ", Column: " + tk.column;
 				SysLogger.err(err + ". Integer is too big. " + tk.token);
 				tk.token = null;
@@ -154,7 +154,7 @@ public class LexicalAnalyzer {
 			try {
 				Float.parseFloat(tk.token);
 			} catch (NumberFormatException e) {				
-				e.printStackTrace();
+				//e.printStackTrace();
 				String err = "Line: " +  tk.line + ", Column: " + tk.column;
 				SysLogger.err(err + ". Float is too big. " + tk.token);
 				tk.token = null;
