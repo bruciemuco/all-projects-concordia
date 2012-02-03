@@ -1,7 +1,7 @@
 /*
  * COMP6461 Assignment1
  *
- * This file is created by Yuan Tao (ewan.msn@gmail.com)
+ * This file is created by Yuan Tao (ewan.msn@gmail.com) & Xiaodong Zhang
  * Licensed under GNU GPL v3
  *
  * $Author$
