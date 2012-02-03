@@ -111,14 +111,14 @@ int TcpClient::start(const char *filename, const char *opname) {
 		return -1;
 	}
 
-	SysLogger::inst()->log("Get response: type: %d, len: %d", header_resp.type, header_resp.len);
+	SysLogger::inst()->out("Get a response, data length: %d", header_resp.len);
 
 	// get the file from server
 	if (header_resp.len > 0) {
 		if (TcpLib::recv_file(sock, filefullname.c_str(), header_resp.len)) {
 			return -1;
 		}
-		SysLogger::inst()->log("Received a file: %s", filefullname.c_str());
+		SysLogger::inst()->out("Received a file: %s", filefullname.c_str());
 	}
 	return 0;
 }
@@ -133,37 +133,31 @@ int main(int argc, char *argv[]) {
 	//get input
 	string servername, filename, opname = "";
 
+	while (1) {
+		SysLogger::inst()->out("\nType name of ftp server: ");
+		cin >> servername;
+		if (servername == "quit") {
+			break;
+		}
+		SysLogger::inst()->out("Type name of file to be transferred: ");
+		cin >> filename;
+		SysLogger::inst()->out("Type direction of transfer: ");
+		cin >> opname;
 
-	SysLogger::inst()->out("Type name of ftp server: ");
-	cin >> servername;
-	SysLogger::inst()->out("Type name of file to be transferred: ");
-	cin >> filename;
-	SysLogger::inst()->out("Type direction of transfer: ");
-	cin >> opname;
+		servername = "Ewan-PC";
 
-	servername = "Ewan-PC";
-//	filename = "client_test_file.txt";
+		//start to connect to the server
+		TcpClient * tc = new TcpClient();
 
-	//start to connect to the server
-	TcpClient * tc = new TcpClient();
+		if (tc->client_init(servername.c_str()) == 0) {
+			SysLogger::inst()->out("\nSent request to %s, waiting...", servername.c_str());
 
-	if (tc->client_init(servername.c_str())) {
-		goto ERR;
+			if (tc->start(filename.c_str(), opname.c_str())) {
+				// error
+			}
+		}
+		delete tc;
 	}
-	SysLogger::inst()->out("Sent request to %s, waiting...", servername.c_str());
 
-	if (tc->start(filename.c_str(), opname.c_str())) {
-		goto ERR;
-	}
-
-	SysLogger::inst()->out("Type exit to exit the program: ");
-	cin >> opname;
 	return 0;
-
-ERR:
-	SysLogger::inst()->out("\nType exit to exit the program: ");
-	cin >> opname;
-
-	delete tc;
-	return -1;
 }
