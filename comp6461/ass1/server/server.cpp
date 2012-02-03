@@ -91,7 +91,6 @@ int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 		}
 	} else if (header.type == MSGTYPE_REQ_PUT) {
 		type = MSGTYPE_STRPUT;
-		SysLogger::inst()->out("User \"%s\" requested file %s to be Received.", request.hostname, request.filename);
 	} else {
 		SysLogger::inst()->err("unknown request type");
 		return MSGTYPE_RESP_UNKNOWNTYPE;
@@ -105,6 +104,11 @@ int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 			return MSGTYPE_RESP_FAILTOGETINFO;
 		}
 		SysLogger::inst()->log("hostname: %s, filename: %s", request.hostname, request.filename);
+	}
+	if (header.type == MSGTYPE_REQ_PUT) {
+		SysLogger::inst()->out("User \"%s\" requested file %s to be Received.", "spacewalker", request.filename);
+	} else {
+		SysLogger::inst()->out("User \"%s\" requested file %s to be sent.", "spacewalker", request.filename);
 	}
 
 	// send back the response
@@ -141,8 +145,6 @@ void TcpThread::run() //cs: Server socket
 	filename += request.filename;
 
 	if (header.type == MSGTYPE_REQ_GET) {
-		SysLogger::inst()->out("User \"%s\" requested file %s to be sent.", request.hostname, request.filename);
-
 		// get the file size
 		FILE *pFile = 0;
 
