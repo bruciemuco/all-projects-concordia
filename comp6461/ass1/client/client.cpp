@@ -111,7 +111,7 @@ int TcpClient::start(const char *filename, const char *opname) {
 		return -1;
 	}
 
-	SysLogger::inst()->out("Get a response, data length: %d", header_resp.len);
+	SysLogger::inst()->out("Get an OK response, data length: %d", header_resp.len);
 
 	// get the file from server
 	if (header_resp.len > 0) {
@@ -143,8 +143,6 @@ int main(int argc, char *argv[]) {
 		cin >> filename;
 		SysLogger::inst()->out("Type direction of transfer: ");
 		cin >> opname;
-
-		servername = "Ewan-PC";
 
 		//start to connect to the server
 		TcpClient * tc = new TcpClient();
