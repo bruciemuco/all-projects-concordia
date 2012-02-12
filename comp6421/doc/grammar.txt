@@ -12,11 +12,9 @@ funcDef  ->  funcHead funcBody ;
 
 funcBody  ->  { varStateList } 
 varStateList -> EPSILON | id varStateListP 
- | integer id arraySizeList ; varDeclList statementList
- | real id arraySizeList ; varDeclList statementList
+ | integer id arraySizeList ; varStateList
+ | real id arraySizeList ; varStateList
 varStateListP -> id arraySizeList ; varStateList | indiceList variableP  assignOp expr ;  statementList
-varDeclList -> integer id arraySizeList ; varDeclList | varStateList
-varDeclList -> real id arraySizeList ; varDeclList | varStateList
 
 statementList -> statement statementList  | EPSILON
 varDecl  ->  type id arraySizeList ; 
