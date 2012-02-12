@@ -1,5 +1,13 @@
 /*
- * COMP6461 Assignment1
+   COMP6461 Assignment1
+
+   Yuan Tao (ID: 5977363) 
+   Xiaodong Zhang (ID: 6263879) 
+ 
+   Course Instructor: Amin Ranj Bar 
+   Lab Instructor: Steve Morse   
+   Lab number: Friday 
+
  *
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
@@ -41,8 +49,8 @@
 #define MSGTYPE_RESP_FAILTORECVFILE		5
 #define MSGTYPE_RESP_NOFILE				6
 
-#define MSGTYPE_RESP_ERR_BASE 			100
-#define MSGTYPE_RESP_OK					MSGTYPE_RESP_ERR_BASE + 1
+#define MSGTYPE_RESP_OK_BASE 			100
+#define MSGTYPE_RESP_OK					MSGTYPE_RESP_OK_BASE + 1
 
 
 //const char *ERROR_MSG[] = {
