@@ -1,0 +1,64 @@
+prog -> classDeclList progBody 
+classDeclList -> classDecl classDeclList | EPSILON
+
+classDecl  ->  class id { varFuncDeclList } ; 
+varFuncDeclList ->  EPSILON | type id varFuncDeclListP 
+varFuncDeclListP -> arraySizeList ;  varFuncDeclList | ( fParams )  funcBody ;  funcDefList
+
+funcDefList -> funcDef funcDefList  | EPSILON
+progBody  ->  program funcBody ; funcDefList
+funcHead  ->  type id ( fParams ) 
+funcDef  ->  funcHead funcBody ; 
+
+funcBody  ->  { varStateList } 
+varStateList -> EPSILON | id varStateListP 
+ | integer id arraySizeList ; varDeclList statementList
+ | real id arraySizeList ; varDeclList statementList
+varStateListP -> id arraySizeList ; varStateList | indiceList variableP  assignOp expr ;  statementList
+varDeclList -> integer id arraySizeList ; varDeclList | varStateList
+varDeclList -> real id arraySizeList ; varDeclList | varStateList
+
+statementList -> statement statementList  | EPSILON
+varDecl  ->  type id arraySizeList ; 
+arraySizeList -> arraySize arraySizeList  | EPSILON
+statement  ->  variable assignOp expr ; 
+  |  if ( expr ) then statBlock else statBlock ; 
+  |  while ( expr ) do statBlock ; 
+  |  read ( variable ) ; 
+  |  write ( expr ) ; 
+  |  return ( expr ) ;  
+statBlock  ->  { statementList } | statement | EPSILON
+
+expr  -> arithExpr exprP
+exprP  -> EPSILON | relOp arithExpr 
+
+arithExpr -> term arithExprP
+arithExprP -> EPSILON | addOp term arithExprP
+
+sign  ->  + | - 
+
+term -> factor termP
+termP -> EPSILON | multOp factor termP
+
+factor  -> id factorPP
+  |  num 
+  |  ( expr ) 
+  |  not factor 
+  | sign factor 
+factorP -> EPSILON | . id factorPP
+factorPP -> indiceList factorP | ( aParams )  
+  
+idnestList -> idnest idnestList  | EPSILON
+variable  ->  id indiceList variableP 
+variableP ->  EPSILON | . id indiceList variableP
+indiceList -> indice indiceList  | EPSILON
+idnest  ->  id indiceList . 
+indice  ->  [ arithExpr ] 
+arraySize  ->  [ int ] 
+type  ->  integer | real | id 
+fParams  ->  type id arraySizeList fParamsTailList | EPSILON 
+fParamsTailList -> fParamsTail fParamsTailList  | EPSILON
+aParams  ->  expr aParamsTailList | EPSILON
+aParamsTailList -> aParamsTail aParamsTailList  | EPSILON
+fParamsTail  ->  , type id arraySizeList
+aParamsTail  -> , expr 
