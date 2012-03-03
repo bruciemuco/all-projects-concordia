@@ -4,10 +4,10 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  *
- * $Author: ewan.msn@gmail.com $
- * $Date: 2012-01-23 03:02:21 -0500 (Mon, 23 Jan 2012) $
- * $Rev: 14 $
- * $HeadURL: https://all-projects-concordia.googlecode.com/svn/comp6461/ass1/common/tcplib.h $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  *
  */
 #ifndef __TCPLIB_H__
