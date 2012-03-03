@@ -12,10 +12,10 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  *
- * $Author: ewan.msn@gmail.com $
- * $Date: 2012-03-03 13:25:07 -0500 (Sat, 03 Mar 2012) $
- * $Rev: 40 $
- * $HeadURL: https://all-projects-concordia.googlecode.com/svn/comp6461/ass1/common/protocol.h $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  *
  */
 #ifndef __PROTOCOL_H__

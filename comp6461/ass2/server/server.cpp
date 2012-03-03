@@ -18,10 +18,10 @@
  * This file is modified by Yuan Tao (ewan.msn@gmail.com) & Xiaodong Zhang
  * Licensed under GNU GPL v3
  *
- * $Author: ewan.msn@gmail.com $
- * $Date: 2012-02-11 23:22:34 -0500 (Sat, 11 Feb 2012) $
- * $Rev: 36 $
- * $HeadURL: https://all-projects-concordia.googlecode.com/svn/comp6461/ass1/server/server.cpp $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  *
  */
 

@@ -4,10 +4,10 @@
  * This file is modified by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  *
- * $Author: ewan.msn@gmail.com $
- * $Date: 2012-01-22 17:51:15 -0500 (Sun, 22 Jan 2012) $
- * $Rev: 11 $
- * $HeadURL: https://all-projects-concordia.googlecode.com/svn/comp6461/ass1/server/Thread.h $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  *
  */
 
