@@ -1,5 +1,8 @@
 //Router.cpp
 #include "Router.h"
+
+#pragma comment(lib, "ws2_32.lib")
+
 //////////////////////////////////////////////////////////
 //
 //	Router Constructor

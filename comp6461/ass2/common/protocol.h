@@ -1,5 +1,5 @@
 /*
-   COMP6461 Assignment1
+   COMP6461 Assignment2
 
    Yuan Tao (ID: 5977363) 
    Xiaodong Zhang (ID: 6263879) 
@@ -24,8 +24,15 @@
 #define CLIENT_RECV_PORT 5000
 #define SERVER_RECV_PORT 5001
 
+// router ports
+#define ROUTER_RECV_PORT 7000
+
+// select timeout
+#define TIMEOUT_USEC 300000 
+
+
 //#define RESP_LENGTH 40
-#define BUFFER_LENGTH 80
+#define BUFFER_LENGTH (80 - sizeof(MSGHEADER))
 
 #define FILENAME_LENGTH 256
 #define HOSTNAME_LENGTH 256
@@ -76,10 +83,16 @@ typedef struct {
 
 // msg header
 typedef struct {
-	char type;
-	unsigned long len;		// length of the data following this header to be received
+	int type:7;				// message type
+	int seq:1;				// sequence number
+	unsigned int len;		// length of the data following this header to be received
 } MSGHEADER, PMSGHEADER;
 
+// three-way hand shake
+typedef struct {
+	int clientSeq;
+	int serverSeq;
+} HANDSHAKE, *PHANDSHAKE;
 
 
 #endif

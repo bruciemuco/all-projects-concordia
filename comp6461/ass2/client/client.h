@@ -1,5 +1,5 @@
 /*
- * COMP6461 Assignment1
+ * COMP6461 Assignment2
  *
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
@@ -15,7 +15,7 @@
 
 const char *FILE_DIR_ROOT = "../client_files_root/";
 
-class TcpClient: public TcpLib {
+class TcpClient: public SockLib {
 
 public:
 	TcpClient(){};

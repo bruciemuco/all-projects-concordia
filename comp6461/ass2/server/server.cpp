@@ -5,7 +5,7 @@
  In the Server,issuse "Server sd2.encs.concordia.ca test.txt time" and you can get creation time of the file
  */
 /*
-   COMP6461 Assignment1
+   COMP6461 Assignment2
 
    Yuan Tao (ID: 5977363) 
    Xiaodong Zhang (ID: 6263879) 
@@ -71,11 +71,11 @@ TcpThread::~TcpThread() {
 }
 
 int TcpThread::msg_recv(int sock, char *buf, int length) {
-	return TcpLib::sock_recv(sock, buf, length);
+	return SockLib::sock_recv(sock, buf, length);
 }
 
 int TcpThread::msg_send(int sock, char *buf, int length) {
-	return TcpLib::sock_send(sock, buf, length);
+	return SockLib::sock_send(sock, buf, length);
 }
 
 int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
@@ -126,7 +126,7 @@ int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 	if (header.type == MSGTYPE_REQ_PUT) {
 		// continue to receive the file before sending response
 		SysLogger::inst()->out("Receiving file from %s, waiting...", request.hostname);
-		if (TcpLib::recv_file(sock, filename.c_str(), header.len - sizeof(MSGREQUEST))) {
+		if (SockLib::recv_file(sock, filename.c_str(), header.len - sizeof(MSGREQUEST))) {
 			return MSGTYPE_RESP_FAILTORECVFILE;
 		}
 		SysLogger::inst()->out("Successfully receive the file: %s", request.filename);
@@ -177,7 +177,7 @@ void TcpThread::run() //cs: Server socket
 	// send file
 	if (header.type == MSGTYPE_REQ_GET && header_resp.type == MSGTYPE_RESP_OK) {
 		SysLogger::inst()->out("Sending file to %s, waiting...", request.hostname);
-		if (TcpLib::send_file(sock, filename.c_str(), header_resp.len)) {
+		if (SockLib::send_file(sock, filename.c_str(), header_resp.len)) {
 			return;
 		}
 		SysLogger::inst()->out("Successfully send the file: %s", request.filename);

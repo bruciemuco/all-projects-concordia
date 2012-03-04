@@ -1,5 +1,5 @@
 /*
-   COMP6461 Assignment1
+   COMP6461 Assignment2
 
    Yuan Tao (ID: 5977363) 
    Xiaodong Zhang (ID: 6263879) 
@@ -229,12 +229,21 @@ int SockLib::recv_file(int sock, const char *filename, int len) {
 // ---------------------------------------------
 // Assignment 2 UDP
 
-int SockLib::udp_init(const char *dstHostName, int dstPort, int localPort) {
+int SockLib::set_dstAddr(const char *dstHostName, int dstPort) {
 	if (dstHostName == 0) {
-		SysLogger::inst()->err("init params error");
+		SysLogger::inst()->err("set_dstAddr params error");
 		return -1;
 	}
-	
+	// specify destination address
+	memset(&dstAddr, 0, sizeof(dstAddr));
+	dstAddr.sin_family = AF_INET;
+	dstAddr.sin_addr.s_addr = resolve_name(dstHostName);
+	dstAddr.sin_port = htons(dstPort); 
+
+	return 0;	
+}
+
+int SockLib::udp_init(int localPort) {
 	if (init()) {
 		SysLogger::inst()->err("socket init error");
 		return -1;
@@ -249,15 +258,11 @@ int SockLib::udp_init(const char *dstHostName, int dstPort, int localPort) {
 		SysLogger::inst()->err("bind error");
 		return -1;
 	}
-	
-	// specify destination address
-	memset(&dstAddr, 0, sizeof(dstAddr));
-	dstAddr.sin_family = AF_INET;
-	dstAddr.sin_addr.s_addr = resolve_name(dstHostName);
-	dstAddr.sin_port = htons(dstPort); 
+
+	dstAddr.sin_port = 0;
 	
 	SysLogger::inst()->out("ftp_udp starting on host: [%s:%d]", hostname, localPort);
-	
+	return 0;
 }
 
 int SockLib::sock_sendto(int sock, char *buf, int length) {
@@ -265,14 +270,14 @@ int SockLib::sock_sendto(int sock, char *buf, int length) {
 	char *p = buf;
 	
 	// TODO: select
-	ret = sendto(sock, p, left, 0, (SOCKADDR*)&dstAddr, sizeof(dstAddr));
+	ret = sendto(sock, p, left, 0, (SOCKADDR *)&dstAddr, sizeof(dstAddr));
 	if (ret == SOCKET_ERROR) {
 		SysLogger::inst()->err("sock_sendto, len = %d", length);
 		return -1;
 	}
 	SysLogger::inst()->log("sendto: %d bytes, left: %d", ret, left);
 	if (left != ret) {
-		ret = SOCKET_ERROR;
+		ret = SOCKET_ERROR;		// continue;
 	}
 
 	return left;
@@ -317,6 +322,10 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length) {
 			}
 			
 			SysLogger::inst()->log("recvfrom: %d bytes, left: %d", ret, left);
+			if (dstAddr.sin_port == 0) {
+				// save the destination address
+				memmove((void *)&dstAddr, (void *)&from, sizeof(from));
+			}
 			if (ret != left) {
 				return -1;
 			}

@@ -6,7 +6,7 @@
  */
 
 /*
- * COMP6461 Assignment1
+ * COMP6461 Assignment2
 
    Yuan Tao (ID: 5977363) 
    Xiaodong Zhang (ID: 6263879) 
@@ -34,7 +34,7 @@
 
 #include "../common/syslogger.h"
 #include "../common/protocol.h"
-#include "../common/tcplib.h"
+#include "../common/socklib.h"
 #include "client.h"
 
 using namespace std;
@@ -93,7 +93,7 @@ int TcpClient::start(const char *filename, const char *opname) {
 
 	if (header.type == MSGTYPE_REQ_PUT) {
 		// send file to server
-		if (TcpLib::send_file(sock, filefullname.c_str(), header.len - sizeof(request))) {
+		if (SockLib::send_file(sock, filefullname.c_str(), header.len - sizeof(request))) {
 			return -1;
 		}
 	}
@@ -124,7 +124,7 @@ int TcpClient::start(const char *filename, const char *opname) {
 
 	// get the file from server
 	if (header_resp.len > 0) {
-		if (TcpLib::recv_file(sock, filefullname.c_str(), header_resp.len)) {
+		if (SockLib::recv_file(sock, filefullname.c_str(), header_resp.len)) {
 			return -1;
 		}
 		SysLogger::inst()->out("Received a file: %s", filefullname.c_str());
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
 	string servername, filename, opname = "";
 
 	while (1) {
-		SysLogger::inst()->out("\nType name of ftp server: ");
+		SysLogger::inst()->out("\nType name of ftp server (router): ");
 		cin >> servername;
 		if (servername == "quit") {
 			break;
@@ -156,11 +156,13 @@ int main(int argc, char *argv[]) {
 		//start to connect to the server
 		TcpClient * tc = new TcpClient();
 
-		if (tc->client_init(servername.c_str()) == 0) {
-			SysLogger::inst()->out("\nSent request to %s, waiting...", servername.c_str());
-
-			if (tc->start(filename.c_str(), opname.c_str())) {
-				// error
+		if (tc->udp_init(CLIENT_RECV_PORT) == 0) {
+			if (tc->set_dstAddr(servername.c_str(), ROUTER_RECV_PORT) == 0) {
+				SysLogger::inst()->out("\nSent request to %s, waiting...", servername.c_str());
+				
+				if (tc->start(filename.c_str(), opname.c_str())) {
+					// error
+				}
 			}
 		}
 		delete tc;
