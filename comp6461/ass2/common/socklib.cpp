@@ -24,18 +24,18 @@
 
 #include "syslogger.h"
 #include "protocol.h"
-#include "tcplib.h"
+#include "socklib.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
 
-TcpLib::~TcpLib() {
+SockLib::~SockLib() {
 	/* When done uninstall winsock.dll (WSACleanup()) and exit */
 	closesocket(sock);
 	WSACleanup();
 }
 
-int TcpLib::init() {
+int SockLib::init() {
 	//initilize winsocket
 	if (WSAStartup(0x0202, &wsadata) != 0) {
 		SysLogger::inst()->err("Error in starting WSAStartup()\n");
@@ -59,7 +59,7 @@ int TcpLib::init() {
 	return 0;
 }
 
-int TcpLib::client_init(const char *servername) {
+int SockLib::client_init(const char *servername) {
 	if (servername == 0) {
 		SysLogger::inst()->err("init params error");
 		return -1;
@@ -76,7 +76,7 @@ int TcpLib::client_init(const char *servername) {
 	memset(&ServerAddr, 0, sizeof(ServerAddr)); /* Zero out structure */
 	ServerAddr.sin_family = AF_INET; /* Internet address family */
 	ServerAddr.sin_addr.s_addr = resolve_name(servername); /* Server IP address */
-	ServerAddr.sin_port = htons(REQUEST_PORT); /* Server port */
+	ServerAddr.sin_port = htons(SERVER_RECV_PORT); /* Server port */
 	if (connect(sock, (struct sockaddr *) &ServerAddr, sizeof(ServerAddr)) < 0) {
 		SysLogger::inst()->err("Faild to connect to server: %s", servername);
 		//closesocket(sock);
@@ -88,7 +88,7 @@ int TcpLib::client_init(const char *servername) {
 	return 0;
 }
 
-int TcpLib::server_init() {
+int SockLib::server_init() {
 	if (init()) {
 		SysLogger::inst()->err("socket init error");
 		return -1;
@@ -100,7 +100,7 @@ int TcpLib::server_init() {
 	memset(&ServerAddr, 0, sizeof(ServerAddr)); /* Zero out structure */
 	ServerAddr.sin_family = AF_INET; /* Internet address family */
 	ServerAddr.sin_addr.s_addr = htonl(INADDR_ANY); /* Any incoming interface */
-	ServerAddr.sin_port = htons(REQUEST_PORT); /* Local port */
+	ServerAddr.sin_port = htons(SERVER_RECV_PORT); /* Local port */
 
 	//Bind the server socket
 	if (bind(sock, (struct sockaddr *) &ServerAddr, sizeof(ServerAddr))	== SOCKET_ERROR) {
@@ -122,7 +122,7 @@ int TcpLib::server_init() {
 	return 0;
 }
 
-unsigned long TcpLib::resolve_name(const char *name) {
+unsigned long SockLib::resolve_name(const char *name) {
 	struct hostent *host; /* Structure containing host information */
 
 	if ((host = gethostbyname(name)) == NULL) {
@@ -134,7 +134,7 @@ unsigned long TcpLib::resolve_name(const char *name) {
 	return *((unsigned long *) host->h_addr_list[0]);
 }
 
-int TcpLib::sock_recv(int sock, char *buf, int length) {
+int SockLib::sock_recv(int sock, char *buf, int length) {
 	int ret = SOCKET_ERROR, left = length;
 	char *p = buf;
 
@@ -156,7 +156,7 @@ int TcpLib::sock_recv(int sock, char *buf, int length) {
 	return left;
 }
 
-int TcpLib::sock_send(int sock, char *buf, int length) {
+int SockLib::sock_send(int sock, char *buf, int length) {
 	int ret = SOCKET_ERROR, left = length;
 	char *p = buf;
 
@@ -176,7 +176,7 @@ int TcpLib::sock_send(int sock, char *buf, int length) {
 	return left;
 }
 
-int TcpLib::send_file(int sock, const char *filename, int len) {
+int SockLib::send_file(int sock, const char *filename, int len) {
 	FILE *pFile = 0;
 	char buf[BUFFER_LENGTH + 1];
 
@@ -199,7 +199,7 @@ int TcpLib::send_file(int sock, const char *filename, int len) {
 	return 0;
 }
 
-int TcpLib::recv_file(int sock, const char *filename, int len) {
+int SockLib::recv_file(int sock, const char *filename, int len) {
 	FILE *pFile = 0;
 	char buf[BUFFER_LENGTH + 1];
 
@@ -226,4 +226,106 @@ int TcpLib::recv_file(int sock, const char *filename, int len) {
 	return 0;
 }
 
+// ---------------------------------------------
+// Assignment 2 UDP
 
+int SockLib::udp_init(const char *dstHostName, int dstPort, int localPort) {
+	if (dstHostName == 0) {
+		SysLogger::inst()->err("init params error");
+		return -1;
+	}
+	
+	if (init()) {
+		SysLogger::inst()->err("socket init error");
+		return -1;
+	}
+	
+	// bind receiving port
+	memset(&localAddr, 0, sizeof(localAddr)); /* Zero out structure */
+	localAddr.sin_family = AF_INET; /* Internet address family */
+	localAddr.sin_addr.s_addr = htonl(INADDR_ANY); /* Any incoming interface */
+	localAddr.sin_port = htons(localPort); /* Local port */
+	if (bind(sock, (struct sockaddr *) &localAddr, sizeof(localAddr)) == SOCKET_ERROR) {
+		SysLogger::inst()->err("bind error");
+		return -1;
+	}
+	
+	// specify destination address
+	memset(&dstAddr, 0, sizeof(dstAddr));
+	dstAddr.sin_family = AF_INET;
+	dstAddr.sin_addr.s_addr = resolve_name(dstHostName);
+	dstAddr.sin_port = htons(dstPort); 
+	
+	SysLogger::inst()->out("ftp_udp starting on host: [%s:%d]", hostname, localPort);
+	
+}
+
+int SockLib::sock_sendto(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR, left = length;
+	char *p = buf;
+	
+	// TODO: select
+	ret = sendto(sock, p, left, 0, (SOCKADDR*)&dstAddr, sizeof(dstAddr));
+	if (ret == SOCKET_ERROR) {
+		SysLogger::inst()->err("sock_sendto, len = %d", length);
+		return -1;
+	}
+	SysLogger::inst()->log("sendto: %d bytes, left: %d", ret, left);
+	if (left != ret) {
+		ret = SOCKET_ERROR;
+	}
+
+	return left;
+}
+
+int SockLib::sock_recvfrom(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR, left = length;
+	char *p = buf;
+	fd_set readfds;
+	struct timeval *tp = new timeval;
+	int waitCnt = 2;		// waiting total time: waitCnt * TIMEOUT_USEC
+	SOCKADDR from;
+	int fromlen;
+
+	tp->tv_sec = 0;
+	tp->tv_usec = TIMEOUT_USEC;
+
+	while (1) {
+		FD_ZERO(&readfds);
+		FD_SET(sock, &readfds);
+
+		if ((ret = select(sock + 1, &readfds, NULL, NULL, tp)) == SOCKET_ERROR) {
+			SysLogger::inst()->err("select error");
+			
+		} else if (ret == 0) {
+			// select timeout
+			if (waitCnt <= 1) {
+				return 0;		// receive timeout
+			}
+			waitCnt--;
+
+		} else if (ret > 0) {
+			// there is something to be received in the windows socket buffer
+			fromlen = sizeof(from);
+			ret = recvfrom(sock, p, left, 0, &from, &fromlen);
+			if (ret == 0) {
+				SysLogger::inst()->err("recvfrom: connection closed");
+				return -1;
+			} else if (ret == SOCKET_ERROR) {
+				SysLogger::inst()->err("recvfrom: error");
+				return -1;
+			}
+			
+			SysLogger::inst()->log("recvfrom: %d bytes, left: %d", ret, left);
+			if (ret != left) {
+				return -1;
+			}
+			break;	// 
+		
+		} else {
+			SysLogger::inst()->err("select unknown error");
+		}
+	}
+
+	return ret;
+}

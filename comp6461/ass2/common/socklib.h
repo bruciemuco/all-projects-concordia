@@ -17,9 +17,9 @@
 #include <winsock.h>
 
 #define MAXPENDING 10
+#define TIMEOUT_USEC 300000 
 
-
-class TcpLib {
+class SockLib {
 protected:
 	int sock; 		// client socket or server listening socket
 	int client_sock; // sockets that accepted by server
@@ -28,7 +28,7 @@ protected:
 	struct sockaddr_in ClientAddr;
 
 	// for UDP
-	struct sockaddr_in destAddr;	// 
+	struct sockaddr_in dstAddr;		// 
 	struct sockaddr_in localAddr;
 
 	//unsigned short ServPort; /* server port */
@@ -37,13 +37,14 @@ protected:
 	char hostname[HOSTNAME_LENGTH];
 
 public:
-	TcpLib() {
+	SockLib() {
 	}
-	~TcpLib();
+	~SockLib();
 
 	int init();
 	int client_init(const char *servername);
 	int server_init();
+	int udp_init(const char *dstHostName, int dstPort, int localPort);
 	//void server_start();
 
 	unsigned long resolve_name(const char *name);
