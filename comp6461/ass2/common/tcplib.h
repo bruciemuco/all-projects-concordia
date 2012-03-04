@@ -14,6 +14,7 @@
 #define __TCPLIB_H__
 
 #include <windows.h>
+#include <winsock.h>
 
 #define MAXPENDING 10
 
@@ -25,6 +26,10 @@ protected:
 
 	struct sockaddr_in ServerAddr; 		/* server socket address */
 	struct sockaddr_in ClientAddr;
+
+	// for UDP
+	struct sockaddr_in destAddr;	// 
+	struct sockaddr_in localAddr;
 
 	//unsigned short ServPort; /* server port */
 	WSADATA wsadata;
@@ -45,6 +50,8 @@ public:
 
 	static int sock_send(int sock, char *buf, int length);
 	static int sock_recv(int sock, char *buf, int length);
+	static int sock_sendto(int sock, char *buf, int length);
+	static int sock_recvfrom(int sock, char *buf, int length);
 
 	static int send_file(int sock, const char *filename, int len);
 	static int recv_file(int sock, const char *filename, int len);
