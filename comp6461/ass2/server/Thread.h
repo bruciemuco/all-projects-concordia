@@ -1,5 +1,5 @@
 /*
- * COMP6461 Assignment1
+ * COMP6461 Assignment2
  *
  * This file is modified by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
