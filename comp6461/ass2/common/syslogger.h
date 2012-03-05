@@ -15,6 +15,9 @@
 #define __SYSLOGGER_H__
 
 
+#define TRACE	2		// 0: no trace, 1: all trace, 2: trace requried by assignment
+
+
 class SysLogger {
 private:
 	static SysLogger *pInst;		// TODO: delete

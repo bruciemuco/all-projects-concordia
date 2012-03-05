@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
-
+#include <time.h>
 
 #include "../common/syslogger.h"
 #include "../common/protocol.h"
@@ -39,6 +39,53 @@
 
 using namespace std;
 
+int SockClient::handshake() {
+	HANDSHAKE hs, tmp;
+	int	ret = -1;
+	
+	srand(time(NULL));
+	hs.serverSeq = 0;
+	hs.clientSeq = rand();			// TODO: htonl, ntohl
+	tmp.clientSeq = hs.clientSeq;
+	
+	// send hand shake request
+	SysLogger::inst()->out("Sending Handshake Request...");
+
+	ret = sock_sendto(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
+	if (ret) {
+		SysLogger::inst()->err("failed to send handshake request.");
+		return -1;
+	}
+	SysLogger::inst()->out("Sent a Handshake Request (%d, %d)", hs.clientSeq, hs.serverSeq);
+
+	// wait for server's response
+	hs.serverSeq = 0;
+	hs.clientSeq = 0;
+	ret = sock_recvfrom(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
+	if (ret) {
+		SysLogger::inst()->err("failed to get handshake response.");
+		return -1;
+	}
+	SysLogger::inst()->out("Received a Handshake Response (%d, %d)", hs.clientSeq, hs.serverSeq);
+
+	// send hand shake response
+	ret = sock_sendto(sock, (char *)&hs, sizeof(HANDSHAKE), 2);
+	if (ret) {
+		SysLogger::inst()->err("failed to send handshake response.");
+		return -1;
+	}
+	SysLogger::inst()->out("Sent a Handshake Response (%d, %d)\n", hs.clientSeq, hs.serverSeq);
+
+	if (hs.clientSeq == tmp.clientSeq) {
+		// handshake OK.
+		// save the server's sequence number.
+		seq = hs.serverSeq;
+		reset_statistics();
+		
+		return 0;
+	}
+	return -1;
+}
 
 int SockClient::start(const char *filename, const char *opname) {
 	if (filename == 0 || opname == 0) {
@@ -46,6 +93,16 @@ int SockClient::start(const char *filename, const char *opname) {
 		return -1;
 	}
 
+	// hand shake
+	static bool ifHandShake = true;
+	if (ifHandShake) {
+		if (handshake()) {
+			return -1;
+		}
+		ifHandShake = false;
+	}
+
+	SysLogger::inst()->out("Sending request...");
 	// create the header of msg
 	MSGHEADER header;
 	MSGREQUEST request;
@@ -100,6 +157,7 @@ int SockClient::start(const char *filename, const char *opname) {
 	show_statistics(true);
 
 	//receive the response, first get the header
+	SysLogger::inst()->out("Receiving response...");
 	MSGHEADER header_resp;
 	if (sock_recvfrom(sock, (char *)&header_resp, sizeof(header_resp))) {
 		SysLogger::inst()->err("failed to get header of response");
@@ -146,6 +204,9 @@ int main(int argc, char *argv[]) {
 
 	while (1) {
 		SysLogger::inst()->out("\nType name of ftp server (router): ");
+		servername = "";
+		filename = "";
+		opname = "";
 
 //		cin >> servername;
 		if (servername == "quit") {
@@ -164,7 +225,7 @@ int main(int argc, char *argv[]) {
 
 		if (tc->udp_init(CLIENT_RECV_PORT) == 0) {
 			if (tc->set_dstAddr(servername.c_str(), SERVER_RECV_PORT) == 0) {
-				SysLogger::inst()->out("\nSent request to %s, waiting...", servername.c_str());
+				SysLogger::inst()->out("\nSent request to %s, waiting...\n", servername.c_str());
 				
 				if (tc->start(filename.c_str(), opname.c_str())) {
 					// error
