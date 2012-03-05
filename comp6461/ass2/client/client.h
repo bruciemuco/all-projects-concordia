@@ -15,11 +15,11 @@
 
 const char *FILE_DIR_ROOT = "../client_files_root/";
 
-class TcpClient: public SockLib {
+class SockClient: public SockLib {
 
 public:
-	TcpClient(){};
-	~TcpClient(){};
+	SockClient(){};
+	~SockClient(){};
 	int start(const char *filename, const char *opname);
 };
 

@@ -19,27 +19,31 @@
 
 const char *FILE_DIR_ROOT = "../server_files_root/";
 
-class TcpServer: public TcpLib {
+class SockServer: public SockLib {
 
 public:
-	TcpServer(){};
-	~TcpServer(){};
-	int TcpServer::start();
-};
+	SockServer(){};
+	~SockServer(){};
+	int start();
 
-class TcpThread: public Thread {
-	int cs;
-
-public:
-	TcpThread(int clientsocket) :
-			cs(clientsocket) {
-	}
-	~TcpThread();
-	virtual void run();
-	int msg_recv(int sock, char *buf, int length);
-	int msg_send(int sock, char *buf, int length);
-
+	// udp
+	void client_handler();
 	int recv_data(MSGHEADER &header, MSGREQUEST &request);
 };
+
+// class TcpThread: public Thread {
+// 	int cs;
+// 
+// public:
+// 	TcpThread(int clientsocket) :
+// 			cs(clientsocket) {
+// 	}
+// 	~TcpThread();
+// 	virtual void run();
+// 	int msg_recv(int sock, char *buf, int length);
+// 	int msg_send(int sock, char *buf, int length);
+// 
+// 	int recv_data(MSGHEADER &header, MSGREQUEST &request);
+// };
 
 #endif

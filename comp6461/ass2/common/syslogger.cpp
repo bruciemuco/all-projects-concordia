@@ -25,6 +25,8 @@
 
 #include "syslogger.h"
 
+#define TRACE	2		// 0: no trace, 1: all trace, 2: trace requried by assignment
+
 SysLogger * SysLogger::pInst = NULL;
 FILE * SysLogger::pLogFile = NULL;
 
@@ -55,7 +57,7 @@ int SysLogger::set(char *filename) {
 }
 
 void SysLogger::err(char *fmt, ...) {
-	if (pLogFile == NULL) {
+	if (pLogFile == NULL || !TRACE) {
 		return;
 	}
 	va_list args;
@@ -72,7 +74,19 @@ void SysLogger::err(char *fmt, ...) {
 }
 
 void SysLogger::log(char *fmt, ...) {
-	if (pLogFile == NULL) {
+	if (pLogFile == NULL || !(TRACE == 1)) {
+		return;
+	}
+	va_list args;
+	va_start(args, fmt);
+	vfprintf(pLogFile, fmt, args);
+	fprintf(pLogFile, "\n");
+	va_end(args);
+	fflush(pLogFile);
+}
+
+void SysLogger::asslog(char *fmt, ...) {
+	if (pLogFile == NULL || !TRACE) {
 		return;
 	}
 	va_list args;
@@ -85,7 +99,7 @@ void SysLogger::log(char *fmt, ...) {
 
 // messages showing to the users
 void SysLogger::out(char *fmt, ...) {
-	if (pLogFile == NULL) {
+	if (pLogFile == NULL || !TRACE) {
 		return;
 	}
 	va_list args;
@@ -99,11 +113,11 @@ void SysLogger::out(char *fmt, ...) {
 }
 
 void SysLogger::wellcome() {
-	out("Wellcome to COMP6461 assignment 1.");
+	out("Welcome to COMP6461 assignment 2.");
 	out("Developed by Yuan Tao & Xiaodong Zhang.\n");
-	out("Root directory of testing files for Client side is $ThisProgram\\client_files_root\\, which already has two sample files: test.txt & test.bin.");
-	out("Root directory of testing files for Server side is $ThisProgram\\server_files_root\\, which already has two sample files: tests.txt & tests.bin.");
-	out("If any error of Client or Server happens, please check the logs frist, which are placed under $ThisProgram\\logs\\. ");
+	out("Root directory of testing files for Client side is $ThisProgram\\client_files_root\\, which already has two sample files: c.txt & c.jpg");
+	out("Root directory of testing files for Server side is $ThisProgram\\server_files_root\\, which already has two sample files: s.txt & s.jpg");
+	out("If any error of Client or Server happens, please check the logs first, which are placed under $ThisProgram\\logs\\. ");
 	out("");
 }
 

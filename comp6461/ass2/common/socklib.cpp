@@ -50,11 +50,13 @@ int SockLib::init() {
 	}
 
 	//Create the socket
-	if ((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET) {
+	//if ((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET) {
+	if ((sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == INVALID_SOCKET) {
 		SysLogger::inst()->err("Socket Creating Error");
 		//WSACleanup();
 		return -1;
 	}
+	SysLogger::inst()->log("create a socket: %d", sock);
 
 	return 0;
 }
@@ -189,8 +191,8 @@ int SockLib::send_file(int sock, const char *filename, int len) {
 		memset((void *)buf, 0, BUFFER_LENGTH + 1);
 		//fgets(buf, BUFFER_LENGTH, pFile);
 		int cnt = fread(buf, 1, BUFFER_LENGTH, pFile);
-		if (sock_send(sock, buf, cnt) != 0) {
-			SysLogger::inst()->err("sock_send error. buf.len:%d, file_len:%d\n", strlen(buf), len);
+		if (sock_sendto(sock, buf, cnt) != 0) {				// call sock_send if TCP
+			SysLogger::inst()->err("send_file error. buf.len:%d, file_len:%d\n", strlen(buf), len);
 			return -1;
 		}
 	}
@@ -213,8 +215,8 @@ int SockLib::recv_file(int sock, const char *filename, int len) {
 	while (left > 0) {
 		recv_len = left > BUFFER_LENGTH ? BUFFER_LENGTH : left;
 		memset((void *)buf, 0, BUFFER_LENGTH + 1);
-		if (sock_recv(sock, buf, recv_len)) {
-			SysLogger::inst()->err("failed to recv. %d, %d, %d", recv_len, left, len);
+		if (sock_recvfrom(sock, buf, recv_len)) {			// call sock_recv if TCP
+			SysLogger::inst()->err("recv_file error. %d, %d, %d", recv_len, left, len);
 			return -1;
 		}
 		fwrite(buf, 1, recv_len, pFile);
@@ -260,47 +262,36 @@ int SockLib::udp_init(int localPort) {
 	}
 
 	dstAddr.sin_port = 0;
+
+	// generate seq num
+	//srand(time(NULL));
+	seq = 0;
+	lastSeq = -1;
+	reset_statistics();	
 	
 	SysLogger::inst()->out("ftp_udp starting on host: [%s:%d]", hostname, localPort);
 	return 0;
 }
 
-int SockLib::sock_sendto(int sock, char *buf, int length) {
-	int ret = SOCKET_ERROR, left = length;
-	char *p = buf;
-	
-	// TODO: select
-	ret = sendto(sock, p, left, 0, (SOCKADDR *)&dstAddr, sizeof(dstAddr));
-	if (ret == SOCKET_ERROR) {
-		SysLogger::inst()->err("sock_sendto, len = %d", length);
-		return -1;
-	}
-	SysLogger::inst()->log("sendto: %d bytes, left: %d", ret, left);
-	if (left != ret) {
-		ret = SOCKET_ERROR;		// continue;
-	}
-
-	return left;
-}
-
-int SockLib::sock_recvfrom(int sock, char *buf, int length) {
+int SockLib::lib_recvfrom(int sock, char *buf, int length) {
 	int ret = SOCKET_ERROR, left = length;
 	char *p = buf;
 	fd_set readfds;
 	struct timeval *tp = new timeval;
-	int waitCnt = 2;		// waiting total time: waitCnt * TIMEOUT_USEC
+	int waitCnt = 3;		// waiting total time: waitCnt * TIMEOUT_USEC
 	SOCKADDR from;
 	int fromlen;
-
+	
 	tp->tv_sec = 0;
 	tp->tv_usec = TIMEOUT_USEC;
-
+	
 	while (1) {
 		FD_ZERO(&readfds);
 		FD_SET(sock, &readfds);
-
+		
 		if ((ret = select(sock + 1, &readfds, NULL, NULL, tp)) == SOCKET_ERROR) {
 			SysLogger::inst()->err("select error");
+			return -1;
 			
 		} else if (ret == 0) {
 			// select timeout
@@ -308,7 +299,7 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length) {
 				return 0;		// receive timeout
 			}
 			waitCnt--;
-
+			
 		} else if (ret > 0) {
 			// there is something to be received in the windows socket buffer
 			fromlen = sizeof(from);
@@ -330,11 +321,216 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length) {
 				return -1;
 			}
 			break;	// 
-		
+			
 		} else {
 			SysLogger::inst()->err("select unknown error");
+			return -1;
 		}
+	}
+	
+	return ret;
+}
+
+int SockLib::lib_sendto(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR;
+
+	ret = sendto(sock, buf, length, 0, (SOCKADDR *)&dstAddr, sizeof(dstAddr));
+	if (ret == SOCKET_ERROR) { 
+		SysLogger::inst()->err("lib_sendto, len = %d", length);
+		return -1;
+	}
+	SysLogger::inst()->log("lib_sendto: %d bytes", ret);
+	if (ret != length) {
+		SysLogger::inst()->err("lib_sendto, ret != length");
+		return -1;
 	}
 
 	return ret;
+}
+
+int SockLib::udp_sendto(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR, retryCnt = 5;
+	UDPPACKET udp;
+
+	while (retryCnt > 0) {
+		// sendto destination
+		if (lib_sendto(sock, buf, length) < 0) {
+			return -1;
+		}
+		PUDPPACKET pudp = (PUDPPACKET)buf;
+		SysLogger::inst()->asslog("Sender: sent packet %d", pudp->seq);
+		
+		// wait for ACK
+		memset((void *)&udp, 0, sizeof(UDPPACKET));
+		ret = lib_recvfrom(sock, (char *)&udp, sizeof(UDPPACKET));
+		
+		if (ret == 0) {
+			// get ACK timeout, sendto again
+			SysLogger::inst()->asslog("Get ACK Timeout, sendto again.");
+			retryCnt--;
+			reSendCnt++;
+			continue;
+
+		} else if (ret < 0) {
+			return -1;
+		}
+
+		// check the sequence number
+		if (udp.seq != ((seq - 1) & 0x01)) {
+			SysLogger::inst()->asslog("Get a Wrong ACK.");
+			return -1;
+		}
+		
+		SysLogger::inst()->asslog("Sender: received ACK for packet %d", udp.seq);
+		break;
+	} 
+
+	return ret;
+}
+
+int SockLib::add_udpheader(PUDPPACKET pudp, char *buf) {
+	memset((void *)pudp, 0, sizeof(UDPPACKET));
+
+	pudp->seq = seq++;
+	memmove(pudp->data, buf, BUFFER_LENGTH);
+	return 0;
+}
+
+int SockLib::sock_sendto(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR, left = length;
+	UDPPACKET udp;
+	char *p = buf;
+	
+	// divide the tcp packet into small udp frames
+	while (left > 0) {
+		// add udp header and copy the data
+		if (add_udpheader(&udp, p)) {
+			return -1;
+		}
+		if (udp_sendto(sock, (char *)&udp, sizeof(UDPPACKET)) <= 0) {
+			return -1;
+		}
+
+		left -= BUFFER_LENGTH;
+		p = buf + BUFFER_LENGTH;
+		sendCnt++;
+	}
+	if (left < 0) {
+		left = 0;		// to be compatible with TCP
+	}
+
+	return left;
+}
+
+// send an ACK to the sender
+int SockLib::send_ack(unsigned int seq) {
+	UDPPACKET udp;
+
+	memset((void *)&udp, 0, sizeof(UDPPACKET));	
+	udp.seq = seq;
+	lib_sendto(sock, (char *)&udp, sizeof(UDPPACKET));
+
+	SysLogger::inst()->asslog("Receiver: sent an ACK for packet %d", udp.seq);
+	return 0;
+}
+
+// used by receiver to check if the frame is the same as last one
+int SockLib::chk_seq(unsigned int seq) {
+	if (lastSeq == -1) {
+		lastSeq = seq;
+		return 0;
+	}
+
+	if (lastSeq == seq) {
+		return -1;			// duplicated frame
+	}
+
+	lastSeq = seq;
+	return 0;
+}
+
+int SockLib::sock_recvfrom(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR, left = length;
+	char *p = buf;
+	UDPPACKET udp;
+
+	do {
+		memset((void *)&udp, 0, sizeof(UDPPACKET));		
+		ret = lib_recvfrom(sock, (char *)&udp, sizeof(UDPPACKET));
+		if (ret == 0) {
+			continue;
+		} else if (ret < 0) {
+			return -1;
+		}
+		SysLogger::inst()->asslog("Receiver: received packet %d", udp.seq);
+
+		// send ACK
+		send_ack(udp.seq);
+
+		// check sequence number
+		if (chk_seq(udp.seq)) {
+			SysLogger::inst()->asslog("Receiver: received same packet %d", udp.seq);
+			continue;
+		}
+
+		// copy the data from udp frame
+		memmove(p, udp.data, (left < BUFFER_LENGTH) ? left : BUFFER_LENGTH );
+		left -= BUFFER_LENGTH;
+		SysLogger::inst()->log("sock_recvfrom %d bytes, left: %d", ret, left);
+		p += BUFFER_LENGTH;
+		ret = SOCKET_ERROR;
+		recvCnt++;
+	} while (left > 0);
+	
+	if (left < 0) {
+		left = 0;		// to be compatible with TCP
+	}
+
+	return left;
+}
+
+// wait for requests from client
+int SockLib::srv_wait4cnn(int sock) {
+	int ret = SOCKET_ERROR;
+	fd_set readfds;
+	struct timeval *tp = new timeval;
+	
+	tp->tv_sec = 0;
+	tp->tv_usec = TIMEOUT_USEC;
+	while (1) {
+		FD_ZERO(&readfds);
+		FD_SET(sock, &readfds);
+		
+		if ((ret = select(sock + 1, &readfds, NULL, NULL, tp)) < 0) {
+			SysLogger::inst()->err("srv_wait4cnn select error");
+			return -1;
+			
+		} else if (ret == 0) {
+			// select timeout
+			continue;
+		}
+		break;
+	}
+	return 0;
+}
+
+void SockLib::reset_statistics() 
+{
+	reSendCnt = 0;
+	recvCnt = 0;
+	sendCnt = 0;
+}
+void SockLib::show_statistics(bool ifSend) 
+{
+	if (ifSend) {
+		SysLogger::inst()->out("Sender: number of effective bytes sent: %d (%d * %d)", 
+			sendCnt * sizeof(UDPPACKET), sendCnt, sizeof(UDPPACKET));
+		SysLogger::inst()->out("Sender: number of packets sent: %d", sendCnt + reSendCnt);
+		SysLogger::inst()->out("Sender: number of bytes sent: %d (%d * %d)\n", 
+			(sendCnt + reSendCnt) * sizeof(UDPPACKET), (sendCnt + reSendCnt), sizeof(UDPPACKET));
+	} else {
+		SysLogger::inst()->out("Receiver: number of bytes received: %d (%d * %d)\n", 
+			recvCnt * sizeof(UDPPACKET), recvCnt, sizeof(UDPPACKET));
+	}
+	reset_statistics();
 }

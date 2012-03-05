@@ -32,10 +32,11 @@
 
 
 //#define RESP_LENGTH 40
-#define BUFFER_LENGTH (80 - sizeof(MSGHEADER))
+//#define BUFFER_LENGTH (80 - sizeof(MSGHEADER))
+#define BUFFER_LENGTH 80
 
-#define FILENAME_LENGTH 256
-#define HOSTNAME_LENGTH 256
+#define FILENAME_LENGTH 32
+#define HOSTNAME_LENGTH 32
 
 
 //Message type
@@ -83,10 +84,15 @@ typedef struct {
 
 // msg header
 typedef struct {
-	int type:7;				// message type
-	int seq:1;				// sequence number
-	unsigned int len;		// length of the data following this header to be received
-} MSGHEADER, PMSGHEADER;
+	char type;	
+	unsigned long len;		// length of the data following this header to be received
+} MSGHEADER, *PMSGHEADER;
+
+// UDP packet
+typedef struct {
+	unsigned int seq:1;			// sequence number
+	char data[BUFFER_LENGTH];	// stores TCP packets, in order to reuse code of assignment1
+} UDPPACKET, *PUDPPACKET;
 
 // three-way hand shake
 typedef struct {
