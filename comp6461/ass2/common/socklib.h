@@ -27,14 +27,22 @@ protected:
 	struct sockaddr_in ServerAddr; 		/* server socket address */
 	struct sockaddr_in ClientAddr;
 
-	// for UDP
-	struct sockaddr_in dstAddr;		// 
-	struct sockaddr_in localAddr;
-
 	//unsigned short ServPort; /* server port */
 	WSADATA wsadata;
 
 	char hostname[HOSTNAME_LENGTH];
+
+	// for UDP
+	struct sockaddr_in dstAddr;		// 
+	struct sockaddr_in localAddr;
+	// sequence num
+	unsigned int seq;
+	unsigned int lastSeq;		// used by receiver to check if the frame is the same as last one
+
+	// statistics
+	int reSendCnt;		// resend times
+	int sendCnt;		// send times not including resend times
+	int recvCnt;
 
 public:
 	SockLib() {
@@ -44,19 +52,36 @@ public:
 	int init();
 	int client_init(const char *servername);
 	int server_init();
-	int set_dstAddr(const char *dstHostName, int dstPort);
-	int udp_init(int localPort);
 	//void server_start();
 
 	unsigned long resolve_name(const char *name);
 
 	int sock_send(int sock, char *buf, int length);
 	int sock_recv(int sock, char *buf, int length);
-	int sock_sendto(int sock, char *buf, int length);
-	int sock_recvfrom(int sock, char *buf, int length);
 
 	int send_file(int sock, const char *filename, int len);
 	int recv_file(int sock, const char *filename, int len);
+
+	// udp
+	int set_dstAddr(const char *dstHostName, int dstPort);
+	int udp_init(int localPort);
+	
+
+	int lib_sendto(int sock, char *buf, int length);
+	int udp_sendto(int sock, char *buf, int length);
+	int add_udpheader(PUDPPACKET pudp, char *buf);
+	int sock_sendto(int sock, char *buf, int length);
+	int lib_recvfrom(int sock, char *buf, int length);
+	
+	int send_ack(unsigned int seq);
+	int chk_seq(unsigned int seq);
+	int sock_recvfrom(int sock, char *buf, int length);
+	
+	int srv_wait4cnn(int sock);
+
+	// statistics
+	void reset_statistics();
+	void show_statistics(bool ifSend);
 };
 
 

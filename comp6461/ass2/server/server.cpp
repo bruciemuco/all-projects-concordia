@@ -34,59 +34,47 @@
 #include <stdio.h>
 #include <process.h>
 #include <string>
+#include <exception>
 
 #include "../common/syslogger.h"
 #include "../common/protocol.h"
-#include "../common/tcplib.h"
+#include "../common/socklib.h"
 #include "server.h"
 
 
 using namespace std;
 
 
-int TcpServer::start() {
-	for (;;) /* Run forever */
-	{
-		/* Set the size of the result-value parameter */
-		int clientLen = sizeof(ServerAddr);
-
-		/* Wait for a Server to connect */
-		if ((client_sock = accept(sock, (struct sockaddr *)&ClientAddr, &clientLen)) == INVALID_SOCKET) {
-			SysLogger::inst()->err("accept error");
+int SockServer::start() {
+// 	for (;;) /* Run forever */
+// 	{
+// 		/* Set the size of the result-value parameter */
+// 		int clientLen = sizeof(ServerAddr);
+// 
+// 		/* Wait for a Server to connect */
+// 		if ((client_sock = accept(sock, (struct sockaddr *)&ClientAddr, &clientLen)) == INVALID_SOCKET) {
+// 			SysLogger::inst()->err("accept error");
+// 			return -1;
+// 		}
+// 
+// 		/* Create a Thread for this new connection and run*/
+// 		TcpThread * pt = new TcpThread(client_sock);
+// 		pt->start();
+// 	}
+	while (1) {
+		if (srv_wait4cnn(sock) < 0) {
 			return -1;
 		}
-
-		/* Create a Thread for this new connection and run*/
-		TcpThread * pt = new TcpThread(client_sock);
-		pt->start();
+		client_handler();
 	}
-
 	return 0;
 }
 
-//////////////////////////////TcpThread Class //////////////////////////////////////////
-
-TcpThread::~TcpThread() {
-	closesocket(cs);
-}
-
-int TcpThread::msg_recv(int sock, char *buf, int length) {
-	return SockLib::sock_recv(sock, buf, length);
-}
-
-int TcpThread::msg_send(int sock, char *buf, int length) {
-	return SockLib::sock_send(sock, buf, length);
-}
-
-int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
-	int sock = cs;
-
-	SysLogger::inst()->log("accept sock: %d", sock);
-
+int SockServer::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 	// began to receive the request header
 	string type;
 
-	if (msg_recv(sock, (char *)&header, sizeof(MSGHEADER))) {
+	if (sock_recvfrom(sock, (char *)&header, sizeof(MSGHEADER))) {
 		SysLogger::inst()->err("failed to get header of request");
 		return MSGTYPE_RESP_FAILTOGETHEADER;
 	}
@@ -107,7 +95,7 @@ int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 
 	// get the filename and host name
 	if (header.len > 0) {
-		if (msg_recv(sock, (char *)&request, sizeof(MSGREQUEST))) {
+		if (sock_recvfrom(sock, (char *)&request, sizeof(MSGREQUEST))) {
 			SysLogger::inst()->err("failed to get request info.");
 			return MSGTYPE_RESP_FAILTOGETINFO;
 		}
@@ -135,9 +123,8 @@ int TcpThread::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 	return MSGTYPE_RESP_OK;
 }
 
-void TcpThread::run() //cs: Server socket
+void SockServer::client_handler()
 {
-	int sock = cs;
 	MSGHEADER header;
 	MSGREQUEST request;
 	MSGHEADER header_resp;
@@ -166,10 +153,11 @@ void TcpThread::run() //cs: Server socket
 			fclose(pFile);
 		}
 	}
+	show_statistics(false);
 
 	// send header
-	if (msg_send(sock, (char *)&header_resp, sizeof(header_resp)) != 0) {
-		SysLogger::inst()->err("sock_send error. header.type:%d\n", header.type);
+	if (sock_sendto(sock, (char *)&header_resp, sizeof(header_resp)) != 0) {
+		SysLogger::inst()->err("sock_sendto error. header.type:%d\n", header.type);
 		return;
 	}
 	SysLogger::inst()->log("Send response: header.type: %d, len: %d", header_resp.type, header_resp.len);
@@ -177,16 +165,16 @@ void TcpThread::run() //cs: Server socket
 	// send file
 	if (header.type == MSGTYPE_REQ_GET && header_resp.type == MSGTYPE_RESP_OK) {
 		SysLogger::inst()->out("Sending file to %s, waiting...", request.hostname);
-		if (SockLib::send_file(sock, filename.c_str(), header_resp.len)) {
+		if (send_file(sock, filename.c_str(), header_resp.len)) {
 			return;
 		}
 		SysLogger::inst()->out("Successfully send the file: %s", request.filename);
 	}
 	SysLogger::inst()->log("Send response: file: %s ", filename.c_str());
+	show_statistics(true);
 	SysLogger::inst()->out("\n");
 }
 
-////////////////////////////////////////////////////////////////////////////////////////
 
 int main(void) {
 	// create logger
@@ -195,20 +183,26 @@ int main(void) {
 	}
 	SysLogger::inst()->wellcome();
 
-	TcpServer *ts = new TcpServer();
+	SockServer *ts = new SockServer();
 
-	if (ts->server_init()) {
-		goto ERR;
+	try {
+		if (ts->udp_init(SERVER_RECV_PORT)) {
+			delete ts;
+			return -1;
+		}
+		
+		if (ts->start()) {
+			delete ts;
+			return -1;
+		}
 	}
-	
-	if (ts->start()) {
-		goto ERR;
+	catch (int e) {
+		e = 0;
+		delete ts;
+		return -1;
 	}
 
-	return 0;
-
-ERR:
 	delete ts;
-	return -1;
+	return 0;
 }
 

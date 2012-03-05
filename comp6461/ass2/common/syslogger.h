@@ -29,6 +29,7 @@ public:
 
 	void err(char *fmt, ...);
 	void log(char *fmt, ...);
+	void asslog(char *fmt, ...);		// trace requried by assignment
 	void out(char *fmt, ...);
 
 	void wellcome();

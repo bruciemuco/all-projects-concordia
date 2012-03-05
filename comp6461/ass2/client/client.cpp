@@ -40,7 +40,7 @@
 using namespace std;
 
 
-int TcpClient::start(const char *filename, const char *opname) {
+int SockClient::start(const char *filename, const char *opname) {
 	if (filename == 0 || opname == 0) {
 		SysLogger::inst()->err("msg_send params error");
 		return -1;
@@ -79,13 +79,13 @@ int TcpClient::start(const char *filename, const char *opname) {
 
 	//send out the header + filename + hostname
 	header.len = htonl(header.len);
-	if (sock_send(sock, (char *)&header, sizeof(header)) != 0) {
-		SysLogger::inst()->err("sock_send error. header.type: %d, len: %d\n", header.type, header.len);
+	if (sock_sendto(sock, (char *)&header, sizeof(header)) != 0) {
+		SysLogger::inst()->err("sock_send error. header.type: %d, len: %d\n", header.type, ntohl(header.len));
 		return -1;
 	}
 	memmove(request.filename, filename, strlen(filename));
 	memmove(request.hostname, hostname, strlen(hostname));
-	if (sock_send(sock, (char *)&request, sizeof(request)) != 0) {
+	if (sock_sendto(sock, (char *)&request, sizeof(request)) != 0) {
 		SysLogger::inst()->err("sock_send error. filename: %s, hostname: %s\n",
 				request.filename, request.hostname);
 		return -1;
@@ -97,10 +97,11 @@ int TcpClient::start(const char *filename, const char *opname) {
 			return -1;
 		}
 	}
+	show_statistics(true);
 
 	//receive the response, first get the header
 	MSGHEADER header_resp;
-	if (sock_recv(sock, (char *)&header_resp, sizeof(header_resp))) {
+	if (sock_recvfrom(sock, (char *)&header_resp, sizeof(header_resp))) {
 		SysLogger::inst()->err("failed to get header of response");
 		return -1;
 	}
@@ -129,6 +130,7 @@ int TcpClient::start(const char *filename, const char *opname) {
 		}
 		SysLogger::inst()->out("Received a file: %s", filefullname.c_str());
 	}
+	show_statistics(false);
 	return 0;
 }
 
@@ -144,7 +146,8 @@ int main(int argc, char *argv[]) {
 
 	while (1) {
 		SysLogger::inst()->out("\nType name of ftp server (router): ");
-		cin >> servername;
+
+//		cin >> servername;
 		if (servername == "quit") {
 			break;
 		}
@@ -152,12 +155,15 @@ int main(int argc, char *argv[]) {
 		cin >> filename;
 		SysLogger::inst()->out("Type direction of transfer: ");
 		cin >> opname;
+ 		servername = "Ewan-PC";
+// 		filename = "s.txt";
+// 		opname = "get";
 
 		//start to connect to the server
-		TcpClient * tc = new TcpClient();
+		SockClient * tc = new SockClient();
 
 		if (tc->udp_init(CLIENT_RECV_PORT) == 0) {
-			if (tc->set_dstAddr(servername.c_str(), ROUTER_RECV_PORT) == 0) {
+			if (tc->set_dstAddr(servername.c_str(), SERVER_RECV_PORT) == 0) {
 				SysLogger::inst()->out("\nSent request to %s, waiting...", servername.c_str());
 				
 				if (tc->start(filename.c_str(), opname.c_str())) {
@@ -166,6 +172,8 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		delete tc;
+
+//		servername = "quit";
 	}
 
 	return 0;
