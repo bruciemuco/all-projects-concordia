@@ -21,6 +21,7 @@ public:
 	SockClient(){};
 	~SockClient(){};
 	int start(const char *filename, const char *opname);
+	int handshake();
 };
 
 

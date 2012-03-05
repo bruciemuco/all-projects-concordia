@@ -25,8 +25,6 @@
 
 #include "syslogger.h"
 
-#define TRACE	2		// 0: no trace, 1: all trace, 2: trace requried by assignment
-
 SysLogger * SysLogger::pInst = NULL;
 FILE * SysLogger::pLogFile = NULL;
 

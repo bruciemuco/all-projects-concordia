@@ -187,6 +187,10 @@ int SockLib::send_file(int sock, const char *filename, int len) {
 		SysLogger::inst()->err("No such a file: %s\n", filename);
 		return -1;
 	}
+	showFile = true;
+	if (showFile) {
+		printf("\n\n-------------------- File content Begin------------------------\n");
+	}
 	while (!feof(pFile)) {
 		memset((void *)buf, 0, BUFFER_LENGTH + 1);
 		//fgets(buf, BUFFER_LENGTH, pFile);
@@ -197,6 +201,10 @@ int SockLib::send_file(int sock, const char *filename, int len) {
 		}
 	}
 	fclose(pFile);
+	if (showFile) {
+		printf("\n-------------------- File content End------------------------\n\n");
+	}
+	showFile = false;
 
 	return 0;
 }
@@ -264,16 +272,16 @@ int SockLib::udp_init(int localPort) {
 	dstAddr.sin_port = 0;
 
 	// generate seq num
-	//srand(time(NULL));
 	seq = 0;
 	lastSeq = -1;
 	reset_statistics();	
+	showFile = false;
 	
 	SysLogger::inst()->out("ftp_udp starting on host: [%s:%d]", hostname, localPort);
 	return 0;
 }
 
-int SockLib::lib_recvfrom(int sock, char *buf, int length) {
+int SockLib::lib_recvfrom(int sock, char *buf, int length, int handshake) {
 	int ret = SOCKET_ERROR, left = length;
 	char *p = buf;
 	fd_set readfds;
@@ -301,6 +309,10 @@ int SockLib::lib_recvfrom(int sock, char *buf, int length) {
 			waitCnt--;
 			
 		} else if (ret > 0) {
+			if (handshake) {
+				return 1;
+			}
+
 			// there is something to be received in the windows socket buffer
 			fromlen = sizeof(from);
 			ret = recvfrom(sock, p, left, 0, &from, &fromlen);
@@ -348,7 +360,8 @@ int SockLib::lib_sendto(int sock, char *buf, int length) {
 	return ret;
 }
 
-int SockLib::udp_sendto(int sock, char *buf, int length) {
+// param handshake: 0: wait for ack and receive it, 1: wait for ack but not receive, 2: do not wait for ack
+int SockLib::udp_sendto(int sock, char *buf, int length, int handshake) {
 	int ret = SOCKET_ERROR, retryCnt = 5;
 	UDPPACKET udp;
 
@@ -357,12 +370,17 @@ int SockLib::udp_sendto(int sock, char *buf, int length) {
 		if (lib_sendto(sock, buf, length) < 0) {
 			return -1;
 		}
-		PUDPPACKET pudp = (PUDPPACKET)buf;
-		SysLogger::inst()->asslog("Sender: sent packet %d", pudp->seq);
-		
+		if (!handshake) {
+			PUDPPACKET pudp = (PUDPPACKET)buf;
+			SysLogger::inst()->asslog("Sender: sent packet %d", pudp->seq);
+		}
+		if (handshake == 2) {
+			return 1;
+		}
+
 		// wait for ACK
 		memset((void *)&udp, 0, sizeof(UDPPACKET));
-		ret = lib_recvfrom(sock, (char *)&udp, sizeof(UDPPACKET));
+		ret = lib_recvfrom(sock, (char *)&udp, sizeof(UDPPACKET), handshake);
 		
 		if (ret == 0) {
 			// get ACK timeout, sendto again
@@ -375,13 +393,15 @@ int SockLib::udp_sendto(int sock, char *buf, int length) {
 			return -1;
 		}
 
-		// check the sequence number
-		if (udp.seq != ((seq - 1) & 0x01)) {
-			SysLogger::inst()->asslog("Get a Wrong ACK.");
-			return -1;
+		if (!handshake) {
+			// check the sequence number
+			if (udp.seq != ((seq - 1) & 0x01)) {
+				SysLogger::inst()->asslog("Get a Wrong ACK.");
+				return -1;
+			}
+			SysLogger::inst()->asslog("Sender: received ACK for packet %d", udp.seq);
 		}
 		
-		SysLogger::inst()->asslog("Sender: received ACK for packet %d", udp.seq);
 		break;
 	} 
 
@@ -396,7 +416,7 @@ int SockLib::add_udpheader(PUDPPACKET pudp, char *buf) {
 	return 0;
 }
 
-int SockLib::sock_sendto(int sock, char *buf, int length) {
+int SockLib::sock_sendto(int sock, char *buf, int length, int handshake) {
 	int ret = SOCKET_ERROR, left = length;
 	UDPPACKET udp;
 	char *p = buf;
@@ -407,13 +427,17 @@ int SockLib::sock_sendto(int sock, char *buf, int length) {
 		if (add_udpheader(&udp, p)) {
 			return -1;
 		}
-		if (udp_sendto(sock, (char *)&udp, sizeof(UDPPACKET)) <= 0) {
+		if (udp_sendto(sock, (char *)&udp, sizeof(UDPPACKET), handshake) <= 0) {
 			return -1;
 		}
 
 		left -= BUFFER_LENGTH;
 		p = buf + BUFFER_LENGTH;
 		sendCnt++;
+
+		if (showFile) {
+			printf("%s\n", udp.data);
+		}
 	}
 	if (left < 0) {
 		left = 0;		// to be compatible with TCP
@@ -449,7 +473,7 @@ int SockLib::chk_seq(unsigned int seq) {
 	return 0;
 }
 
-int SockLib::sock_recvfrom(int sock, char *buf, int length) {
+int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
 	int ret = SOCKET_ERROR, left = length;
 	char *p = buf;
 	UDPPACKET udp;
@@ -462,15 +486,18 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length) {
 		} else if (ret < 0) {
 			return -1;
 		}
-		SysLogger::inst()->asslog("Receiver: received packet %d", udp.seq);
 
-		// send ACK
-		send_ack(udp.seq);
+		if (!handshake) {
+			SysLogger::inst()->asslog("Receiver: received packet %d", udp.seq);
 
-		// check sequence number
-		if (chk_seq(udp.seq)) {
-			SysLogger::inst()->asslog("Receiver: received same packet %d", udp.seq);
-			continue;
+			// send ACK
+			send_ack(udp.seq);
+			
+			// check sequence number
+			if (chk_seq(udp.seq)) {
+				SysLogger::inst()->asslog("Receiver: received same packet %d", udp.seq);
+				continue;
+			}			
 		}
 
 		// copy the data from udp frame

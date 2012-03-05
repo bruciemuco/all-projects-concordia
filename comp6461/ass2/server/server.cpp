@@ -45,6 +45,50 @@
 using namespace std;
 
 
+int SockServer::handshake() {
+	HANDSHAKE hs, tmp;
+	int	ret = -1;
+	
+	// wait for client's request
+	ret = sock_recvfrom(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
+	if (ret) {
+		SysLogger::inst()->err("failed to get handshake request.");
+		return -1;
+	}
+	srand(time(NULL));
+	tmp.serverSeq = rand();			// TODO: htonl, ntohl
+	tmp.clientSeq = hs.clientSeq;
+	SysLogger::inst()->out("Received a Handshake Request (%d, %d)", hs.clientSeq, hs.serverSeq);
+	
+	// send response
+	hs.serverSeq = tmp.serverSeq;
+	ret = sock_sendto(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
+	if (ret) {
+		SysLogger::inst()->err("failed to send handshake response.");
+		return -1;
+	}
+	SysLogger::inst()->out("Sent a Handshake Response (%d, %d)", hs.clientSeq, hs.serverSeq);
+	
+	// wait for client's response
+	hs.clientSeq = 0;
+	hs.serverSeq = 0;
+	ret = sock_recvfrom(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
+	if (ret) {
+		SysLogger::inst()->err("failed to get handshake response.");
+		return -1;
+	}
+	SysLogger::inst()->out("Received a Handshake Response (%d, %d)\n", hs.clientSeq, hs.serverSeq);
+	if (hs.clientSeq == tmp.clientSeq && hs.serverSeq == tmp.serverSeq) {
+		// handshake OK.
+		// save the client's sequence number.
+		seq = hs.clientSeq;
+		reset_statistics();
+		
+		return 0;
+	}
+	return -1;
+}
+
 int SockServer::start() {
 // 	for (;;) /* Run forever */
 // 	{
@@ -61,9 +105,18 @@ int SockServer::start() {
 // 		TcpThread * pt = new TcpThread(client_sock);
 // 		pt->start();
 // 	}
+
+	bool ifHandShake = true;
 	while (1) {
 		if (srv_wait4cnn(sock) < 0) {
 			return -1;
+		}
+		if (ifHandShake) {
+			if (handshake()) {
+				return -1;
+			}
+			ifHandShake = false;
+			continue;
 		}
 		client_handler();
 	}
@@ -123,13 +176,13 @@ int SockServer::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 	return MSGTYPE_RESP_OK;
 }
 
-void SockServer::client_handler()
-{
+void SockServer::client_handler() {
 	MSGHEADER header;
 	MSGREQUEST request;
 	MSGHEADER header_resp;
 
 	// handle request
+	SysLogger::inst()->out("Receiving request...");
 	memset((void *)&header, 0, sizeof(MSGHEADER));
 	memset((void *)&request, 0, sizeof(MSGREQUEST));
 	header_resp.type = recv_data(header, request);
@@ -156,6 +209,7 @@ void SockServer::client_handler()
 	show_statistics(false);
 
 	// send header
+	SysLogger::inst()->out("Sending response...");
 	if (sock_sendto(sock, (char *)&header_resp, sizeof(header_resp)) != 0) {
 		SysLogger::inst()->err("sock_sendto error. header.type:%d\n", header.type);
 		return;

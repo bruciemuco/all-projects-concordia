@@ -44,6 +44,8 @@ protected:
 	int sendCnt;		// send times not including resend times
 	int recvCnt;
 
+	bool showFile;		// print file content on the screen
+
 public:
 	SockLib() {
 	}
@@ -65,20 +67,21 @@ public:
 	// udp
 	int set_dstAddr(const char *dstHostName, int dstPort);
 	int udp_init(int localPort);
+	int sock_sendto(int sock, char *buf, int length, int handshake = 0);
+	int sock_recvfrom(int sock, char *buf, int length, int handshake = 0);
 	
-
+protected:
 	int lib_sendto(int sock, char *buf, int length);
-	int udp_sendto(int sock, char *buf, int length);
+	int udp_sendto(int sock, char *buf, int length, int handshake = 0);
 	int add_udpheader(PUDPPACKET pudp, char *buf);
-	int sock_sendto(int sock, char *buf, int length);
-	int lib_recvfrom(int sock, char *buf, int length);
+	int lib_recvfrom(int sock, char *buf, int length, int handshake = 0);
 	
 	int send_ack(unsigned int seq);
 	int chk_seq(unsigned int seq);
-	int sock_recvfrom(int sock, char *buf, int length);
 	
 	int srv_wait4cnn(int sock);
 
+public:
 	// statistics
 	void reset_statistics();
 	void show_statistics(bool ifSend);

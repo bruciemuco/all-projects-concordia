@@ -29,6 +29,7 @@ public:
 	// udp
 	void client_handler();
 	int recv_data(MSGHEADER &header, MSGREQUEST &request);
+	int handshake();
 };
 
 // class TcpThread: public Thread {
