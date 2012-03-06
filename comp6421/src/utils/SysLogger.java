@@ -39,6 +39,8 @@ public class SysLogger {
 	public static Logger result = Logger.getLogger("COMP6421ProjectResult");
 	public static Logger err = Logger.getLogger("COMP6421ProjectError");
 	
+	public static boolean bLexicalAnalyzer = false;
+	
 	private static FileHandler fhLast = null;
 	private static FileHandler fhErrLast = null;
 		
@@ -72,6 +74,8 @@ public class SysLogger {
 			fileHandle.setLevel(Level.ALL);
 			fileHandle.setFormatter(new OutputTextFormat());
 			if (fhLast != null) {
+				fhLast.flush();
+				fhLast.close();
 				result.removeHandler(fhLast);
 			}
 			result.addHandler(fileHandle);

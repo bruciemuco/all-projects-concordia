@@ -1,34 +1,38 @@
 prog -> classDeclList progBody 
 classDeclList -> classDecl classDeclList | EPSILON
 
-classDecl  ->  class id { varFuncDeclList } ; 
-varFuncDeclList ->  EPSILON | type id varFuncDeclListP 
+classDecl -> class id { varFuncDeclList } ; 
+varFuncDeclList -> EPSILON | type id varFuncDeclListP 
 varFuncDeclListP -> arraySizeList ;  varFuncDeclList | ( fParams )  funcBody ;  funcDefList
 
 funcDefList -> funcDef funcDefList  | EPSILON
-progBody  ->  program funcBody ; funcDefList
-funcHead  ->  type id ( fParams ) 
-funcDef  ->  funcHead funcBody ; 
+funcDef -> funcHead funcBody ; 
+funcHead -> type id ( fParams ) 
 
-funcBody  ->  { varStateList } 
+funcBody -> { varStateList } 
 varStateList -> EPSILON | id varStateListP 
  | integer id arraySizeList ; varStateList
  | real id arraySizeList ; varStateList
+  |  if ( expr ) then statBlock else statBlock ; statementList
+  |  while ( expr ) do statBlock ; statementList
+  |  read ( variable ) ; statementList
+  |  write ( expr ) ; statementList
+  |  return ( expr ) ;  statementList
 varStateListP -> id arraySizeList ; varStateList | indiceList variableP  assignOp expr ;  statementList
 
+progBody -> program funcBody ; funcDefList
 statementList -> statement statementList  | EPSILON
-varDecl  ->  type id arraySizeList ; 
 arraySizeList -> arraySize arraySizeList  | EPSILON
-statement  ->  variable assignOp expr ; 
+statement -> variable assignOp expr ; 
   |  if ( expr ) then statBlock else statBlock ; 
   |  while ( expr ) do statBlock ; 
   |  read ( variable ) ; 
   |  write ( expr ) ; 
   |  return ( expr ) ;  
-statBlock  ->  { statementList } | statement | EPSILON
+statBlock -> { statementList } | statement | EPSILON
 
 expr  -> arithExpr exprP
-exprP  -> EPSILON | relOp arithExpr 
+exprP  -> EPSILON | relOp arithExpr
 
 arithExpr -> term arithExprP
 arithExprP -> EPSILON | addOp term arithExprP
@@ -43,14 +47,13 @@ factor  -> id factorPP
   |  ( expr ) 
   |  not factor 
   | sign factor 
-factorP -> EPSILON | . id factorPP
 factorPP -> indiceList factorP | ( aParams )  
-  
-idnestList -> idnest idnestList  | EPSILON
+factorP -> EPSILON | . id factorPP
+
 variable  ->  id indiceList variableP 
 variableP ->  EPSILON | . id indiceList variableP
+
 indiceList -> indice indiceList  | EPSILON
-idnest  ->  id indiceList . 
 indice  ->  [ arithExpr ] 
 arraySize  ->  [ int ] 
 type  ->  integer | real | id 
@@ -59,4 +62,4 @@ fParamsTailList -> fParamsTail fParamsTailList  | EPSILON
 aParams  ->  expr aParamsTailList | EPSILON
 aParamsTailList -> aParamsTail aParamsTailList  | EPSILON
 fParamsTail  ->  , type id arraySizeList
-aParamsTail  -> , expr 
+aParamsTail  -> , expr

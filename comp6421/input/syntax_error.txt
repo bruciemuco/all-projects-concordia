@@ -1,0 +1,22 @@
+class Foo {
+	Type func(
+	{}
+	int func() {
+		integer i[2][4]
+		real def[23 3];
+		def[23 3];			// goes to line 11 
+	};
+};
+
+class Foo1 {
+	real foo2() {
+		return(a not b)
+	};
+}
+program { 
+	if (1) then {
+		a = b + - c  d;
+	};
+};
+void emptyFunc(){};
+
