@@ -23,6 +23,7 @@ import utils.SysLogger;
 
 public class LexicalAnalyzer {
 	public static final int ID_MAX_LEN = 255;
+	public static final int TAB_LEN = 4;
 	
 	private String strFile = null;
 	private BufferedReader in = null;
@@ -81,9 +82,14 @@ public class LexicalAnalyzer {
 			e.printStackTrace();
 			SysLogger.err(e.getMessage());
 			return 0;
-		}        
-		curPos++;
-		curLinePos++;
+		}
+		if (ret == '\t') {
+			curPos += TAB_LEN;
+			curLinePos += TAB_LEN;
+		} else {
+			curPos++;
+			curLinePos++;
+		}
 		if (ret == '\r' || ret == '\n') {
 			if (ret == '\n') {
 				curLine++;
@@ -167,7 +173,7 @@ public class LexicalAnalyzer {
 	}
 
 	// get next valid token from the stream.
-	public Token nextToken() {
+	public Token nextTokenEx() {
 		int curState = StateMachineDriver.INIT_STATE;
 		Token tk = new Token();
 		boolean bExit = false;
@@ -181,11 +187,16 @@ public class LexicalAnalyzer {
 				curLinePos++;
 				//return null;		// exit;
 			}
-			
-			SysLogger.log("Line(" + curLine + "," + curLinePos + ")curstate: " + curState 
-					+ ", " + curChar + ", " + (int)curChar);
+
+			if (SysLogger.bLexicalAnalyzer) {
+				SysLogger.log("Line(" + curLine + "," + curLinePos + ")curstate: " + curState 
+						+ ", " + curChar + ", " + (int)curChar);
+			}
 			curState = StateMachineDriver.nextState(curState, curChar, tk);
-			SysLogger.log("next state: " + curState);
+			
+			if (SysLogger.bLexicalAnalyzer) {
+				SysLogger.log("next state: " + curState);
+			}
 
 			// final state without backing up
 			if (curState == StateMachineDriver.N) {
@@ -269,12 +280,43 @@ public class LexicalAnalyzer {
 		return tk;
 	}
 	
+	// modifications according to the requirements of Ass2.
+	public Token nextToken() {
+		Token tk = nextTokenEx();
+		
+		if (tk == null || tk.token == null) {
+			return tk;
+		}
+		
+		if (tk.type == StateMachineDriver.TOKEN_TYPE_OPERATOR) {
+			if (tk.token.equals("=")) {
+				tk.type = StateMachineDriver.TOKEN_TYPE_OP_ASS;
+			} else if (tk.token.equals("+") || tk.token.equals("-") 
+					|| tk.token.equals("or")) {
+				tk.type = StateMachineDriver.TOKEN_TYPE_OP_ADD;
+			} else if (tk.token.equals("*") || tk.token.equals("/") 
+					|| tk.token.equals("and")) {
+				tk.type = StateMachineDriver.TOKEN_TYPE_OP_MUL;
+			} else if (tk.token.equals("==") || tk.token.equals("<>") 
+					|| tk.token.equals("<") || tk.token.equals(">")
+					|| tk.token.equals("<=") || tk.token.equals(">=")) {
+				tk.type = StateMachineDriver.TOKEN_TYPE_OP_REL;
+			}
+		} else if (tk.type == StateMachineDriver.TOKEN_TYPE_INT) {
+			if (tk.token.equals("0")) {
+				tk.type = StateMachineDriver.TOKEN_TYPE_FLOAT;	// Just for Ass2.
+			}
+		}
+		
+		return tk;
+	}
+	
 	public void printToken(Token tk) {
 		if (tk == null || (tk != null && tk.token == null)) {
 			return;
 		}
 		
-		String msg = String.format("Line: %4s,\tCol: %3s,\tType: %11s", tk.line, tk.column, 
+		String msg = String.format("Line: %4d,\tCol: %3d,\tType: %11s", tk.line, tk.column, 
 			StateMachineDriver.TOKEN_STR_TYPE[tk.type]);
 //		msg = "Line: " + tk.line + ", Column: " + tk.column + ", Type: " 
 //			+ StateMachineDriver.TOKEN_STR_TYPE[tk.type];

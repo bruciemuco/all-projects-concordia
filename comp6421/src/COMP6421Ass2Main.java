@@ -1,17 +1,17 @@
 /*
- * COMP6421 Project
+ * COMP6421 Project. 
  * Project description: http://newton.cs.concordia.ca/~paquet/wiki/index.php/COMP442/6421_winter_2012
  *  
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
- * Compiler Design (COMP 442/642) Winter 2012 
- * Assignment 1, Lexical Analyzer
+ * Compiler Design (COMP 442/6421) Winter 2012 
+ * Assignment 2, LL Syntax Analyzer
  *  
- * $Author$
- * $Date$
- * $Rev$
- * $HeadURL$
+ * $Author: yua_t $
+ * $Date: 2012-02-25 15:05:33 -0500 (Sat, 25 Feb 2012) $
+ * $Rev: 18 $
+ * $HeadURL: svn+ssh://yua_t@login.encs.concordia.ca/home/y/yua_t/svn_resp/comp6421/src/COMP6421Ass2Main.java $
  * 
  */
 
@@ -23,11 +23,13 @@ import java.util.ArrayList;
 import LexicalAnalyzer.InputLoader;
 import LexicalAnalyzer.LexicalAnalyzer;
 import LexicalAnalyzer.StateMachineDriver;
+import SyntacticAnalyzer.FirstFollowSets;
+import SyntacticAnalyzer.SyntacticAnalyzer;
 
 import utils.SysLogger;
 
 
-public class COMP6421Ass1Main {
+public class COMP6421Ass2Main {
 	
 	public static void main(String[] args) {
 		// create and initialize the logger
@@ -38,7 +40,8 @@ public class COMP6421Ass1Main {
 		System.out.println("Developed by Yuan Tao.\n");
 		System.out.println("Please read $ThisProgram\\readme.pdf first.");
 		System.out.println("Please put all the test files under the root directoy of $ThisProgram\\input\\, which already has some sample files.");
-		System.out.println("The result of the progrom will be stored accordingly in the files under $ThisProgram\\output\\ \n");
+		System.out.println("The result of the progrom will be stored accordingly in the files under $ThisProgram\\output\\");
+		System.out.println("More information about the program result please refer to $ThisProgram\\logs\\ \n");
 		System.out.println("Press any key to begin...\n");
 		
 		try {
@@ -70,6 +73,12 @@ public class COMP6421Ass1Main {
 			SimpleDateFormat tmpDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String datetimeNow = tmpDate.format(new java.util.Date());
 			//SysLogger.info(datetimeNow + "\nThe following is the result:");
+			String tabNote = "Note: If the length of TAB of your editor is not 4, please accordingly modify LexicalAnalyzer.java at line 26 and run again.\n";
+			SysLogger.info(tabNote);
+			SysLogger.err(tabNote);
+			SysLogger.log("--------------------------------------------------");
+			SysLogger.log("Start to analyze: " + testFilesLoader.lstFiles.get(i));
+			SysLogger.log("--------------------------------------------------");
 			
 			// create a lexical analyzer
 			LexicalAnalyzer scanner = new LexicalAnalyzer();
@@ -78,7 +87,17 @@ public class COMP6421Ass1Main {
 				return;
 			}
 			
-			scanner.getAllTokens();
+			// create a syntax analyzer
+			SyntacticAnalyzer parser = new SyntacticAnalyzer();
+			
+			if (parser.init(scanner) != 0) {
+				return;
+			}
+			if (parser.parse()) {
+				//
+			}
+			
+			//scanner.getAllTokens();
 		}
 
 		System.out.println("\nThe program ends successfully!");

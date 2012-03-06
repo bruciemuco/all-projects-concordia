@@ -40,6 +40,11 @@ public class StateMachineDriver {
 	public static final int TOKEN_TYPE_PUNCTUATOR = 6;
 	public static final int TOKEN_TYPE_COMMENT = 7;
 	
+	public static final int TOKEN_TYPE_OP_ASS = 8;
+	public static final int TOKEN_TYPE_OP_ADD = 9;
+	public static final int TOKEN_TYPE_OP_REL = 10;
+	public static final int TOKEN_TYPE_OP_MUL = 11;
+		
 	public static String[] TOKEN_STR_TYPE = {
 		"Unknown",
 		"Keyword",
@@ -49,6 +54,10 @@ public class StateMachineDriver {
 		"Operator",
 		"Punctuator",
 		"Comment",
+		"AssignOp",
+		"AddOp",
+		"RelOp",
+		"MultOp"
 	};
 	
 
@@ -293,17 +302,20 @@ public class StateMachineDriver {
 		if (token.equals("return")) {
 			return true;
 		}
+		if (token.equals("program")) {
+			return true;
+		}
 		return false;
 	}
 	
 	public static boolean ifOperator(String token) {
-		if (token.equals("And")) {
+		if (token.equals("and")) {
 			return true;
 		}
-		if (token.equals("Not")) {
+		if (token.equals("not")) {
 			return true;
 		}
-		if (token.equals("Or")) {
+		if (token.equals("or")) {
 			return true;
 		}
 		return false;
