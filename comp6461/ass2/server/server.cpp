@@ -46,28 +46,17 @@ using namespace std;
 
 
 int SockServer::handshake() {
-	HANDSHAKE hs, tmp;
+	HANDSHAKE hs;
 	int	ret = -1;
 	
 	// wait for client's request
+	hsData.clientSeq = 0;
+	hsData.serverSeq = rand();
 	ret = sock_recvfrom(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
 	if (ret) {
 		SysLogger::inst()->err("failed to get handshake request.");
 		return -1;
 	}
-	srand(time(NULL));
-	tmp.serverSeq = rand();			// TODO: htonl, ntohl
-	tmp.clientSeq = hs.clientSeq;
-	SysLogger::inst()->out("Received a Handshake Request (%d, %d)", hs.clientSeq, hs.serverSeq);
-	
-	// send response
-	hs.serverSeq = tmp.serverSeq;
-	ret = sock_sendto(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
-	if (ret) {
-		SysLogger::inst()->err("failed to send handshake response.");
-		return -1;
-	}
-	SysLogger::inst()->out("Sent a Handshake Response (%d, %d)", hs.clientSeq, hs.serverSeq);
 	
 	// wait for client's response
 	hs.clientSeq = 0;
@@ -77,16 +66,14 @@ int SockServer::handshake() {
 		SysLogger::inst()->err("failed to get handshake response.");
 		return -1;
 	}
-	SysLogger::inst()->out("Received a Handshake Response (%d, %d)\n", hs.clientSeq, hs.serverSeq);
-	if (hs.clientSeq == tmp.clientSeq && hs.serverSeq == tmp.serverSeq) {
-		// handshake OK.
-		// save the client's sequence number.
-		seq = hs.clientSeq;
-		reset_statistics();
-		
-		return 0;
-	}
-	return -1;
+	// handshake OK.
+	// save the client's sequence number.
+	//srv_wait4cnn(sock, 10);		// make sure that the ACK of last packet sent
+
+	seq = hs.clientSeq;
+	reset_statistics(true);
+	
+	return 0;
 }
 
 int SockServer::start() {
@@ -108,9 +95,6 @@ int SockServer::start() {
 
 	bool ifHandShake = true;
 	while (1) {
-		if (srv_wait4cnn(sock) < 0) {
-			return -1;
-		}
 		if (ifHandShake) {
 			if (handshake()) {
 				return -1;
@@ -170,6 +154,7 @@ int SockServer::recv_data(MSGHEADER &header, MSGREQUEST &request) {
 		if (SockLib::recv_file(sock, filename.c_str(), header.len - sizeof(MSGREQUEST))) {
 			return MSGTYPE_RESP_FAILTORECVFILE;
 		}
+		srv_wait4cnn(sock, 25);		// make sure that the ACK of last packet sent
 		SysLogger::inst()->out("Successfully receive the file: %s", request.filename);
 	}
 
@@ -231,6 +216,8 @@ void SockServer::client_handler() {
 
 
 int main(void) {
+	srand(time(NULL));
+
 	// create logger
 	if (SysLogger::inst()->set("../logs/server_log.txt")) {
 		return -1;
