@@ -46,6 +46,8 @@ protected:
 
 	bool showFile;		// print file content on the screen
 
+	HANDSHAKE hsData;
+
 public:
 	SockLib() {
 	}
@@ -79,11 +81,11 @@ protected:
 	int send_ack(unsigned int seq);
 	int chk_seq(unsigned int seq);
 	
-	int srv_wait4cnn(int sock);
+	int srv_wait4cnn(int sock, int sec = 0);
 
 public:
 	// statistics
-	void reset_statistics();
+	void reset_statistics(bool seq = false);
 	void show_statistics(bool ifSend);
 };
 

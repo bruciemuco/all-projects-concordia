@@ -40,13 +40,13 @@
 using namespace std;
 
 int SockClient::handshake() {
-	HANDSHAKE hs, tmp;
 	int	ret = -1;
+	HANDSHAKE hs;
 	
-	srand(time(NULL));
+	hsData.clientSeq = 0;
+	hsData.serverSeq = 0;
 	hs.serverSeq = 0;
 	hs.clientSeq = rand();			// TODO: htonl, ntohl
-	tmp.clientSeq = hs.clientSeq;
 	
 	// send hand shake request
 	SysLogger::inst()->out("Sending Handshake Request...");
@@ -59,32 +59,34 @@ int SockClient::handshake() {
 	SysLogger::inst()->out("Sent a Handshake Request (%d, %d)", hs.clientSeq, hs.serverSeq);
 
 	// wait for server's response
-	hs.serverSeq = 0;
-	hs.clientSeq = 0;
-	ret = sock_recvfrom(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
-	if (ret) {
-		SysLogger::inst()->err("failed to get handshake response.");
+	if (hsData.clientSeq != hs.clientSeq) {
+		SysLogger::inst()->err("failed to get handshake response (%d, %d)", hsData.clientSeq, hsData.serverSeq);
 		return -1;
 	}
-	SysLogger::inst()->out("Received a Handshake Response (%d, %d)", hs.clientSeq, hs.serverSeq);
+	SysLogger::inst()->out("Received a Handshake Response (%d, %d)", hsData.clientSeq, hsData.serverSeq);
 
 	// send hand shake response
-	ret = sock_sendto(sock, (char *)&hs, sizeof(HANDSHAKE), 2);
+	// client may fail to send this frame as the high loss rate of the router.
+	// so we need an ACK for this frame
+	hs.serverSeq = hsData.serverSeq;
+	ret = sock_sendto(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
 	if (ret) {
 		SysLogger::inst()->err("failed to send handshake response.");
 		return -1;
 	}
 	SysLogger::inst()->out("Sent a Handshake Response (%d, %d)\n", hs.clientSeq, hs.serverSeq);
 
-	if (hs.clientSeq == tmp.clientSeq) {
-		// handshake OK.
-		// save the server's sequence number.
-		seq = hs.serverSeq;
-		reset_statistics();
-		
-		return 0;
+	if (hs.clientSeq != hsData.clientSeq || hs.serverSeq != hsData.serverSeq) {
+		SysLogger::inst()->err("failed to get the last Handshake ACK (%d, %d)", hsData.clientSeq, hsData.serverSeq);
+		return -1;
 	}
-	return -1;
+
+	// handshake OK.
+	// save the server's sequence number.
+	seq = hs.serverSeq;
+	reset_statistics(true);
+	
+	return 0;
 }
 
 int SockClient::start(const char *filename, const char *opname) {
@@ -188,11 +190,16 @@ int SockClient::start(const char *filename, const char *opname) {
 		}
 		SysLogger::inst()->out("Received a file: %s", filefullname.c_str());
 	}
+
+	srv_wait4cnn(sock, 25);		// make sure that the ACK of last packet sent
+
 	show_statistics(false);
 	return 0;
 }
 
 int main(int argc, char *argv[]) {
+	srand(time(NULL));
+
 	// create logger
 	if (SysLogger::inst()->set("../logs/client_log.txt")) {
 		return -1;
@@ -208,7 +215,7 @@ int main(int argc, char *argv[]) {
 		filename = "";
 		opname = "";
 
-//		cin >> servername;
+		cin >> servername;
 		if (servername == "quit") {
 			break;
 		}
@@ -216,15 +223,15 @@ int main(int argc, char *argv[]) {
 		cin >> filename;
 		SysLogger::inst()->out("Type direction of transfer: ");
 		cin >> opname;
- 		servername = "Ewan-PC";
-// 		filename = "s.txt";
-// 		opname = "get";
+//  		servername = "Ewan-PC";
+//  		filename = "s.jpg";
+//  		opname = "put";
 
 		//start to connect to the server
 		SockClient * tc = new SockClient();
 
 		if (tc->udp_init(CLIENT_RECV_PORT) == 0) {
-			if (tc->set_dstAddr(servername.c_str(), SERVER_RECV_PORT) == 0) {
+			if (tc->set_dstAddr(servername.c_str(), CLIENT_DST_RECV_PORT) == 0) {
 				SysLogger::inst()->out("\nSent request to %s, waiting...\n", servername.c_str());
 				
 				if (tc->start(filename.c_str(), opname.c_str())) {
@@ -233,8 +240,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		delete tc;
-
-//		servername = "quit";
+//		cin >> opname;
 	}
 
 	return 0;
