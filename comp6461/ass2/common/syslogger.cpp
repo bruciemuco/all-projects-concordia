@@ -1,5 +1,5 @@
 /*
-   COMP6461 Assignment2
+   COMP6461 Assignment3
 
    Yuan Tao (ID: 5977363) 
    Xiaodong Zhang (ID: 6263879) 
