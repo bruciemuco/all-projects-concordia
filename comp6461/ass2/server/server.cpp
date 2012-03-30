@@ -53,13 +53,13 @@ int SockServer::handshake() {
 	}
 	
 	// wait for client's response
-	hs.clientSeq = 0;
-	hs.serverSeq = 0;
-	ret = sock_recvfrom(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
-	if (ret) {
-		SysLogger::inst()->err("failed to get handshake response.");
-		return -1;
-	}
+// 	hs.clientSeq = 0;
+// 	hs.serverSeq = 0;
+// 	ret = sock_recvfrom(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
+// 	if (ret) {
+// 		SysLogger::inst()->err("failed to get handshake response.");
+// 		return -1;
+// 	}
 	// handshake OK.
 	// save the client's sequence number.
 	//srv_wait4cnn(sock, 10);		// make sure that the ACK of last packet sent
@@ -182,6 +182,7 @@ void SockServer::client_handler() {
 		} else {
 			fseek(pFile, 0, SEEK_END);
 			header_resp.len = ftell(pFile);
+			fileSize = header_resp.len;
 			fclose(pFile);
 		}
 	}
@@ -189,7 +190,7 @@ void SockServer::client_handler() {
 
 	// send header
 	SysLogger::inst()->out("Sending response...");
-	if (sock_sendto(sock, (char *)&header_resp, sizeof(header_resp)) != 0) {
+	if (sock_sendtoEx(sock, (char *)&header_resp, sizeof(header_resp)) != 0) {
 		SysLogger::inst()->err("sock_sendto error. header.type:%d\n", header.type);
 		return;
 	}
@@ -218,10 +219,16 @@ int main(void) {
 	}
 	SysLogger::inst()->wellcome();
 
+	SysLogger::inst()->out("Please set the window size: ");
+	int windowSize = DEFAULT_WINDOWSIZE;
+	
+	//cin >> windowSize;
+
 	SockServer *ts = new SockServer();
 
 	try {
-		if (ts->udp_init(SERVER_RECV_PORT)) {
+		ts->setWindowsSize(8);
+		if (ts->udp_init(SERVER_RECV_PORT, windowSize)) {
 			delete ts;
 			return -1;
 		}

@@ -17,7 +17,7 @@
 #include <winsock.h>
 
 #define MAXPENDING 10
-
+#define DEFAULT_WINDOWSIZE	8
 
 class SockLib {
 protected:
@@ -43,10 +43,18 @@ protected:
 	int reSendCnt;		// resend times
 	int sendCnt;		// send times not including resend times
 	int recvCnt;
+	int totalFramesSent;	// the total frames sent for a file.
+	int fileSize;			// size of the file.
 
 	bool showFile;		// print file content on the screen
 
 	HANDSHAKE hsData;
+
+	// assignment 3	
+	int wSize;			// window size	
+	char *winBuf;
+	int winPos;			// window position
+	int winBufPos;		// the position of window buffer
 
 public:
 	SockLib() {
@@ -68,18 +76,22 @@ public:
 
 	// udp
 	int set_dstAddr(const char *dstHostName, int dstPort);
-	int udp_init(int localPort);
+	int udp_init(int localPort, int windowSize);
 	int sock_sendto(int sock, char *buf, int length, int handshake = 0);
+	int sock_sendtoEx(int sock, char *buf, int length, int flag = 0);
+	//int sock_recvfromEx(int sock, char *buf, int length, int handshake = 0);
 	int sock_recvfrom(int sock, char *buf, int length, int handshake = 0);
 	
 protected:
 	int lib_sendto(int sock, char *buf, int length);
 	int udp_sendto(int sock, char *buf, int length, int handshake = 0);
+	int udp_sendtoEx(int sock, char *buf, int length);
 	int add_udpheader(PUDPPACKET pudp, char *buf);
 	int lib_recvfrom(int sock, char *buf, int length, int handshake = 0);
 	
-	int send_ack(unsigned int seq);
+	int send_ack(unsigned int seq, int type = 0);
 	int chk_seq(unsigned int seq);
+	int chk_seqEx(PUDPPACKET pudp);
 	
 	int srv_wait4cnn(int sock, int sec = 0);
 
@@ -87,6 +99,16 @@ public:
 	// statistics
 	void reset_statistics(bool seq = false);
 	void show_statistics(bool ifSend);
+
+	//
+	void setWindowsSize(int size);
+
+private:
+	int copy_2_winbuf(const char *buf);
+	int send_all_win_packets(int flag = 0);
+	int remove_packets_from_win(PUDPPACKET pudp);
+	int set_last_seq(unsigned int &seqOfLastACK, PUDPPACKET pudp);
+	int send_special_request();
 };
 
 

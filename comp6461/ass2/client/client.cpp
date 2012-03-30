@@ -56,23 +56,25 @@ int SockClient::handshake() {
 		SysLogger::inst()->err("failed to get handshake response (%d, %d)", hsData.clientSeq, hsData.serverSeq);
 		return -1;
 	}
-	SysLogger::inst()->out("Received a Handshake Response (%d, %d)", hsData.clientSeq, hsData.serverSeq);
+	SysLogger::inst()->out("Received a Handshake Response (%d, %d) (%d, %d)", 
+		hsData.clientSeq, hsData.serverSeq, 
+		hsData.clientSeq & SEQUENCE_NUM_MASK, hsData.serverSeq & SEQUENCE_NUM_MASK);
 
 	// send hand shake response
 	// client may fail to send this frame as the high loss rate of the router.
 	// so we need an ACK for this frame
 	hs.serverSeq = hsData.serverSeq;
-	ret = sock_sendto(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
-	if (ret) {
-		SysLogger::inst()->err("failed to send handshake response.");
-		return -1;
-	}
-	SysLogger::inst()->out("Sent a Handshake Response (%d, %d)\n", hs.clientSeq, hs.serverSeq);
-
-	if (hs.clientSeq != hsData.clientSeq || hs.serverSeq != hsData.serverSeq) {
-		SysLogger::inst()->err("failed to get the last Handshake ACK (%d, %d)", hsData.clientSeq, hsData.serverSeq);
-		return -1;
-	}
+// 	ret = sock_sendto(sock, (char *)&hs, sizeof(HANDSHAKE), 1);
+// 	if (ret) {
+// 		SysLogger::inst()->err("failed to send handshake response.");
+// 		return -1;
+// 	}
+// 	SysLogger::inst()->out("Sent a Handshake Response (%d, %d)\n", hs.clientSeq, hs.serverSeq);
+// 
+// 	if (hs.clientSeq != hsData.clientSeq || hs.serverSeq != hsData.serverSeq) {
+// 		SysLogger::inst()->err("failed to get the last Handshake ACK (%d, %d)", hsData.clientSeq, hsData.serverSeq);
+// 		return -1;
+// 	}
 
 	// handshake OK.
 	// save the server's sequence number.
@@ -121,7 +123,9 @@ int SockClient::start(const char *filename, const char *opname) {
 			return -1;
 		}
 		fseek(pFile, 0, SEEK_END);
-		header.len += ftell(pFile);
+		fileSize = ftell(pFile);
+		header.len += fileSize;
+		
 		fclose(pFile);
 	}
 	else {
@@ -131,13 +135,13 @@ int SockClient::start(const char *filename, const char *opname) {
 
 	//send out the header + filename + hostname
 	header.len = htonl(header.len);
-	if (sock_sendto(sock, (char *)&header, sizeof(header)) != 0) {
+	if (sock_sendtoEx(sock, (char *)&header, sizeof(header), 1) != 0) {
 		SysLogger::inst()->err("sock_send error. header.type: %d, len: %d\n", header.type, ntohl(header.len));
 		return -1;
 	}
 	memmove(request.filename, filename, strlen(filename));
 	memmove(request.hostname, hostname, strlen(hostname));
-	if (sock_sendto(sock, (char *)&request, sizeof(request)) != 0) {
+	if (sock_sendtoEx(sock, (char *)&request, sizeof(request)) != 0) {
 		SysLogger::inst()->err("sock_send error. filename: %s, hostname: %s\n",
 				request.filename, request.hostname);
 		return -1;
@@ -199,6 +203,11 @@ int main(int argc, char *argv[]) {
 	}
 	SysLogger::inst()->wellcome();
 
+	SysLogger::inst()->out("Please set the window size: ");
+	int windowSize = DEFAULT_WINDOWSIZE;
+	
+	//cin >> windowSize;
+
 	//get input
 	string servername, filename, opname = "";
 
@@ -208,22 +217,22 @@ int main(int argc, char *argv[]) {
 		filename = "";
 		opname = "";
 
-		cin >> servername;
+		//cin >> servername;
 		if (servername == "quit") {
 			break;
 		}
 		SysLogger::inst()->out("Type name of file to be transferred: ");
-		cin >> filename;
+		//cin >> filename;
 		SysLogger::inst()->out("Type direction of transfer: ");
-		cin >> opname;
-//  		servername = "Ewan-PC";
-//  		filename = "s.jpg";
-//  		opname = "put";
+		//cin >> opname;
+  		servername = "Ewan-PC";
+  		filename = "s.jpg";
+  		opname = "get";
 
 		//start to connect to the server
 		SockClient * tc = new SockClient();
 
-		if (tc->udp_init(CLIENT_RECV_PORT) == 0) {
+		if (tc->udp_init(CLIENT_RECV_PORT, windowSize) == 0) {
 			if (tc->set_dstAddr(servername.c_str(), CLIENT_DST_RECV_PORT) == 0) {
 				SysLogger::inst()->out("\nSent request to %s, waiting...\n", servername.c_str());
 				
@@ -233,7 +242,8 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		delete tc;
-//		cin >> opname;
+
+		cin >> opname;
 	}
 
 	return 0;

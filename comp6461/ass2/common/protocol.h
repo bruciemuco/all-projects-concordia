@@ -22,7 +22,7 @@
 #define __PROTOCOL_H__
 
 #define CLIENT_RECV_PORT 5000
-#define CLIENT_DST_RECV_PORT ROUTER_RECV_PORT	//SERVER_RECV_PORT
+#define CLIENT_DST_RECV_PORT 	ROUTER_RECV_PORT		//SERVER_RECV_PORT
 #define SERVER_RECV_PORT 5001
 
 // router ports
@@ -89,9 +89,19 @@ typedef struct {
 	unsigned long len;		// length of the data following this header to be received
 } MSGHEADER, *PMSGHEADER;
 
+
+#define ACKTYPE_REQUEST		0	// request packet
+#define ACKTYPE_ACK			1	// ack
+#define ACKTYPE_NACK		2
+#define ACKTYPE_SACK		3	// special ack in order to get the sequence number the receiver is waiting for.
+
+//#define MAX_SEQUENCE_NUM	32
+#define SEQUENCE_NUM_MASK	0x1F
+
 // UDP packet
 typedef struct {
-	unsigned int seq:1;			// sequence number
+	unsigned int seq:5;			// sequence number
+	char ackType;				// see RESPONSE_XXX
 	char data[BUFFER_LENGTH];	// stores TCP packets, in order to reuse code of assignment1
 } UDPPACKET, *PUDPPACKET;
 

@@ -95,10 +95,6 @@ SOURCE=..\common\socklib.cpp
 
 SOURCE=..\common\syslogger.cpp
 # End Source File
-# Begin Source File
-
-SOURCE=.\Thread.cpp
-# End Source File
 # End Group
 # Begin Group "Header Files"
 

@@ -111,7 +111,7 @@ void SysLogger::out(char *fmt, ...) {
 }
 
 void SysLogger::wellcome() {
-	out("Welcome to COMP6461 assignment 2.");
+	out("Welcome to COMP6461 assignment 3.");
 	out("Developed by Yuan Tao & Xiaodong Zhang.\n");
 	out("Root directory of testing files for Client side is $ThisProgram\\client_files_root\\, which already has two sample files: c.txt & c.jpg");
 	out("Root directory of testing files for Server side is $ThisProgram\\server_files_root\\, which already has two sample files: s.txt & s.jpg");
