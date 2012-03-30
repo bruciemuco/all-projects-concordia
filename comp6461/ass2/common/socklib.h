@@ -89,7 +89,7 @@ protected:
 	int add_udpheader(PUDPPACKET pudp, char *buf);
 	int lib_recvfrom(int sock, char *buf, int length, int handshake = 0);
 	
-	int send_ack(unsigned int seq, int type = 0);
+	int send_ack(unsigned int seq, int type = ACKTYPE_REQUEST);
 	int chk_seq(unsigned int seq);
 	int chk_seqEx(PUDPPACKET pudp);
 	

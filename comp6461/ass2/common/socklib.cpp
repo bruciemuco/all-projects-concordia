@@ -548,7 +548,7 @@ int SockLib::send_special_request() {
 	
 	memset((void *)&udp, 0, length);	
 	udp.seq = seq;
-	udp.ackType = RESPONSE_SACK;
+	udp.ackType = ACKTYPE_SACK;
 
 	if (lib_sendto(sock, (char *)&udp, length) < 0) {
 		SysLogger::inst()->err("send_special_request error: Seq:%d\n", seq);
@@ -598,23 +598,23 @@ int SockLib::udp_sendtoEx(int sock, char *buf, int length) {
 			return -1;
 		}
 		
-		if (udp.ackType == RESPONSE_ACK) {
+		if (udp.ackType == ACKTYPE_ACK) {
 			SysLogger::inst()->asslog("Sender: received ACK for packet %d", udp.seq);
-		} else if (udp.ackType == RESPONSE_NACK) {
+		} else if (udp.ackType == ACKTYPE_NACK) {
 			SysLogger::inst()->asslog("Sender: received NACK for packet %d", udp.seq);
-		} else if (udp.ackType == RESPONSE_SACK) {
+		} else if (udp.ackType == ACKTYPE_SACK) {
 			SysLogger::inst()->asslog("Sender: received SACK for packet %d", udp.seq);
 		}
 
 		// if it is a NACK
-		if (udp.ackType == RESPONSE_NACK || udp.ackType == RESPONSE_SACK) {
+		if (udp.ackType == ACKTYPE_NACK || udp.ackType == ACKTYPE_SACK) {
 			// remove received packets from window buffer
 			int packets_left = remove_packets_from_win(&udp);
 			
 			// read file again and send all packets
 			return packets_left;
 			
-		} else if (udp.ackType == RESPONSE_ACK) {
+		} else if (udp.ackType == ACKTYPE_ACK) {
 			// check the sequence number
 			int tmp = set_last_seq(seqOfLastACK, &udp);
 
@@ -645,7 +645,7 @@ int SockLib::add_udpheader(PUDPPACKET pudp, char *buf) {
 	memset((void *)pudp, 0, sizeof(UDPPACKET));
 
 	pudp->seq = seq++;
-	pudp->ackType = RESPONSE_REQUEST;
+	pudp->ackType = ACKTYPE_REQUEST;
 	if (buf) {
 		memmove(pudp->data, buf, BUFFER_LENGTH);
 	}
@@ -871,13 +871,13 @@ int SockLib::srv_wait4cnn(int sock, int sec) {
 		SysLogger::inst()->asslog("Receiver: received packet %d", udp.seq);		
 		
 		// send ACK
-		send_ack(udp.seq);			
+		send_ack(udp.seq, ACKTYPE_ACK);			
 		
 		// check sequence number
-		if (chk_seq(udp.seq)) {
-			SysLogger::inst()->asslog("Receiver: received same packet %d", udp.seq);
-			continue;
-		}	
+// 		if (chk_seq(udp.seq)) {
+// 			SysLogger::inst()->asslog("Receiver: received same packet %d", udp.seq);
+// 			continue;
+// 		}	
 		
 	} while (sec-- > 0);
 	
