@@ -218,9 +218,11 @@ int SockLib::copy_2_winbuf(const char *buf) {
 	UDPPACKET udp;
 	int length = sizeof(UDPPACKET);
 
-	add_udpheader(&udp, (char *)buf);
-	memmove(winBuf + length * winBufPos, &udp, length);
-	winBufPos++;
+	if (winBufPos < wSize) {
+		add_udpheader(&udp, (char *)buf);
+		memmove(winBuf + length * winBufPos, &udp, length);
+		winBufPos++;
+	}
 	if (winBufPos == wSize) {
 		return send_all_win_packets();
 	}
@@ -255,7 +257,7 @@ int SockLib::send_file(int sock, const char *filename, int len) {
 	// send packets left in the window buffer.
 	ret = 0;
 	do {
-		if (send_all_win_packets() < 0) {
+		if (send_all_win_packets() <= 0) {
 			ret = -1;
 			break;
 		}
@@ -479,38 +481,87 @@ int SockLib::udp_sendto(int sock, char *buf, int length, int handshake) {
 	return ret;
 }
 
-int SockLib::remove_packets_from_win(PUDPPACKET pudp) {
-	unsigned int recvSeq = pudp->seq;
+int SockLib::remove_packets_from_win(unsigned int recvSeq, char arrAck[]) {
 	PUDPPACKET p = 0;
 	int len = sizeof(UDPPACKET);
 
 	if (winBufPos == 0) {
-		SysLogger::inst()->err("No packet to be removed");
+		SysLogger::inst()->asslog("No packet to be removed");
 	}
 	// remove all packets from begin whose SEQ != recvSeq;
-	int i = 0;
+	int i = 0, findit = 0;
 	for (; i < winBufPos; i++) {
 		p = (PUDPPACKET)(winBuf + len * i);
 		if (p->seq == recvSeq) {
+			findit = 1;
 			break;
 		}
 	}
-	winBufPos -= i;
-	if (i != 0 && winBufPos != 0) {
+	if (findit) {
 		// move unsent packets to the left of window buffer
 		// TODO: optimize. do not need to move.
+		i++;
+		winBufPos -= i;
 		if (winBufPos > 0 && winBufPos < wSize) {
 			char *p = winBuf;
 			for (int j = 0; j < winBufPos; j++) {
-				memmove(p + len * j, winBuf + len * (winBufPos + j), len);
+				memmove(p + len * j, winBuf + len * (i + j), len);
+				arrAck[j] = arrAck[i + j];
+			}
+			for (int k = j; k < SEQUENCE_NUM_MAX; k++) {
+				arrAck[k] = 0;
 			}
 		}
+// 	} else {
+// 		p = (PUDPPACKET)(winBuf + len * i);
+// 		if (p->seq == (recvSeq - 1) & SEQUENCE_NUM_MASK) {
+// 			winBufPos = 0;
+// 		}
 	}
 	return winBufPos;
 }
 
-// get the biggest sequence number from ACKs
-int SockLib::set_last_seq(unsigned int &seqOfLastACK, PUDPPACKET pudp) {
+// get the biggest sequence number from consecutive ACKs
+int SockLib::get_max_seq(unsigned int &retSeq, PUDPPACKET pudp, char arrAck[]) {
+	PUDPPACKET p = (PUDPPACKET)winBuf;
+	int len = sizeof(UDPPACKET);	
+	int i = 0;
+
+	if (winBufPos == 0) {
+		SysLogger::inst()->asslog("No packet in buffer.");
+		return -1;
+	}
+
+	// set a tag for this seq
+	for (; i < winBufPos; i++) {
+		p = (PUDPPACKET)(winBuf + len * i);
+		if (p->seq == pudp->seq) {
+			arrAck[i] = 1;
+			break;
+		}
+	}
+
+	// find the biggest one
+	int j = 0;
+	for (; j < winBufPos; j++) {
+		if (arrAck[j] == 0) {
+			break;
+		}
+	}
+	SysLogger::inst()->asslog("%d, %d,%d,%d,%d", j, arrAck[0], arrAck[1], arrAck[2], arrAck[3]);
+
+	if (j > 0) {
+		j--;
+		p = (PUDPPACKET)(winBuf + len * j);
+		retSeq = p->seq;
+
+		return 1;
+	}
+	return 0;
+}
+
+// obsoleted
+int SockLib::set_last_seq(unsigned int &retSeq, PUDPPACKET pudp) {
 	PUDPPACKET p = (PUDPPACKET)winBuf;
 	unsigned int maxSeq = -1, minSeq = -1;
 
@@ -524,22 +575,34 @@ int SockLib::set_last_seq(unsigned int &seqOfLastACK, PUDPPACKET pudp) {
 	maxSeq = p->seq;
 
 	if (seqOfLastACK == -1) {
-		seqOfLastACK = pudp->seq;
-	} 
-	if (maxSeq > minSeq) {
-		if (pudp->seq > seqOfLastACK) {
+		// the first one should be minSeq
+		if (pudp->seq == minSeq) {
 			seqOfLastACK = pudp->seq;
+		} else {
+			return 0;
 		}
 	} else {
-		// seq list like: 29,30,31,0,1,2,3
-		if (pudp->seq > minSeq || pudp->seq > seqOfLastACK) {
-			seqOfLastACK = pudp->seq;
-		} else if (pudp->seq < minSeq || pudp->seq > seqOfLastACK) {
-			seqOfLastACK = pudp->seq;
+		if (maxSeq > minSeq) {
+			if (pudp->seq > seqOfLastACK) {
+				seqOfLastACK = pudp->seq;
+			}
+		} else {
+			// seq list like: 29,30,31,0,1,2,3
+			if (pudp->seq > minSeq || pudp->seq > seqOfLastACK) {
+				seqOfLastACK = pudp->seq;
+			} else if (pudp->seq < minSeq || pudp->seq > seqOfLastACK) {
+				seqOfLastACK = pudp->seq;
+			}
 		}
+	} 
+	SysLogger::inst()->asslog("SEQ: (%d, %d), %d, %d", minSeq, maxSeq, pudp->seq, seqOfLastACK);
+
+	if (seqOfLastACK == maxSeq) {
+		return 1;
+	} else if (seqOfLastACK == minSeq) {
+		return 2;
 	}
-	SysLogger::inst()->asslog("SEQ: (%d, %d), %d", minSeq, maxSeq, pudp->seq, seqOfLastACK);
-	return seqOfLastACK == maxSeq;
+	return 0;
 }
 
 int SockLib::send_special_request() {
@@ -559,10 +622,11 @@ int SockLib::send_special_request() {
 
 int SockLib::udp_sendtoEx(int sock, char *buf, int length) {
 	int ret = SOCKET_ERROR, retryCnt = 5;
-	static unsigned int seqOfLastACK = -1;
 	boolean waitForACK = false;
 	UDPPACKET udp;
+	char arrACK[SEQUENCE_NUM_MAX];
 	
+	memset(arrACK, 0, SEQUENCE_NUM_MAX);
 	while (retryCnt > 0) {
 		if (!waitForACK) {
 			// sendto destination
@@ -592,6 +656,7 @@ int SockLib::udp_sendtoEx(int sock, char *buf, int length) {
 					return -1;
 				}
 			}
+			memset(arrACK, 0, SEQUENCE_NUM_MAX);
 			continue;
 			
 		} else if (ret < 0) {
@@ -604,37 +669,49 @@ int SockLib::udp_sendtoEx(int sock, char *buf, int length) {
 			SysLogger::inst()->asslog("Sender: received NACK for packet %d", udp.seq);
 		} else if (udp.ackType == ACKTYPE_SACK) {
 			SysLogger::inst()->asslog("Sender: received SACK for packet %d", udp.seq);
+		} else {
+			// error
+			SysLogger::inst()->asslog("Sender: received unknown ACK type: %d, seq: %d, last: %d", 
+				udp.ackType, udp.seq, lastSeq);
+			// return -1;			// it might be a resent packet, send ack and discards it.
+			if (udp.seq == ((lastSeq + 1) & SEQUENCE_NUM_MASK)) {
+				send_ack(udp.seq, ACKTYPE_ACK);
+				waitForACK = true;
+			}
 		}
 
 		// if it is a NACK
 		if (udp.ackType == ACKTYPE_NACK || udp.ackType == ACKTYPE_SACK) {
 			// remove received packets from window buffer
-			int packets_left = remove_packets_from_win(&udp);
+			UDPPACKET tmp;
+
+			tmp.seq = (udp.seq - 1) & SEQUENCE_NUM_MASK;
+			int packets_left = remove_packets_from_win(tmp.seq, arrACK);
+			SysLogger::inst()->asslog("remove_packets: %d, %d", packets_left, tmp.seq);
 			
 			// read file again and send all packets
 			return packets_left;
 			
 		} else if (udp.ackType == ACKTYPE_ACK) {
 			// check the sequence number
-			int tmp = set_last_seq(seqOfLastACK, &udp);
-
+			unsigned int biggestACK = -1;
+			int tmp = get_max_seq(biggestACK, &udp, arrACK);
+	
 			if (tmp == -1) {
 				return -1;
 			} 
 			if (tmp == 1) {
-				// get the ACK of last packet.
-				// remove all packets from window buffer
-				winBufPos = 0;
-				return 0;
+				// remove packets from window buffer
+				int packets_left = remove_packets_from_win(biggestACK, arrACK);
+
+				SysLogger::inst()->asslog("remove_packets: %d, %d", packets_left, biggestACK);
+				if (packets_left == 0) {
+					return 0;
+				}
 			}
 			
 			// do not find the ack for the last packet. continue waiting...
 			waitForACK = true;
-
-		} else {
-			// error
-			SysLogger::inst()->err("Unknown ACK type: %d", udp.ackType);
-			return -1;
 		}
 	} 
 	
@@ -662,6 +739,9 @@ int SockLib::sock_sendto(int sock, char *buf, int length, int handshake) {
 		// add udp header and copy the data
 		if (add_udpheader(&udp, p)) {
 			return -1;
+		}
+		if (handshake) {
+			udp.ackType = ACKTYPE_HANDSHAKE;
 		}
 		if (udp_sendto(sock, (char *)&udp, sizeof(UDPPACKET), handshake) <= 0) {
 			return -1;
@@ -691,12 +771,13 @@ int SockLib::sock_sendtoEx(int sock, char *buf, int length, int flag) {
 	// send packets left in the window buffer.
 	int ret = -1;
 	if (flag) {
-		ret = send_all_win_packets(flag);
+		//ret = send_all_win_packets(flag);
+		return 0;
 	} else {
 		// wait for response
 		do {
 			ret = send_all_win_packets(flag);
-			if (ret < 0) {
+			if (ret <= 0) {
 				break;
 			}
 		} while (winBufPos > 0);
@@ -776,7 +857,7 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
 			return -1;
 		} 
 
-		SysLogger::inst()->asslog("Receiver: received packet %d", udp.seq);
+		SysLogger::inst()->asslog("Receiver: received packet %d, %d", udp.seq, udp.ackType);
 
 		HANDSHAKE tmp;
 		tmp.clientSeq = 0;
@@ -813,14 +894,14 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
 		} else {
 			// check if it is still a handshake frame, then discards it until receive a normal frame
 			//if (hsData.clientSeq == tmp.clientSeq && hsData.serverSeq == tmp.serverSeq) {
-			if (hsData.clientSeq == tmp.clientSeq && udp.seq == lastSeq) {
+			if (udp.ackType == ACKTYPE_HANDSHAKE) {
 				// send ACK 
 				UDPPACKET resp;
 				resp.seq = udp.seq;
 				memset((void *)&resp, 0, sizeof(UDPPACKET));
 				memmove((void *)&resp.data, &hsData, sizeof(HANDSHAKE));
 				lib_sendto(sock, (char *)&resp, sizeof(UDPPACKET));
-				//SysLogger::inst()->out("--resp ack: %d", udp.seq);
+				SysLogger::inst()->out("--==resp ack: %d", udp.seq);
 				continue;
 			}
 
@@ -834,7 +915,7 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
 				SysLogger::inst()->asslog("Receiver: received disorder packet. LastSeq: %d, curSeq: %d", 
 					lastSeq, udp.seq);
 				continue;
-			}	
+			}
 		}
 
 		// copy the data from udp frame

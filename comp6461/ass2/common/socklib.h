@@ -55,6 +55,7 @@ protected:
 	char *winBuf;
 	int winPos;			// window position
 	int winBufPos;		// the position of window buffer
+	unsigned int seqOfLastACK;
 
 public:
 	SockLib() {
@@ -103,11 +104,12 @@ public:
 	//
 	void setWindowsSize(int size);
 
-private:
+protected:
 	int copy_2_winbuf(const char *buf);
 	int send_all_win_packets(int flag = 0);
-	int remove_packets_from_win(PUDPPACKET pudp);
+	int remove_packets_from_win(unsigned int recvSeq, char arrAck[]);
 	int set_last_seq(unsigned int &seqOfLastACK, PUDPPACKET pudp);
+	int get_max_seq(unsigned int &retSeq, PUDPPACKET pudp, char arrAck[]);
 	int send_special_request();
 };
 
