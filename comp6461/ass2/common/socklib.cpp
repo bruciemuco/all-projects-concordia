@@ -33,6 +33,7 @@ SockLib::~SockLib() {
 	/* When done uninstall winsock.dll (WSACleanup()) and exit */
 	closesocket(sock);
 	WSACleanup();
+	delete winBuf;
 }
 
 int SockLib::init() {
@@ -178,16 +179,65 @@ int SockLib::sock_send(int sock, char *buf, int length) {
 	return left;
 }
 
+int SockLib::send_all_win_packets(int flag) {
+	int length = sizeof(UDPPACKET);
+	char *buf = winBuf;
+	int ret = 0;
+
+	for (int i = 0; i < winBufPos - 1; i++) {
+		buf = winBuf + length * i;
+		if (lib_sendto(sock, buf, length) < 0) {
+			SysLogger::inst()->err("send_frame error: buf.len:%d, No.:%d\n", length, i);
+			return -1;
+		}
+		PUDPPACKET pudp = (PUDPPACKET)buf;
+		SysLogger::inst()->asslog("Sender: sent packet %d", pudp->seq);
+		ret++;
+	}
+	// wait for the ACK after send the last packet of the window buffer
+	if (flag) {
+		if (lib_sendto(sock, buf, length) < 0) {
+			SysLogger::inst()->err("send_frame error: buf.len:%d, No.:%d\n", length, i);
+			return -1;
+		}
+		PUDPPACKET pudp = (PUDPPACKET)buf;
+		SysLogger::inst()->asslog("Sender: sent packet %d", pudp->seq);
+		ret++;
+	} else {
+		buf = winBuf + length * i;
+		ret = udp_sendtoEx(sock, buf, length);
+		if (ret < 0) {
+			SysLogger::inst()->err("send_frame error. buf.len:%d, No.:%d\n", length, i);
+			return -1;
+		}
+	}
+	return ret;
+}
+
+int SockLib::copy_2_winbuf(const char *buf) {
+	UDPPACKET udp;
+	int length = sizeof(UDPPACKET);
+
+	add_udpheader(&udp, (char *)buf);
+	memmove(winBuf + length * winBufPos, &udp, length);
+	winBufPos++;
+	if (winBufPos == wSize) {
+		return send_all_win_packets();
+	}
+	return 1;
+}
+
 int SockLib::send_file(int sock, const char *filename, int len) {
 	FILE *pFile = 0;
 	char buf[BUFFER_LENGTH + 1];
+	int ret = -1;
 
 	pFile = fopen(filename, "rb");
 	if (pFile == NULL) {
 		SysLogger::inst()->err("No such a file: %s\n", filename);
 		return -1;
 	}
-	showFile = true;
+	showFile = false;
 	if (showFile) {
 		printf("\n\n-------------------- File content Begin------------------------\n");
 	}
@@ -195,18 +245,29 @@ int SockLib::send_file(int sock, const char *filename, int len) {
 		memset((void *)buf, 0, BUFFER_LENGTH + 1);
 		//fgets(buf, BUFFER_LENGTH, pFile);
 		int cnt = fread(buf, 1, BUFFER_LENGTH, pFile);
-		if (sock_sendto(sock, buf, cnt) != 0) {				// call sock_send if TCP
-			SysLogger::inst()->err("send_file error. buf.len:%d, file_len:%d\n", strlen(buf), len);
+
+		//copy to window buffer
+		if (copy_2_winbuf(buf) < 0) {
 			return -1;
 		}
 	}
+
+	// send packets left in the window buffer.
+	ret = 0;
+	do {
+		if (send_all_win_packets() < 0) {
+			ret = -1;
+			break;
+		}
+	} while (winBufPos > 0);	
+
 	fclose(pFile);
 	if (showFile) {
 		printf("\n-------------------- File content End------------------------\n\n");
 	}
 	showFile = false;
 
-	return 0;
+	return ret;
 }
 
 int SockLib::recv_file(int sock, const char *filename, int len) {
@@ -253,7 +314,7 @@ int SockLib::set_dstAddr(const char *dstHostName, int dstPort) {
 	return 0;	
 }
 
-int SockLib::udp_init(int localPort) {
+int SockLib::udp_init(int localPort, int windowSize) {
 	if (init()) {
 		SysLogger::inst()->err("socket init error");
 		return -1;
@@ -276,8 +337,16 @@ int SockLib::udp_init(int localPort) {
 	lastSeq = -1;
 	reset_statistics();	
 	showFile = false;
+
+	// 
+	wSize = windowSize;
+	winBuf = new char[wSize * sizeof(UDPPACKET)];
+	winPos = 0;
+	winBufPos = 0;
+	fileSize = 0;
 	
-	SysLogger::inst()->out("ftp_udp starting on host: [%s:%d]", hostname, localPort);
+	SysLogger::inst()->out("ftp_udp starting on host: [%s:%d]. (Window Size: %d)", 
+		hostname, localPort, wSize);
 	return 0;
 }
 
@@ -286,12 +355,12 @@ int SockLib::lib_recvfrom(int sock, char *buf, int length, int handshake) {
 	char *p = buf;
 	fd_set readfds;
 	struct timeval *tp = new timeval;
-	int waitCnt = 3;		// waiting total time: waitCnt * TIMEOUT_USEC
+	int waitCnt = 7;		// waiting total time: waitCnt * TIMEOUT_USEC
 	SOCKADDR from;
 	int fromlen;
 	
 	tp->tv_sec = 0;
-	tp->tv_usec = TIMEOUT_USEC;
+	tp->tv_usec = TIMEOUT_USEC;		// router delay 300ms * 3
 	
 	while (1) {
 		FD_ZERO(&readfds);
@@ -357,6 +426,7 @@ int SockLib::lib_sendto(int sock, char *buf, int length) {
 		return -1;
 	}
 
+	totalFramesSent++;
 	return ret;
 }
 
@@ -396,24 +466,189 @@ int SockLib::udp_sendto(int sock, char *buf, int length, int handshake) {
 
 		} else {
 			// check the sequence number
-			if (udp.seq != ((seq - 1) & 0x01)) {
+			if (udp.seq != ((seq - 1) & 0x1F)) {
 				SysLogger::inst()->asslog("Get a Wrong ACK. (%d. %d)", udp.seq, seq);
 				return -1;
 			}
 		}
 		SysLogger::inst()->asslog("Sender: received ACK for packet %d", udp.seq);
 		
-		break;
+		break; 
 	} 
 
 	return ret;
+}
+
+int SockLib::remove_packets_from_win(PUDPPACKET pudp) {
+	unsigned int recvSeq = pudp->seq;
+	PUDPPACKET p = 0;
+	int len = sizeof(UDPPACKET);
+
+	if (winBufPos == 0) {
+		SysLogger::inst()->err("No packet to be removed");
+	}
+	// remove all packets from begin whose SEQ != recvSeq;
+	int i = 0;
+	for (; i < winBufPos; i++) {
+		p = (PUDPPACKET)(winBuf + len * i);
+		if (p->seq == recvSeq) {
+			break;
+		}
+	}
+	winBufPos -= i;
+	if (i != 0 && winBufPos != 0) {
+		// move unsent packets to the left of window buffer
+		// TODO: optimize. do not need to move.
+		if (winBufPos > 0 && winBufPos < wSize) {
+			char *p = winBuf;
+			for (int j = 0; j < winBufPos; j++) {
+				memmove(p + len * j, winBuf + len * (winBufPos + j), len);
+			}
+		}
+	}
+	return winBufPos;
+}
+
+// get the biggest sequence number from ACKs
+int SockLib::set_last_seq(unsigned int &seqOfLastACK, PUDPPACKET pudp) {
+	PUDPPACKET p = (PUDPPACKET)winBuf;
+	unsigned int maxSeq = -1, minSeq = -1;
+
+	if (winBufPos == 0) {
+		SysLogger::inst()->err("No packet in buffer.");
+		return -1;
+	}
+
+	minSeq = p->seq;
+	p = (PUDPPACKET)(winBuf + sizeof(UDPPACKET) * (winBufPos - 1));
+	maxSeq = p->seq;
+
+	if (seqOfLastACK == -1) {
+		seqOfLastACK = pudp->seq;
+	} 
+	if (maxSeq > minSeq) {
+		if (pudp->seq > seqOfLastACK) {
+			seqOfLastACK = pudp->seq;
+		}
+	} else {
+		// seq list like: 29,30,31,0,1,2,3
+		if (pudp->seq > minSeq || pudp->seq > seqOfLastACK) {
+			seqOfLastACK = pudp->seq;
+		} else if (pudp->seq < minSeq || pudp->seq > seqOfLastACK) {
+			seqOfLastACK = pudp->seq;
+		}
+	}
+	SysLogger::inst()->asslog("SEQ: (%d, %d), %d", minSeq, maxSeq, pudp->seq, seqOfLastACK);
+	return seqOfLastACK == maxSeq;
+}
+
+int SockLib::send_special_request() {
+	int length = sizeof(UDPPACKET);
+	UDPPACKET udp;
+	
+	memset((void *)&udp, 0, length);	
+	udp.seq = seq;
+	udp.ackType = RESPONSE_SACK;
+
+	if (lib_sendto(sock, (char *)&udp, length) < 0) {
+		SysLogger::inst()->err("send_special_request error: Seq:%d\n", seq);
+		return -1;
+	}
+	return 0;
+}
+
+int SockLib::udp_sendtoEx(int sock, char *buf, int length) {
+	int ret = SOCKET_ERROR, retryCnt = 5;
+	static unsigned int seqOfLastACK = -1;
+	boolean waitForACK = false;
+	UDPPACKET udp;
+	
+	while (retryCnt > 0) {
+		if (!waitForACK) {
+			// sendto destination
+			if (lib_sendto(sock, buf, length) < 0) {
+				return -1;
+			}
+			PUDPPACKET pudp = (PUDPPACKET)buf;
+			SysLogger::inst()->asslog("Sender: sent packet %d", pudp->seq);
+		}
+		
+		// wait for ACK
+		memset((void *)&udp, 0, sizeof(UDPPACKET));
+		ret = lib_recvfrom(sock, (char *)&udp, sizeof(UDPPACKET));
+		
+		if (ret == 0) {
+			// get ACK timeout, sendto again
+			SysLogger::inst()->asslog("Get ACK Timeout.");
+			retryCnt--;
+
+			// resend all packets again
+			if (send_all_win_packets(1) < 0) {
+				return -1;
+			}
+			if (retryCnt == 0) {
+				// send special packet to get the sequence number the receiver is waiting for
+				if (send_special_request()) {
+					return -1;
+				}
+			}
+			continue;
+			
+		} else if (ret < 0) {
+			return -1;
+		}
+		
+		if (udp.ackType == RESPONSE_ACK) {
+			SysLogger::inst()->asslog("Sender: received ACK for packet %d", udp.seq);
+		} else if (udp.ackType == RESPONSE_NACK) {
+			SysLogger::inst()->asslog("Sender: received NACK for packet %d", udp.seq);
+		} else if (udp.ackType == RESPONSE_SACK) {
+			SysLogger::inst()->asslog("Sender: received SACK for packet %d", udp.seq);
+		}
+
+		// if it is a NACK
+		if (udp.ackType == RESPONSE_NACK || udp.ackType == RESPONSE_SACK) {
+			// remove received packets from window buffer
+			int packets_left = remove_packets_from_win(&udp);
+			
+			// read file again and send all packets
+			return packets_left;
+			
+		} else if (udp.ackType == RESPONSE_ACK) {
+			// check the sequence number
+			int tmp = set_last_seq(seqOfLastACK, &udp);
+
+			if (tmp == -1) {
+				return -1;
+			} 
+			if (tmp == 1) {
+				// get the ACK of last packet.
+				// remove all packets from window buffer
+				winBufPos = 0;
+				return 0;
+			}
+			
+			// do not find the ack for the last packet. continue waiting...
+			waitForACK = true;
+
+		} else {
+			// error
+			SysLogger::inst()->err("Unknown ACK type: %d", udp.ackType);
+			return -1;
+		}
+	} 
+	
+	return -1;
 }
 
 int SockLib::add_udpheader(PUDPPACKET pudp, char *buf) {
 	memset((void *)pudp, 0, sizeof(UDPPACKET));
 
 	pudp->seq = seq++;
-	memmove(pudp->data, buf, BUFFER_LENGTH);
+	pudp->ackType = RESPONSE_REQUEST;
+	if (buf) {
+		memmove(pudp->data, buf, BUFFER_LENGTH);
+	}
 	return 0;
 }
 
@@ -447,31 +682,84 @@ int SockLib::sock_sendto(int sock, char *buf, int length, int handshake) {
 	return left;
 }
 
+int SockLib::sock_sendtoEx(int sock, char *buf, int length, int flag) {
+	//copy to window buffer
+	if (copy_2_winbuf(buf) < 0) {
+		return -1;
+	}
+	
+	// send packets left in the window buffer.
+	int ret = -1;
+	if (flag) {
+		ret = send_all_win_packets(flag);
+	} else {
+		// wait for response
+		do {
+			ret = send_all_win_packets(flag);
+			if (ret < 0) {
+				break;
+			}
+		} while (winBufPos > 0);
+	}
+
+	if (ret >= 0) {
+		return 0;
+	}
+	return -1;
+}
+
 // send an ACK to the sender
-int SockLib::send_ack(unsigned int seq) {
+int SockLib::send_ack(unsigned int seq, int type) {
 	UDPPACKET udp;
 
 	memset((void *)&udp, 0, sizeof(UDPPACKET));	
 	udp.seq = seq;
+	udp.ackType = type;
 	lib_sendto(sock, (char *)&udp, sizeof(UDPPACKET));
 
-	SysLogger::inst()->asslog("Receiver: sent an ACK for packet %d", udp.seq);
+	if (udp.ackType == ACKTYPE_ACK) {
+		SysLogger::inst()->asslog("Receiver: sent an ACK for packet %d", udp.seq);
+	} else if (udp.ackType == ACKTYPE_NACK) {
+		SysLogger::inst()->asslog("Receiver: sent an NACK for packet %d", udp.seq);
+	} else if (udp.ackType == ACKTYPE_SACK) {
+		SysLogger::inst()->asslog("Receiver: sent an SACK for packet %d", udp.seq);
+	}
 	return 0;
 }
 
 // used by receiver to check if the frame is the same as last one
-int SockLib::chk_seq(unsigned int seq) {
+int SockLib::chk_seq(unsigned int frame_seq) {
 	if (lastSeq == -1) {
 		lastSeq = seq;
 		return 0;
 	}
 
-	if (lastSeq == seq) {
+	if (lastSeq == frame_seq) {
 		return -1;			// duplicated frame
 	}
 
-	lastSeq = seq;
+	lastSeq = frame_seq;
 	return 0;
+}
+int SockLib::chk_seqEx(PUDPPACKET pudp) {
+	if (lastSeq == -1) {
+		lastSeq = (pudp->seq - 1) & SEQUENCE_NUM_MASK;
+	}
+
+	if (pudp->ackType == ACKTYPE_REQUEST) {
+		if (((lastSeq + 1) & SEQUENCE_NUM_MASK) != pudp->seq) {
+			send_ack(lastSeq + 1, ACKTYPE_NACK);
+		} else {
+			send_ack(lastSeq + 1, ACKTYPE_ACK);
+			lastSeq = (lastSeq + 1) & SEQUENCE_NUM_MASK;
+			return 0;
+		}
+
+	} else if (pudp->ackType == ACKTYPE_SACK) {
+		// if it is a special packet
+		send_ack(lastSeq + 1, ACKTYPE_SACK);
+	}
+	return -1;
 }
 
 int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
@@ -486,7 +774,7 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
 			continue;
 		} else if (ret < 0) {
 			return -1;
-		}
+		} 
 
 		SysLogger::inst()->asslog("Receiver: received packet %d", udp.seq);
 
@@ -517,10 +805,15 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
 			} else {
 				//SysLogger::inst()->out("Sent Handshake last ACK (%d, %d)", hsData.clientSeq, hsData.serverSeq);
 			}
-			
+
+			if (chk_seq(udp.seq)) {
+				SysLogger::inst()->asslog("Receiver: received same packet %d", udp.seq);
+				continue;
+			}	
 		} else {
 			// check if it is still a handshake frame, then discards it until receive a normal frame
-			if (hsData.clientSeq == tmp.clientSeq && hsData.serverSeq == tmp.serverSeq) {
+			//if (hsData.clientSeq == tmp.clientSeq && hsData.serverSeq == tmp.serverSeq) {
+			if (hsData.clientSeq == tmp.clientSeq && udp.seq == lastSeq) {
 				// send ACK 
 				UDPPACKET resp;
 				resp.seq = udp.seq;
@@ -532,14 +825,17 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
 			}
 
 			// send ACK
-			send_ack(udp.seq);			
+			//send_ack(udp.seq);			
 		}
 
 		// check sequence number
-		if (chk_seq(udp.seq)) {
-			SysLogger::inst()->asslog("Receiver: received same packet %d", udp.seq);
-			continue;
-		}	
+		if (!handshake) {
+			if (chk_seqEx(&udp)) {
+				SysLogger::inst()->asslog("Receiver: received disorder packet. LastSeq: %d, curSeq: %d", 
+					lastSeq, udp.seq);
+				continue;
+			}	
+		}
 
 		// copy the data from udp frame
 		memmove(p, udp.data, (left < BUFFER_LENGTH) ? left : BUFFER_LENGTH );
@@ -556,6 +852,7 @@ int SockLib::sock_recvfrom(int sock, char *buf, int length, int handshake) {
 
 	return left;
 }
+
 
 // deal with ACK of last packet
 int SockLib::srv_wait4cnn(int sock, int sec) {
@@ -587,26 +884,41 @@ int SockLib::srv_wait4cnn(int sock, int sec) {
 	return 0;
 }
 
-void SockLib::reset_statistics(bool seq) 
-{
+void SockLib::reset_statistics(bool seq) {
 	reSendCnt = 0;
 	recvCnt = 0;
 	sendCnt = 0;
+	totalFramesSent = 0;
+	fileSize = 0;
 	if (seq) {
 		lastSeq = -1;
 	}
 }
-void SockLib::show_statistics(bool ifSend) 
-{
+void SockLib::show_statistics(bool ifSend) {
+// 	if (ifSend) {
+// 		SysLogger::inst()->out("Sender: number of effective bytes sent: %d (%d * %d)", 
+// 			sendCnt * sizeof(UDPPACKET), sendCnt, sizeof(UDPPACKET));
+// 		SysLogger::inst()->out("Sender: number of packets sent: %d", sendCnt + reSendCnt);
+// 		SysLogger::inst()->out("Sender: number of bytes sent: %d (%d * %d)\n", 
+// 			(sendCnt + reSendCnt) * sizeof(UDPPACKET), (sendCnt + reSendCnt), sizeof(UDPPACKET));
+// 	} else {
+// 		SysLogger::inst()->out("Receiver: number of bytes received: %d (%d * %d)\n", 
+// 			recvCnt * sizeof(UDPPACKET), recvCnt, sizeof(UDPPACKET));
+// 	}
 	if (ifSend) {
 		SysLogger::inst()->out("Sender: number of effective bytes sent: %d (%d * %d)", 
-			sendCnt * sizeof(UDPPACKET), sendCnt, sizeof(UDPPACKET));
-		SysLogger::inst()->out("Sender: number of packets sent: %d", sendCnt + reSendCnt);
+			fileSize, fileSize / sizeof(UDPPACKET) + 1, sizeof(UDPPACKET));
+		SysLogger::inst()->out("Sender: number of packets sent: %d", totalFramesSent);
 		SysLogger::inst()->out("Sender: number of bytes sent: %d (%d * %d)\n", 
-			(sendCnt + reSendCnt) * sizeof(UDPPACKET), (sendCnt + reSendCnt), sizeof(UDPPACKET));
+			(totalFramesSent) * sizeof(UDPPACKET), (totalFramesSent), sizeof(UDPPACKET));
 	} else {
 		SysLogger::inst()->out("Receiver: number of bytes received: %d (%d * %d)\n", 
 			recvCnt * sizeof(UDPPACKET), recvCnt, sizeof(UDPPACKET));
 	}
 	reset_statistics();
 }
+
+void SockLib::setWindowsSize(int size) {
+	wSize = size;
+}
+

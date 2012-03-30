@@ -65,9 +65,13 @@ Router::Router(char *fn)		//Constructor
 			throw "can't bind the socket2";
 
 		cout<<"\nPlease enter the first peer host name:"<<flush;		//enter the dropping rate.
-		cin>>peer_name1;
+		//cin>>peer_name1;
+		memset(peer_name1, 0, MAXHOSTNAMELEN);
+		strcpy(peer_name1, "Ewan-PC");
 		cout<<"\nPlease enter the second peer host name:"<<flush;		//enter the dropping rate.
-		cin>>peer_name2;
+		//cin>>peer_name2;
+		memset(peer_name2, 0, MAXHOSTNAMELEN);
+		strcpy(peer_name2, "Ewan-PC");
 		cout<<"\nPlease enter the drop rate:"<<flush;		//enter the dropping rate.
 		cin>>damage_rate;
 		cout<<"\nPlease enter the delay rate:"<<flush;		//enter the dropping rate.
