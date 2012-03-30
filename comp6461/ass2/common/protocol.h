@@ -94,8 +94,10 @@ typedef struct {
 #define ACKTYPE_ACK			1	// ack
 #define ACKTYPE_NACK		2
 #define ACKTYPE_SACK		3	// special ack in order to get the sequence number the receiver is waiting for.
+#define ACKTYPE_HANDSHAKE	4
 
-//#define MAX_SEQUENCE_NUM	32
+
+#define SEQUENCE_NUM_MAX	32
 #define SEQUENCE_NUM_MASK	0x1F
 
 // UDP packet

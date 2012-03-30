@@ -35,12 +35,12 @@ using namespace std;
 int SockClient::handshake() {
 	int	ret = -1;
 	HANDSHAKE hs;
-	
+
 	hsData.clientSeq = 0;
 	hsData.serverSeq = 0;
 	hs.serverSeq = 0;
 	hs.clientSeq = rand();			// TODO: htonl, ntohl
-	
+
 	// send hand shake request
 	SysLogger::inst()->out("Sending Handshake Request...");
 
@@ -135,7 +135,7 @@ int SockClient::start(const char *filename, const char *opname) {
 
 	//send out the header + filename + hostname
 	header.len = htonl(header.len);
-	if (sock_sendtoEx(sock, (char *)&header, sizeof(header), 1) != 0) {
+	if (sock_sendtoEx(sock, (char *)&header, sizeof(header)) != 0) {
 		SysLogger::inst()->err("sock_send error. header.type: %d, len: %d\n", header.type, ntohl(header.len));
 		return -1;
 	}
