@@ -14,10 +14,16 @@
 
 package SyntacticAnalyzer;
 
+import java.util.ArrayList;
+
 import utils.SysLogger;
 import LexicalAnalyzer.LexicalAnalyzer;
 import LexicalAnalyzer.StateMachineDriver;
 import LexicalAnalyzer.Token;
+import SemanticActions.SemanticActions;
+import SemanticActions.Symbol;
+import SemanticActions.Symbol.SYMBOLTYPE;
+import SemanticActions.SymbolTable;
 
 public class SyntacticAnalyzer {
 	private LexicalAnalyzer lexScanner = null;
@@ -26,6 +32,9 @@ public class SyntacticAnalyzer {
 	private Token nextToken = null;
 	
 	public String SYNTAX_END_SIGN = "$";
+	
+	public SemanticActions smActions = new SemanticActions();
+	private Symbol curVar = null;
 	
 	public int init(LexicalAnalyzer la) {
 		if (la == null) {
@@ -59,6 +68,15 @@ public class SyntacticAnalyzer {
 		//err("END.");
 		return false;
 	}
+	public boolean parseEx(SymbolTable st) {
+		if (st == null) {
+			return parse();
+		}
+		
+		// copy function declarations
+		smActions.stBak = (SymbolTable) st.clone();
+		return parse();
+	}
 	
 	private int getNextToken() {
 		preToken = curToken;
@@ -85,16 +103,49 @@ public class SyntacticAnalyzer {
 	}
 	
 	// if next token match the given token
-	private boolean match(String tk) {
+	private boolean matchEx(String tk, SYMBOLTYPE type) {
 		SysLogger.log("match: " + tk);
 		
 		if (tk.equals("id")) {
 			if (curToken.type == StateMachineDriver.TOKEN_TYPE_ID) {
+				// store the symbol temporarily
+				Symbol mb = new Symbol();
+				if (type == SYMBOLTYPE.CHKMEMBER) {
+					mb.tk = (Token) curToken.clone();
+				} else {
+					curVar = new Symbol();
+					curVar.tk = (Token) curToken.clone();
+					curVar.dataType = (Token) preToken.clone();
+					curVar.symbolType = type;
+				}
+				
+				if (type == SYMBOLTYPE.CHKVAR) {
+					smActions.ifVarDefined(curVar);
+				} else if (type == SYMBOLTYPE.CHKTYPE) {
+					smActions.ifDataTypeDefined(curVar);
+				} else if (type == SYMBOLTYPE.CHKMEMBER) {
+					smActions.ifClassMember(curVar, mb);
+					
+					curVar = new Symbol();
+					curVar.tk = (Token) curToken.clone();
+					if (mb.dataType != null) {
+						curVar.dataType = (Token) mb.dataType.clone();
+					} else {
+						curVar.dataType = (Token) preToken.clone();
+					}
+					curVar.symbolType = type;
+					curVar.address = mb.address;		// used for checking params.
+				} 
 				getNextToken();
 				return true;
 			}
 		} else if (tk.equals("int")) {
 			if (curToken.type == StateMachineDriver.TOKEN_TYPE_INT) {
+				if (type == SYMBOLTYPE.ARRAYSIZE) {
+					curVar.isArray = true;
+					curVar.sizeOfDimension.add(Integer.parseInt(curToken.token));
+					curVar.dimensions++;
+				}
 				getNextToken();
 				return true;
 			} 
@@ -125,6 +176,15 @@ public class SyntacticAnalyzer {
 				return true;
 			} 
 		} else if (curToken.token.equals(tk)) {
+			if (type == SYMBOLTYPE.CLASS) {
+				// find a new class definition
+				smActions.newClass(curVar);
+			} else if (type == SYMBOLTYPE.FUNCTION) {
+				smActions.newFunction(curVar);
+			} else if (type == SYMBOLTYPE.UNKNOWN_EXITTABLE) {
+				smActions.exitCurSymbolTable();
+			}
+			
 			getNextToken();
 			return true;
 		}
@@ -148,6 +208,10 @@ public class SyntacticAnalyzer {
 //		err("Inserts a new token: " + tk);
 		
 		return true;		
+	}
+	
+	private boolean match(String tk) {
+		return matchEx(tk, SYMBOLTYPE.UNKNOWN);
 	}
 	
 	// check if the next token is one of the tokens in the FIRST set for grammar 'symbol'
@@ -258,7 +322,12 @@ public class SyntacticAnalyzer {
 			str = String.format("Line: %4s, Col: %4s, Token: %12s, \t", 
 					preToken.line, preToken.column, preToken.token); 
 		}
-		SysLogger.info(str + "Grammar: " + msg);
+		//SysLogger.info(str + "Grammar: " + msg);
+	}
+	
+	private void copyType(Symbol s, Symbol d) {
+		s.tk = (Token)d.tk.clone();
+		s.dataType = (Token)d.dataType.clone();
 	}
 	
 	/* Grammar definition:
@@ -333,6 +402,7 @@ public class SyntacticAnalyzer {
 	}	
 
 	private boolean prog() {
+		smActions.newProg();
 		skipErrors("classDeclList", "");
 		if (isFirst("classDeclList")) {
 			if (classDeclList() && progBody()) {
@@ -371,8 +441,9 @@ public class SyntacticAnalyzer {
 	private boolean classDecl() {
 		skipErrors("class", "");
 		if (isFirst("class")) {
-			if (match("class") && match("id") && match("{") && varFuncDeclList() && match("}") && match(";")) {
+			if (match("class") && match("id") && matchEx("{", SYMBOLTYPE.CLASS) && varFuncDeclList() && match("}") && match(";")) {
 				printGrammar("classDecl        -> class id { varFuncDeclList } ;");
+				smActions.exitCurSymbolTable();
 				return true;
 			} else
 				return false;
@@ -420,6 +491,7 @@ public class SyntacticAnalyzer {
 	}	
 	private boolean varStateList() {
 		skipErrors("varStateList", "varStateList");
+		Symbol expr = new Symbol();
 		if (isFirst("integer")) {
 			if (match("integer") && match("id") && arraySizeList() && match(";") && varStateList()) {
 				printGrammar("varStateList     -> integer id arraySizeList ; varStateList");
@@ -439,13 +511,13 @@ public class SyntacticAnalyzer {
 			} else
 				return false;
 		} else if (isFirst("if")) {
-			if (match("if") && match("(") && expr() && match(")") && match("then") && statBlock() && match("else") && statBlock() && match(";") && statementList()) {
+			if (match("if") && match("(") && expr(expr) && match(")") && match("then") && statBlock() && match("else") && statBlock() && match(";") && statementList()) {
 				printGrammar("varStateList     -> if ( expr ) then statBlock else statBlock ; statementList");
 				return true;
 			} else
 				return false;
 		} else if (isFirst("while")) {
-			if (match("while") && match("(") && expr() && match(")") && match("do") && statBlock() && match(";") && statementList()) {
+			if (match("while") && match("(") && expr(expr) && match(")") && match("do") && statBlock() && match(";") && statementList()) {
 				printGrammar("varStateList     -> while ( expr ) do statBlock ; statementList");
 				return true;
 			} else
@@ -457,13 +529,13 @@ public class SyntacticAnalyzer {
 			} else
 				return false;
 		} else if (isFirst("return")) {
-			if (match("return") && match("(") && expr() && match(")") && match(";") && statementList()) {
+			if (match("return") && match("(") && expr(expr) && match(")") && match(";") && statementList()) {
 				printGrammar("varStateList     -> return ( expr ) ; statementList");
 				return true;
 			} else
 				return false;
 		} else if (isFirst("write")) {
-			if (match("write") && match("(") && expr() && match(")") && match(";") && statementList()) {
+			if (match("write") && match("(") && expr(expr) && match(")") && match(";") && statementList()) {
 				printGrammar("varStateList     -> write ( expr ) ; statementList");
 				return true;
 			} else
@@ -479,6 +551,7 @@ public class SyntacticAnalyzer {
 		if (isFirst("funcHead")) {
 			if (funcHead() && funcBody() && match(";")) {
 				printGrammar("funcDef          -> funcHead funcBody ;");
+				smActions.exitCurSymbolTable();
 				return true;
 			} else
 				return false;
@@ -488,7 +561,7 @@ public class SyntacticAnalyzer {
 	private boolean varFuncDeclListP() {
 		skipErrors("varFuncDeclListP", "");
 		if (isFirst("(")) {
-			if (match("(") && fParams() && match(")") && funcBody() && match(";") && funcDefList()) {
+			if (matchEx("(", SYMBOLTYPE.FUNCTION) && fParams() && match(")") && funcBody() && matchEx(";", SYMBOLTYPE.UNKNOWN_EXITTABLE) && funcDefList()) {
 				printGrammar("varFuncDeclListP -> ( fParams ) funcBody ; funcDefList");
 				return true;
 			} else
@@ -505,25 +578,35 @@ public class SyntacticAnalyzer {
 	private boolean varStateListP() {
 		skipErrors("varStateListP", "");
 		if (isFirst("id")) {
+			smActions.ifDataTypeDefined(curVar);
 			if (match("id") && arraySizeList() && match(";") && varStateList()) {
 				printGrammar("varStateList     -> id arraySizeList ; varStateList");
 				return true;
 			} else
 				return false;
 		} else if (isFirst("varStateListP")) {
-			if (indiceList() && variableP() && match("assignOp") && expr() && match(";") && statementList()) {
-				printGrammar("varStateListP    -> indiceList variableP assignOp expr ; statementList");
-				return true;
-			} else
-				return false;
+			smActions.ifVarDefined(curVar);
+			Symbol expr = new Symbol();
+			if (indiceList() && variableP() && match("assignOp")) {
+				Symbol tmp = (Symbol)curVar.clone();
+				copyType(tmp, curVar);
+				if (expr(expr)) {
+					smActions.compDateType(tmp, expr);
+					if (match(";") && statementList()) {
+						printGrammar("varStateListP    -> indiceList variableP assignOp expr ; statementList");
+						return true;
+					}
+				}
+			}
 		}
 		return false;
 	}	
 	private boolean funcHead() {
 		skipErrors("type", "");
 		if (isFirst("type")) {
-			if (type() && match("id") && match("(") && fParams() && match(")")) {
+			if (type() && match("id") && matchEx("(", SYMBOLTYPE.FUNCTION) && fParams() && match(")")) {
 				printGrammar("funcHead         -> type id ( fParams )");
+				smActions.ifFuncRedefined(curVar);
 				return true;
 			} else
 				return false;
@@ -533,7 +616,7 @@ public class SyntacticAnalyzer {
 	private boolean fParams() {
 		skipErrors("type", "fParams");
 		if (isFirst("type")) {
-			if (type() && match("id") && arraySizeList() && fParamsTailList()) {
+			if (type() && matchEx("id", SYMBOLTYPE.PARAMETER) && arraySizeList() && fParamsTailList()) {
 				printGrammar("fParams          -> type id arraySizeList fParamsTailList");
 				return true;
 			} else
@@ -561,7 +644,7 @@ public class SyntacticAnalyzer {
 	private boolean variableP() {
 		skipErrors(".", "variableP");
 		if (isFirst(".")) {
-			if (match(".") && match("id") && indiceList() && variableP()) {
+			if (match(".") && matchEx("id", SYMBOLTYPE.CHKMEMBER) && indiceList() && variableP()) {
 				printGrammar("variableP        -> . id indiceList variableP");
 				return true;
 			} else
@@ -572,11 +655,15 @@ public class SyntacticAnalyzer {
 		}
 		return false;
 	}
-	private boolean expr() {
+	private boolean expr(Symbol expr) {
 		skipErrors("arithExpr", "");
 		if (isFirst("arithExpr")) {
-			if (arithExpr() && exprP()) {
+			Symbol arithExpr = new Symbol();
+			Symbol exprP = new Symbol();
+			if (arithExpr(arithExpr) && exprP(arithExpr, exprP)) {
 				printGrammar("expr             -> arithExpr exprP");
+				//expr.dataType = (Token) exprP.dataType.clone();
+				copyType(expr, exprP);
 				return true;
 			} else
 				return false;
@@ -614,49 +701,66 @@ public class SyntacticAnalyzer {
 	private boolean indice() {
 		skipErrors("[", "");
 		if (isFirst("[")) {
-			if (match("[") && arithExpr() && match("]")) {
+			Symbol tmp = (Symbol) curVar.clone();			
+			copyType(tmp, curVar);
+			Symbol arithExpr = new Symbol();
+			if (match("[") && arithExpr(arithExpr) && match("]")) {
 				printGrammar("indice           -> [ arithExpr ]");
+				smActions.ifValidIndexType(arithExpr);
+				curVar = (Symbol) tmp.clone();
+				copyType(curVar, tmp);
 				return true;
 			} else
 				return false;
 		}
 		return false;
 	}
-	private boolean arithExpr() {
+	private boolean arithExpr(Symbol arithExpr) {
 		skipErrors("term", "");
 		if (isFirst("term")) {
-			if (term() && arithExprP()) {
+			Symbol term = new Symbol();
+			Symbol arithExprP = new Symbol();
+			if (term(term) && arithExprP(term, arithExprP)) {
 				printGrammar("arithExpr        -> term arithExprP");
+				//arithExpr.dataType = (Token) arithExprP.dataType.clone();
+				copyType(arithExpr, arithExprP);
 				return true;
 			} else
 				return false;
 		}
 		return false;
 	}
-	private boolean exprP() {
+	private boolean exprP(Symbol arithExpr, Symbol exprP) {
 		skipErrors("relOp", "exprP");
 		if (isFirst("relOp")) {
-			if (match("relOp") && arithExpr()) {
+			Symbol arithExprP = new Symbol();
+			if (match("relOp") && arithExpr(arithExprP)) {
 				printGrammar("exprP            -> relOp arithExpr");
+				Symbol tmp = smActions.compDateTypeNum(arithExpr, arithExprP);
+				copyType(exprP, tmp);
+				//exprP.dataType = (Token).dataType.clone();
 				return true;
 			} else
 				return false;
 		} else if (isFollow("exprP")) {
 			printGrammar("exprP            -> EPSILON");
+			//exprP.dataType = (Token) arithExpr.dataType.clone();
+			copyType(exprP, arithExpr);
 			return true;
 		}
 		return false;
 	}
 	private boolean statement() {
 		skipErrors("statement", "");
+		Symbol expr = new Symbol();
 		if (isFirst("if")) {
-			if (match("if") && match("(") && expr() && match(")") && match("then") && statBlock() && match("else") && statBlock() && match(";")) {
+			if (match("if") && match("(") && expr(expr) && match(")") && match("then") && statBlock() && match("else") && statBlock() && match(";")) {
 				printGrammar("statement        -> if ( expr ) then statBlock else statBlock ;");
 				return true;
 			} else
 				return false;
 		} else if (isFirst("while")) {
-			if (match("while") && match("(") && expr() && match(")") && match("do") && statBlock() && match(";")) {
+			if (match("while") && match("(") && expr(expr) && match(")") && match("do") && statBlock() && match(";")) {
 				printGrammar("statement        -> while ( expr ) do statBlock ;");
 				return true;
 			} else
@@ -668,21 +772,27 @@ public class SyntacticAnalyzer {
 			} else
 				return false;
 		} else if (isFirst("return")) {
-			if (match("return") && match("(") && expr() && match(")") && match(";")) {
+			if (match("return") && match("(") && expr(expr) && match(")") && match(";")) {
 				printGrammar("statement        -> return ( expr ) ;");
 				return true;
 			} else
 				return false;
 		} else if (isFirst("write")) {
-			if (match("write") && match("(") && expr() && match(")") && match(";")) {
+			if (match("write") && match("(") && expr(expr) && match(")") && match(";")) {
 				printGrammar("statement        -> write ( expr ) ;");
 				return true;
 			} else
 				return false;
 		} else if (isFirst("variable")) {
-			if (variable() && match("assignOp") && expr() && match(";")) {
-				printGrammar("statement        -> variable assignOp expr ;");
-				return true;
+			if (variable() && match("assignOp")) {
+				Symbol tmp = (Symbol) curVar.clone();
+				copyType(tmp, curVar);
+				if (expr(expr) && match(";")) {
+					printGrammar("statement        -> variable assignOp expr ;");
+					smActions.compDateType(tmp, expr);
+					return true;
+				} else
+					return false;
 			} else
 				return false;
 		}
@@ -691,7 +801,7 @@ public class SyntacticAnalyzer {
 	private boolean fParamsTail() {
 		skipErrors(",", "");
 		if (isFirst(",")) {
-			if (match(",") && type() && match("id") && arraySizeList()) {
+			if (match(",") && type() && matchEx("id", SYMBOLTYPE.PARAMETER) && arraySizeList()) {
 				printGrammar("fParamsTail      -> , type id arraySizeList");
 				return true;
 			} else
@@ -699,27 +809,38 @@ public class SyntacticAnalyzer {
 		}
 		return false;
 	}
-	private boolean term() {
+	private boolean term(Symbol term) {
 		skipErrors("factor", "");
 		if (isFirst("factor")) {
-			if (factor() && termP()) {
+			Symbol factor = new Symbol();
+			Symbol termP = new Symbol();
+			if (factor(factor) && termP(factor, termP)) {
 				printGrammar("term             -> factor termP");
+				//term.dataType = (Token) termP.dataType.clone();
+				copyType(term, termP);
 				return true;
 			} else
 				return false;
 		}
 		return false;
 	}
-	private boolean arithExprP() {
+	private boolean arithExprP(Symbol term, Symbol arithExprP) {
 		skipErrors("addOp", "arithExprP");
 		if (isFirst("addOp")) {
-			if (match("addOp") && term() && arithExprP()) {
+			Symbol arithExprPP = new Symbol();
+			Symbol termP = new Symbol();
+			if (match("addOp") && term(termP) && arithExprP(termP, arithExprPP)) {
 				printGrammar("arithExprP       -> addOp term arithExprP");
+				//arithExprP.dataType = (Token)smActions.compDateTypeNum(term, arithExprPP).dataType.clone();
+				Symbol tmp = smActions.compDateTypeNum(term, arithExprPP);
+				copyType(arithExprP, tmp);
 				return true;
 			} else
 				return false;
 		} else if (isFollow("arithExprP")) {
 			printGrammar("arithExprP       -> EPSILON");
+			//arithExprP.dataType = (Token)term.dataType.clone();
+			copyType(arithExprP, term);
 			return true;
 		}
 		return false;
@@ -747,7 +868,7 @@ public class SyntacticAnalyzer {
 	private boolean variable() {
 		skipErrors("id", "");
 		if (isFirst("id")) {
-			if (match("id") && indiceList() && variableP()) {
+			if (matchEx("id", SYMBOLTYPE.CHKVAR) && indiceList() && variableP()) {
 				printGrammar("variable         -> id indiceList variableP");
 				return true;
 			} else
@@ -755,48 +876,70 @@ public class SyntacticAnalyzer {
 		}
 		return false;
 	}
-	private boolean termP() {
+	private boolean termP(Symbol factor, Symbol termP) {
 		skipErrors("multOp", "termP");
 		if (isFirst("multOp")) {
-			if (match("multOp") && factor() && termP()) {
+			Symbol factorP = new Symbol();
+			Symbol termPP = new Symbol();
+			if (match("multOp") && factor(factorP) && termP(factorP, termPP)) {
 				printGrammar("termP            -> multOp factor termP");
+				//termP.dataType = (Token)smActions.compDateTypeNum(factor, termPP).dataType.clone();
+				Symbol tmp = smActions.compDateTypeNum(factor, termPP);
+				copyType(termP, tmp);
 				return true;
 			} else
 				return false;
 		} else if (isFollow("termP")) {
 			printGrammar("termP            -> EPSILON");
+			//termP.dataType = (Token)factor.dataType.clone();
+			copyType(termP, factor);
 			return true;
 		}
 		return false;
 	}
-	private boolean factor() {
+	private boolean factor(Symbol factor) {
 		skipErrors("factor", "");
 		if (isFirst("(")) {
-			if (match("(") && expr() && match(")")) {
+			Symbol expr = new Symbol();
+			if (match("(") && expr(expr) && match(")")) {
 				printGrammar("factor           -> ( expr )");
+				//factor.dataType = (Token) expr.dataType.clone();
+				copyType(factor, expr);
 				return true;
 			} else
 				return false;
-		} else if (isFirst("id")) {
-			if (match("id") && factorPP()) {
+		} else if (isFirst("id")) {			
+			Symbol factorPP = new Symbol();
+			if (matchEx("id", SYMBOLTYPE.CHKVAR) && factorPP(curVar, factorPP)) {
 				printGrammar("factor           -> id factorPP");
+				//factor.dataType = (Token)factorPP.dataType.clone();
+				copyType(factor, factorPP);
 				return true;
 			} else
 				return false;
 		} else if (isFirst("num")) {
 			if (match("num")) {
 				printGrammar("factor           -> num");
+				
+				// get the type of 'num'
+				factor.tk = (Token)preToken.clone();
+				factor.dataType = (Token)preToken.clone();
+				if (preToken.type == StateMachineDriver.TOKEN_TYPE_INT) {
+					factor.dataType.token = "integer";
+				} else if (preToken.type == StateMachineDriver.TOKEN_TYPE_FLOAT) {
+					factor.dataType.token = "real";
+				} 
 				return true;
 			} else
 				return false;
 		} else if (isFirst("not")) {
-			if (match("not") && factor()) {
+			if (match("not") && factor(factor)) {
 				printGrammar("factor           -> not factor");
 				return true;
 			} else
 				return false;
 		} else if (isFirst("sign")) {
-			if (sign() && factor()) {
+			if (sign() && factor(factor)) {
 				printGrammar("factor           -> sign factor");
 				return true;
 			} else
@@ -804,36 +947,56 @@ public class SyntacticAnalyzer {
 		}
 		return false;
 	}
-	private boolean factorPP() {
+	private boolean factorPP(Symbol s, Symbol factorPP) {
 		skipErrors("factorPP", "factorPP");
 		if (isFirst("(")) {
+			ArrayList<Symbol> tmpParams = smActions.varFuncParams;
+			smActions.varFuncParams = new ArrayList<Symbol>();
+			Symbol tmp = (Symbol) curVar.clone();
+			copyType(tmp,  curVar);
 			if (match("(") && aParams() && match(")")) {
 				printGrammar("factorPP         -> ( aParams )");
+				// check the parameters
+				smActions.ifValidFuncParamType(tmp);
+				s.dataType = (Token)tmp.dataType.clone();		// reset data type
+				smActions.varFuncParams = tmpParams;
+				//factorPP.dataType = (Token)s.dataType.clone();
+				copyType(factorPP, s);
 				return true;
 			} else
 				return false;
 		} else if (isFirst("factorPP")) {
-			if (indiceList() && factorP()) {
+			Symbol factorP = new Symbol();
+			if (indiceList() && factorP(s, factorP)) {
 				printGrammar("factorPP         -> indiceList factorP");
+				//factorPP.dataType = (Token)factorP.dataType.clone();
+				copyType(factorPP, factorP);
 				return true;
 			} else
 				return false;
 		} else if (isFollow("factorPP")) {
 			printGrammar("factorPP         -> EPSILON");
+			//factorPP.dataType = (Token)s.dataType.clone();
+			copyType(factorPP, s);
 			return true;
 		}
 		return false;
 	}
-	private boolean factorP() {
+	private boolean factorP(Symbol s, Symbol factorP) {
 		skipErrors(".", "factorP");
 		if (isFirst(".")) {
-			if (match(".") && match("id") && factorPP()) {
+			Symbol factorPP = new Symbol();
+			if (match(".") && matchEx("id", SYMBOLTYPE.CHKMEMBER) && factorPP(curVar, factorPP)) {
 				printGrammar("factorP          -> . id factorPP");
+				//factorP.dataType = (Token)factorPP.dataType.clone();
+				copyType(factorP, factorPP);
 				return true;
 			} else
 				return false;
 		} else if (isFollow("factorP")) {
 			printGrammar("factorP          -> EPSILON");
+			//factorP.dataType = (Token)s.dataType.clone();
+			copyType(factorP, s);
 			return true;
 		}
 		return false;
@@ -858,11 +1021,15 @@ public class SyntacticAnalyzer {
 	private boolean aParams() {
 		skipErrors("expr", "aParams");
 		if (isFirst("expr")) {
-			if (expr() && aParamsTailList()) {
-				printGrammar("aParams          -> expr aParamsTailList");
-				return true;
-			} else
-				return false;
+			Symbol expr = new Symbol();
+			if (expr(expr)) {
+				// store the parameter
+				smActions.varFuncParams.add(expr);
+				if (aParamsTailList()) {
+					printGrammar("aParams          -> expr aParamsTailList");
+					return true;
+				}
+			}
 		} else if (isFollow("aParams")) {
 			printGrammar("aParams          -> EPSILON");
 			return true;
@@ -886,8 +1053,10 @@ public class SyntacticAnalyzer {
 	private boolean aParamsTail() {
 		skipErrors(",", "");
 		if (isFirst(",")) {
-			if (match(",") && expr()) {
+			Symbol expr = new Symbol();
+			if (match(",") && expr(expr)) {
 				printGrammar("aParamsTail      -> , expr");
+				smActions.varFuncParams.add(expr);
 				return true;
 			} else
 				return false;
@@ -940,6 +1109,7 @@ type -> integer | real | id
 				return false;
 		} else if (isFollow("arraySizeList")) {
 			printGrammar("arraySizeList    -> EPSILON");
+			smActions.newVarible(curVar);
 			return true;
 		}
 		return false;
@@ -948,7 +1118,7 @@ type -> integer | real | id
 	private boolean arraySize() {
 		skipErrors("[", "");
 		if (isFirst("[")) {
-			if (match("[") && match("int") && match("]")) {
+			if (match("[") && matchEx("int", SYMBOLTYPE.ARRAYSIZE) && match("]")) {
 				printGrammar("arraySize        -> [ int ]");
 				return true;
 			} else
@@ -972,7 +1142,7 @@ type -> integer | real | id
 			} else
 				return false;
 		} else if (isFirst("id")) {
-			if (match("id")) {
+			if (matchEx("id", SYMBOLTYPE.CHKTYPE)) {
 				printGrammar("type             -> id");
 				return true;
 			} else

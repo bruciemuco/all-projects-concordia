@@ -43,6 +43,12 @@ public class SysLogger {
 	
 	private static FileHandler fhLast = null;
 	private static FileHandler fhErrLast = null;
+	
+	private static boolean logEnable = true;
+	
+	public static void enableLog(boolean b) {
+		logEnable = b;
+	}
 		
 	// initialization: e.g. create log files
 	public static void init() {
@@ -102,17 +108,23 @@ public class SysLogger {
 	}
 
 	public static void log(String msg) {
-		log.info(msg);
+		if (logEnable) {
+			log.info(msg);
+		}
 	}
 
 	public static void info(String msg) {
-		log.info(msg);
-		result.info(msg);
+		if (logEnable) {
+			log.info(msg);
+			result.info(msg);
+		}
 	}
 	
 	public static void err(String msg) {
-		log.severe(msg);
-		err.info(msg);
+		if (logEnable) {
+			log.severe(msg);
+			err.info(msg);
+		}
 	}
 }
 
