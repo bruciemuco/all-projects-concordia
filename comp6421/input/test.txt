@@ -1,0 +1,64 @@
+class FOO1 {
+	unknownVarType k;
+	real i;
+	real i;
+	integer func(integer i, real k){};
+	real func(integer i){};
+	unknownFuncType func(){};
+};
+class FOO1 {};
+class FOO2 {
+	real i;
+	integer m;
+	FOO1 foo1;
+	integer func(real i){};
+};
+class FOO3 {
+	FOO2 m_foo2;
+	integer func;
+
+	integer func() {
+		func = m_foo2.unknown_var;
+		m_foo2.foo1.unknown_var = m_foo2.foo1.i;
+		func = unknown_func();
+	};
+	real func(integer i){};
+	real func(integer i, FOO1 x, real y){
+		FOO2 foo2;
+		m_foo2.i = func;
+		func = func();
+		func = func(y);
+		func = foo2.func(y);
+		m_foo2.m = foo2.foo1.func(foo2.foo1.i);
+	};	
+	FOO1 samefunc(real a, FOO2 b[3][3]) {};
+	FOO1 samefunc(real a, FOO2 b[2][2]) {
+		func = func(m_foo2);
+	};
+};
+program {
+	FOO1 foo1;
+	FOO2 foo2[4];
+	FOO3 foo3;
+	
+	foo1.i.var = 0;
+	while (not not func(foo2[1]) <> foo3.m_foo2.foo1.i) do {
+		if (func()) then {
+			foo1.i = foo2[foo3.func(99)].i;
+			read(foo3.func);
+		} else {
+			write(
+				foo3.func(
+					foo2.m, 
+					foo1, 
+					foo2[2].foo1.func(
+						foo1.i, 
+						foo3.func(
+							foo2[1].m))));
+		};
+	};
+	foo3.func = func(1, 2, 2.3, 0.0009);
+};
+real func(){};
+FOO3 func(FOO2 f){};
+
