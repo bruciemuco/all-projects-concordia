@@ -23,14 +23,14 @@ import java.util.logging.Logger;
 class LoggerTextFormat extends Formatter { 
     @Override 
     public String format(LogRecord record) { 
-    	return record.getLevel() + ": " + record.getMessage() + "\n"; 
+    	return record.getLevel() + ": " + record.getMessage() + "\r\n"; 
     } 
 }
 
 class OutputTextFormat extends Formatter { 
     @Override 
     public String format(LogRecord record) { 
-    	return record.getMessage() + "\n"; 
+    	return record.getMessage() + "\r\n"; 
     } 
 }
 
@@ -38,11 +38,13 @@ public class SysLogger {
 	public static Logger log = Logger.getLogger("COMP6421Project");
 	public static Logger result = Logger.getLogger("COMP6421ProjectResult");
 	public static Logger err = Logger.getLogger("COMP6421ProjectError");
+	public static Logger asm = Logger.getLogger("COMP6421ProjectASM");
 	
 	public static boolean bLexicalAnalyzer = false;
 	
 	private static FileHandler fhLast = null;
 	private static FileHandler fhErrLast = null;
+	private static FileHandler fhASMLast = null;
 	
 	private static boolean logEnable = true;
 	
@@ -56,6 +58,7 @@ public class SysLogger {
 		log.setUseParentHandlers(false);
 		result.setUseParentHandlers(false);
 		err.setUseParentHandlers(false);
+		asm.setUseParentHandlers(false);
 		
 		// add a file handler
 		String path = System.getProperty("user.dir") + "\\logs\\log.txt";
@@ -97,6 +100,8 @@ public class SysLogger {
 			fileHandle.setLevel(Level.ALL);
 			fileHandle.setFormatter(new OutputTextFormat());
 			if (fhErrLast != null) {
+				fhErrLast.flush();
+				fhErrLast.close();
 				err.removeHandler(fhErrLast);
 			}
 			err.addHandler(fileHandle);
@@ -105,6 +110,27 @@ public class SysLogger {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+	}
+	
+	public static void setASMFilenames(String filename) {
+		// create a logger to show the results of the program.
+		String path = filename;
+		FileHandler fileHandle;
+		try {
+			fileHandle = new FileHandler(path);
+			fileHandle.setLevel(Level.ALL);
+			fileHandle.setFormatter(new OutputTextFormat());
+			if (fhASMLast != null) {
+				fhASMLast.flush();
+				fhASMLast.close();
+				asm.removeHandler(fhASMLast);
+			}
+			asm.addHandler(fileHandle);
+			fhASMLast = fileHandle;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static void log(String msg) {
@@ -124,6 +150,12 @@ public class SysLogger {
 		if (logEnable) {
 			log.severe(msg);
 			err.info(msg);
+		}
+	}
+	public static void asm(String msg) {
+		if (logEnable) {
+			log.severe(msg);
+			asm.info(msg);
 		}
 	}
 }

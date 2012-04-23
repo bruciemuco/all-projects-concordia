@@ -31,8 +31,8 @@ class FOO3 {
 		func = foo2.func(y);
 		m_foo2.m = foo2.foo1.func(foo2.foo1.i);
 	};	
-	FOO1 samefunc(real a, FOO2 b[3][3]) {};
-	FOO1 samefunc(real a, FOO2 b[2][2]) {
+	FOO1 samefunc(real a, FOO2 b[3]) {};
+	FOO1 samefunc(real a, FOO2 b[3]) {
 		func = func(m_foo2);
 	};
 };

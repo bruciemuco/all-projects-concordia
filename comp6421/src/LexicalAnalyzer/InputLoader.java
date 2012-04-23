@@ -31,6 +31,7 @@ public class InputLoader {
 	public ArrayList<String> lstFiles = new ArrayList<String>();			// input files
 	public ArrayList<String> lstResultFiles = new ArrayList<String>();		// result files
 	public ArrayList<String> lstErrFiles = new ArrayList<String>();		// error msg files
+	public ArrayList<String> lstASMFiles = new ArrayList<String>();		// ASM files
 	
 	// load all files under a directory
 	public int loadTextFiles(String dirPath) {
@@ -61,6 +62,7 @@ public class InputLoader {
             	String name = list[i].getName();
             	lstResultFiles.add(outputDir + name.substring(0, name.length() - 4) + "_result.txt");
             	lstErrFiles.add(outputDir + name.substring(0, name.length() - 4) + "_error.txt");
+            	lstASMFiles.add(outputDir + name.substring(0, name.length() - 4) + "_asm.m");
             }
         }
 		return 0;
