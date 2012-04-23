@@ -302,10 +302,10 @@ public class LexicalAnalyzer {
 					|| tk.token.equals("<=") || tk.token.equals(">=")) {
 				tk.type = StateMachineDriver.TOKEN_TYPE_OP_REL;
 			}
-		} else if (tk.type == StateMachineDriver.TOKEN_TYPE_INT) {
-			if (tk.token.equals("0")) {
-				tk.type = StateMachineDriver.TOKEN_TYPE_FLOAT;	// Just for Ass2.
-			}
+//		} else if (tk.type == StateMachineDriver.TOKEN_TYPE_INT) {
+//			if (tk.token.equals("0")) {
+//				tk.type = StateMachineDriver.TOKEN_TYPE_FLOAT;	// Just for Ass2.
+//			}
 		}
 		
 		return tk;
