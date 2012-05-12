@@ -5,10 +5,10 @@
 ;;; This file is created by Yuan Tao (ewan.msn@gmail.com)
 ;;; Licensed under GNU GPL v3
 
-;;; $Author: ewan.msn@gmail.com $
-;;; $Date:  $
-;;; $Rev:  $
-;;; $HeadURL:  $
+;;; $Author$
+;;; $Date$
+;;; $Rev$
+;;; $HeadURL$
 ;;;
 
 
