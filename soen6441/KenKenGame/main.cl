@@ -185,7 +185,7 @@
       (if (string-equal c (car e))
           (if (null (cadr e))
               (return-from get-value-of-cell nil)
-            (if (or (< 1 (cadr e)) (> (cadr *cur-game*) (cadr e)))
+            (if (or (< (cadr e) 1) (> (cadr e) (cadr *cur-game*)))
                 (return-from get-value-of-cell nil)
               (return-from get-value-of-cell (cadr e))))
         nil))))
@@ -204,11 +204,12 @@
 ; 3. go back to 1
 (defun play-game ()
   (loop 
+    (print-games)
     (if (null (select-a-game))
         (return-from play-game nil)
       (if (null (check-cell-values))
           (return-from play-game nil)
-        (if (string-equal "n" (prompt-play-again))
+        (if (prompt-play-again)
             (return-from play-game nil)
           t)))))
 
@@ -217,7 +218,7 @@
   (loop 
     (let ((game (prompt-select-game)))
       (if (or (string-equal game "q") (string-equal game "quit"))
-          (return-from select-a-game nil)         ; exit
+          (return-from select-a-game nil)              ; exit
         (dolist (e *games*)
           (if (string-equal game (car e))
               (progn (defparameter *cur-game* e)
@@ -226,7 +227,6 @@
         (format t "Invalid game name! ~%"))))
 
 (defun prompt-select-game ()
-  (print-games)
   (format t "Please select a game by name (type q to exit game):~%")
   (read-line *query-io*))
 
@@ -237,8 +237,10 @@
     ; keep inputing cell values
     (let ((cvs (prompt-cell-values)))
       (if (or (string-equal cvs "q") (string-equal cvs "quit"))
-          (return-from check-cell-values nil)      ; exit
-        (parse-cell-values cvs)))
+          (return-from check-cell-values nil)          ; exit
+        (parse-cell-values cvs))
+      ;(print *cur-values*)
+      )
     
     ; if all cells of the game have a value, check if the values are right
     (if (= (length *cur-values*) (* (cadr *cur-game*) (cadr *cur-game*)))
@@ -296,7 +298,6 @@
             
 (defun if-valid-solution ()
   (print-game *cur-game*) 
-  (format t "Congratulations!~%")
   t)
 
 
