@@ -11,6 +11,8 @@
 ;;; $HeadURL$
 ;;;
 
+; data structure of how to present a list of games
+; more information about it please refer to readme.pdf.
 (defparameter *games* 
   (list              ; list of games
    (list 'game1 1 (list (list 1 '= 'a1)))
@@ -42,21 +44,24 @@
                         (list 3 '- 'f4 'f3) (list 5 '+ 'e5 'f5) (list 2 '- 'e6 'f6)))
    ))
 
-;(defparameter *cur-game* (car *games*))
+; cell values of current game
 (defparameter *cur-values* (list (list 'a1 0)))
 
+; the game which user is playing
+(defparameter *cur-game* nil)
+
 ; ((GAME1 2 ((= 2 A1) (* 2 A2 B1 B2))))
-; the format of a game layout:
+; the format of above game layout:
 ;
 ;        1       2               ; first line of layout
 ;    +-------+-------+           ; 2th
-; A  |2=     |2*     |           ; 3th
-;    |   1   |       |           ; 4th
+; A  |2=     |2*     |           ; 3th  cage value & operator
+;    |   1   |       |           ; 4th  cell value
 ;    +-------+       +           ; 2th
 ; B  |               |
 ;    |               |
 ;    +-------+-------+           ; last line
-(defun print-game (game)
+(defun print-a-game (game)
   (format t "Game Name: ~D~%" (car game))
   (let ((size (cadr game)))
     ; print the first line
@@ -139,8 +144,8 @@
 	  
 (defun print-games ()
   (dolist (e *games*)
-    (defparameter *cur-game* e)
-	(print-game e)))
+    (setf *cur-game* e)
+	(print-a-game e)))
 
 (defun get-letter-from-num (num)
   (cond ((= num 1) 'A)
@@ -148,12 +153,13 @@
         ((= num 3) 'C)
         ((= num 4) 'D)
         ((= num 5) 'E)
-        ((= num 6) 'F)))
+        ((= num 6) 'F)
+        (t 'Z)))
 
-; get a list containing the operator and the value of the element (i j)
+; get a list containing the operator and the value of the cage which has the element (i j)
+; i j are the coordinate of the cell
 ; e.g ; ((GAME1 2 ((= 2 A1) (* 2 A2 B1 B2))))
-; CG-USER(51): (GET-OP-AND-VALUE 2 1)
-; (* 2 A2 B1 B2)
+; i=2 j=1 (B1) ==>  (* 2 A2 B1 B2)
 (defun get-op-and-value (i j)
   (dolist (e (caddr *cur-game*))
     (dolist (k (cddr e))
@@ -170,6 +176,7 @@
   (equal (get-op-and-value i1 j1) (get-op-and-value i2 j2)))
 
 ; check if the name of cell is the smallest one of the cage
+; smallest: the cell has smallest i and j.
 (defun if-first-cell-of-cage (i j)
   (let ((c (get-cell-name i j)))
     (dolist (e (cddr (get-op-and-value i j)))
@@ -179,6 +186,7 @@
 
 ; get value of the cell from the values list
 ; e.g. ((A1 1) (A2 2))
+; i=1 j=2 (A2) ==>  2
 (defun get-value-of-cell (i j)
   (let ((c (get-cell-name i j)))
     (dolist (e *cur-values*)
@@ -200,7 +208,7 @@
 
 ; start to play the game
 ; 1. select a game
-; 2. keep inputing cell values and check the values
+; 2. keep inputing cell values and checking the solution
 ; 3. go back to 1
 (defun play-game ()
   (loop 
@@ -210,8 +218,8 @@
       (if (null (check-cell-values))
           (return-from play-game nil)
         (if (prompt-play-again)
-            (return-from play-game nil)
-          t)))))
+			t
+            (return-from play-game nil))))))
 
 ; recusively asking user to select a game
 (defun select-a-game ()
@@ -244,24 +252,24 @@
     
     ; if all cells of the game have a value, check if the values are right
     (if (= (length *cur-values*) (* (cadr *cur-game*) (cadr *cur-game*)))
-      (if (if-valid-solution)
-          (progn
-            (format t "Congratulations!~%")
-            (return-from check-cell-values t))         ; OK
+        (if (if-valid-solution)
+            (progn
+              (format t "Congratulations!~%")
+              (return-from check-cell-values t))       ; OK
           (progn
             (format t "Invalid solution, please check cell values.~%")))
       nil)))
       
 (defun prompt-cell-values ()
-  (print-game *cur-game*)    
+  (print-a-game *cur-game*)    
   (format t "Please set values of cells (e.g. a1=1 b2=2 a1=2) (type q to exit game):~%")
   (read-line *query-io*))
 
 (defun prompt-play-again ()
-  (y-or-n-p "Play again? [y/n]: "))
+  (y-or-n-p "Play again?"))
 
 ; parse and store cell values from user input
-; format: a1=1 b2=2 a1=2 ...
+; input format: a1=1 b2=2 a1=2 ...
 (defun parse-cell-values (cvs)
   (dolist (e (split-by-one-space cvs))
     (store-cell-value (get-key-value-pair e))))
@@ -275,15 +283,15 @@
           collect (subseq string i j)
         while j))
 
-; returns a list with two elements: key and value, from "key=value"
+; returns a list with two elements: key and value, from input string of "key=value"
 (defun get-key-value-pair (string)
   (if (find #\= string :test #'equal)
       (list (subseq string 0 2) (parse-integer (subseq string 3)))
     nil))
 
-; replace an element (which is a list) of a list
+; replace an element (which is a list) from a list
 ; lst: (("a1" 1) ("a2" 2) ("b1" 2))
-; ele-lst: ("a2" 1)
+; ele: ("a2" 1)
 (defun replace-a-value (lst ele)
   (if (null ele)
       lst
@@ -292,12 +300,22 @@
       (if (string-equal (caar lst) (car ele))
           (cons ele (cdr lst))
         (cons (car lst) (replace-a-value (cdr lst) ele))))))
-  
-(defun store-cell-value (lst)
-    (setf *cur-values* (replace-a-value *cur-values* lst)))
-            
+
+; input c: ("a2" 1)
+(defun store-cell-value (c)
+  ; discard the cells beyond the game coordinates.
+  (if (if-valid-cell c)
+      (setf *cur-values* (replace-a-value *cur-values* c))
+    nil))
+
+; input c: ("a2" 1)
+; invalid cells like ("g1" 1) ("a99" 1) ("a1" 99) ("a1" 0)
+(defun if-valid-cell (c)
+  )
+
+; check if the values of all cells of every cage satisfy the operator and value of the cage. 
 (defun if-valid-solution ()
-  (print-game *cur-game*) 
+  (print-a-game *cur-game*) 
   t)
 
 
