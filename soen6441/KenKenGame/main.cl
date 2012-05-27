@@ -41,8 +41,9 @@
                         (list 5 '- 'c6 'd6) (list 48 '* 'e1 'f1 'f2) (list 1 '- 'd4 'e4) (list 3 '- 'e2 'e3)
                         (list 3 '- 'f4 'f3) (list 5 '+ 'e5 'f5) (list 2 '- 'e6 'f6)))
    ))
+
 ;(defparameter *cur-game* (car *games*))
-(defparameter *cur-values* (list (list 'a1) (list 'a2 2)))
+(defparameter *cur-values* (list (list 'a1 0)))
 
 ; ((GAME1 2 ((= 2 A1) (* 2 A2 B1 B2))))
 ; the format of a game layout:
@@ -181,11 +182,13 @@
 (defun get-value-of-cell (i j)
   (let ((c (get-cell-name i j)))
     (dolist (e *cur-values*)
-      (if (string= c (car e))
-          (if (and (not (null (cadr e))) (= 0 (cadr e)))
+      (if (string-equal c (car e))
+          (if (null (cadr e))
               (return-from get-value-of-cell nil)
-            (return-from get-value-of-cell (cadr e)))))
-    nil))
+            (if (or (< 1 (cadr e)) (> (cadr *cur-game*) (cadr e)))
+                (return-from get-value-of-cell nil)
+              (return-from get-value-of-cell (cadr e))))
+        nil))))
 
 ; print the value and operator of the cage
 (defun print-cage-info (num op)
@@ -195,50 +198,107 @@
         (format t "|~D~D    " num op)
       (format t "|~D~D     " num op))))
 
-(defun prompt-select-game ()
-  (format t "Please select a game by name (type q to exit game): ")
-  (read-line *query-io*))
+; start to play the game
+; 1. select a game
+; 2. keep inputing cell values and check the values
+; 3. go back to 1
+(defun play-game ()
+  (loop 
+    (if (null (select-a-game))
+        (return-from play-game nil)
+      (if (null (check-cell-values))
+          (return-from play-game nil)
+        (if (string-equal "n" (prompt-play-again))
+            (return-from play-game nil)
+          t)))))
 
 ; recusively asking user to select a game
-(defun set-current-game ()
+(defun select-a-game ()
   (loop 
     (let ((game (prompt-select-game)))
       (if (or (string-equal game "q") (string-equal game "quit"))
-          (return-from set-current-game t)
+          (return-from select-a-game nil)         ; exit
         (dolist (e *games*)
           (if (string-equal game (car e))
               (progn (defparameter *cur-game* e)
-                (return-from set-current-game e))
+                (return-from select-a-game e))
             nil)))
         (format t "Invalid game name! ~%"))))
 
-(defun prompt-cell-values ()
-  (print-game *cur-game*)    
-  (format t "Please set values of cells (e.g. a1=1 b2=2 a1=2) (type q to exit game): ")
+(defun prompt-select-game ()
+  (print-games)
+  (format t "Please select a game by name (type q to exit game):~%")
   (read-line *query-io*))
 
 ; check cell values. if all cells have a value, check the solution.
 ; otherwise, continue asking user to input cell values.
 (defun check-cell-values ()
   (loop
-    (if (/= (length *cur-values*) (* (cadr *cur-game*) (cadr *cur-game*)))
-        ;continue input cell values
-        (let ((cvs (prompt-cell-values)))
-          (if (or (string-equal game "q") (string-equal game "quit"))
-              (return-from set-current-game t)
-            (parse-cell-values cvs)))
-        ; all cells of the game have a value, then check if the values are right
-      (if-valid-solution))))
+    ; keep inputing cell values
+    (let ((cvs (prompt-cell-values)))
+      (if (or (string-equal cvs "q") (string-equal cvs "quit"))
+          (return-from check-cell-values nil)      ; exit
+        (parse-cell-values cvs)))
+    
+    ; if all cells of the game have a value, check if the values are right
+    (if (= (length *cur-values*) (* (cadr *cur-game*) (cadr *cur-game*)))
+      (if (if-valid-solution)
+          (progn
+            (format t "Congratulations!~%")
+            (return-from check-cell-values t))         ; OK
+          (progn
+            (format t "Invalid solution, please check cell values.~%")))
+      nil)))
+      
+(defun prompt-cell-values ()
+  (print-game *cur-game*)    
+  (format t "Please set values of cells (e.g. a1=1 b2=2 a1=2) (type q to exit game):~%")
+  (read-line *query-io*))
 
-; parse cell values of user input
+(defun prompt-play-again ()
+  (y-or-n-p "Play again? [y/n]: "))
+
+; parse and store cell values from user input
 ; format: a1=1 b2=2 a1=2 ...
 (defun parse-cell-values (cvs)
-  )
+  (dolist (e (split-by-one-space cvs))
+    (store-cell-value (get-key-value-pair e))))
 
+; Returns a list of substrings of string divided by ONE space each.
+; Note: Two consecutive spaces will be seen as if there were an empty string between them."
+; This function is copied from http://cl-cookbook.sourceforge.net/strings.html
+(defun split-by-one-space (string)
+    (loop for i = 0 then (1+ j)
+          as j = (position #\Space string :start i)
+          collect (subseq string i j)
+        while j))
+
+; returns a list with two elements: key and value, from "key=value"
+(defun get-key-value-pair (string)
+  (if (find #\= string :test #'equal)
+      (list (subseq string 0 2) (parse-integer (subseq string 3)))
+    nil))
+
+; replace an element (which is a list) of a list
+; lst: (("a1" 1) ("a2" 2) ("b1" 2))
+; ele-lst: ("a2" 1)
+(defun replace-a-value (lst ele)
+  (if (null ele)
+      lst
+    (if (null lst)
+        (list ele)
+      (if (string-equal (caar lst) (car ele))
+          (cons ele (cdr lst))
+        (cons (car lst) (replace-a-value (cdr lst) ele))))))
+  
+(defun store-cell-value (lst)
+    (setf *cur-values* (replace-a-value *cur-values* lst)))
+            
 (defun if-valid-solution ()
   (print-game *cur-game*) 
-  (format t "Congratulations!")
+  (format t "Congratulations!~%")
   t)
+
 
 
   
