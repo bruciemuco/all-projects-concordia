@@ -55,88 +55,91 @@
 ; B  |               |
 ;    |               |
 ;    +-------+-------+           ; last line
+(defun print-game (game)
+  (format t "Game Name: ~D~%" (car game))
+  (let ((size (cadr game)))
+    ; print the first line
+    (format t "    ")         
+    (dotimes (i size)          
+      (format t "    ~D   " (+ 1 i)))
+    (format t "~%")
+    
+    (loop for i from 1 to size do           ; line of cells
+          ; 2th line
+          (format t "    ")
+          
+          ; first column of cell
+          (loop for j from 1 to size do 
+                (if (= i 1)
+                    (format t "+-------")
+                  (if (if-2cells-connected (- i 1) j i j)
+                      (format t "+       ")
+                    (format t "+-------"))))		
+          
+          (format t "+~%")
+          
+          ; 3th line
+          (format t " ~D  " (get-letter-from-num i))
+          
+          ; first column of cells
+          (let ((opv (get-op-and-value i 1)))
+            (if (= i 1)
+                (if (if-first-cell-of-cage i 1)
+                    (print-cage-info (car opv) (cadr opv))
+                  (format t "|       "))
+              ; if current cell is connceted with above cell
+              (if (if-2cells-connected (- i 1) 1 i 1)
+                  (format t "|       ")
+                (if (if-first-cell-of-cage i 1)
+                    (print-cage-info (car opv) (cadr opv))
+                  (format t "|       ")))))
+          
+          ; other columns of cells
+          (loop for j from 2 to size do 
+                (let ((opv (get-op-and-value i j)))
+                  ; if current cell is connceted with left cell or above cell
+                  (if (if-2cells-connected i (- j 1) i j)
+                      (format t "        ")
+                    (if (if-first-cell-of-cage i j)
+                        (print-cage-info (car opv) (cadr opv))
+                      (format t "|       ")))))
+          
+          ; last edge of the table
+          (format t "|~%")
+          
+          ; 4th line
+          (format t "    ")
+          
+          ; first column
+          (let ((v (get-value-of-cell i 1)))
+            (if (null v)
+                (format t "|       ")
+              (format t "|   ~D   " v)))
+          
+          ; other columns
+          (loop for j from 2 to size do 
+                (let ((v (get-value-of-cell i j)))
+                  ; if current cell is connceted with left cell
+                  (if (if-2cells-connected i (- j 1) i j)
+                      (if (null v)
+                          (format t "        ")
+                        (format t "    ~D   " v))
+                    (if (null v)
+                        (format t "|       ")
+                      (format t "|   ~D   " v)))))
+          (format t "|~%"))
+    
+    ; last line
+    (format t "    ")
+    (dotimes (i size)          
+      (format t "+-------"))
+    (format t "+~%")
+    ))
+	  
 (defun print-games ()
   (dolist (e *games*)
     (defparameter *cur-game* e)
-    (format t "Game Name: ~D~%" (car e))
-    (let ((size (cadr e)))
-      ; print the first line
-      (format t "    ")         
-      (dotimes (i size)          
-        (format t "    ~D   " (+ 1 i)))
-      (format t "~%")
-      
-      (loop for i from 1 to size do           ; line of cells
-            ; 2th line
-            (format t "    ")
-            
-            ; first column of cell
-            (loop for j from 1 to size do 
-                  (if (= i 1)
-                      (format t "+-------")
-                    (if (if-2cells-connected (- i 1) j i j)
-                        (format t "+       ")
-                      (format t "+-------"))))		
-            
-            (format t "+~%")
-            
-            ; 3th line
-            (format t " ~D  " (get-letter-from-num i))
-            
-            ; first column of cells
-            (let ((opv (get-op-and-value i 1)))
-              (if (= i 1)
-                  (if (if-first-cell-of-cage i 1)
-                      (print-cage-info (car opv) (cadr opv))
-                    (format t "|       "))
-                ; if current cell is connceted with above cell
-                (if (if-2cells-connected (- i 1) 1 i 1)
-                    (format t "|       ")
-                  (if (if-first-cell-of-cage i 1)
-                      (print-cage-info (car opv) (cadr opv))
-                    (format t "|       ")))))
-            
-            ; other columns of cells
-            (loop for j from 2 to size do 
-                  (let ((opv (get-op-and-value i j)))
-                    ; if current cell is connceted with left cell or above cell
-                    (if (if-2cells-connected i (- j 1) i j)
-                        (format t "        ")
-                      (if (if-first-cell-of-cage i j)
-                          (print-cage-info (car opv) (cadr opv))
-                        (format t "|       ")))))
-            
-            ; last edge of the table
-            (format t "|~%")
-            
-            ; 4th line
-            (format t "    ")
-            
-            ; first column
-            (let ((v (get-value-of-cell i 1)))
-              (if (null v)
-                  (format t "|       ")
-                (format t "|   ~D   " v)))
-            
-            ; other columns
-            (loop for j from 2 to size do 
-                  (let ((v (get-value-of-cell i j)))
-                    ; if current cell is connceted with left cell
-                    (if (if-2cells-connected i (- j 1) i j)
-                        (if (null v)
-                            (format t "        ")
-                          (format t "    ~D   " v))
-                      (if (null v)
-                          (format t "|       ")
-                        (format t "|   ~D   " v)))))
-            (format t "|~%"))
-      
-      ; last line
-      (format t "    ")
-      (dotimes (i size)          
-        (format t "+-------"))
-      (format t "+~%")
-      )))
+	(print-game e)))
 
 (defun get-letter-from-num (num)
   (cond ((= num 1) 'A)
@@ -192,4 +195,50 @@
         (format t "|~D~D    " num op)
       (format t "|~D~D     " num op))))
 
+(defun prompt-select-game ()
+  (format t "Please select a game by name (type q to exit game): ")
+  (read-line *query-io*))
 
+; recusively asking user to select a game
+(defun set-current-game ()
+  (loop 
+    (let ((game (prompt-select-game)))
+      (if (or (string-equal game "q") (string-equal game "quit"))
+          (return-from set-current-game t)
+        (dolist (e *games*)
+          (if (string-equal game (car e))
+              (progn (defparameter *cur-game* e)
+                (return-from set-current-game e))
+            nil)))
+        (format t "Invalid game name! ~%"))))
+
+(defun prompt-cell-values ()
+  (print-game *cur-game*)    
+  (format t "Please set values of cells (e.g. a1=1 b2=2 a1=2) (type q to exit game): ")
+  (read-line *query-io*))
+
+; check cell values. if all cells have a value, check the solution.
+; otherwise, continue asking user to input cell values.
+(defun check-cell-values ()
+  (loop
+    (if (/= (length *cur-values*) (* (cadr *cur-game*) (cadr *cur-game*)))
+        ;continue input cell values
+        (let ((cvs (prompt-cell-values)))
+          (if (or (string-equal game "q") (string-equal game "quit"))
+              (return-from set-current-game t)
+            (parse-cell-values cvs)))
+        ; all cells of the game have a value, then check if the values are right
+      (if-valid-solution))))
+
+; parse cell values of user input
+; format: a1=1 b2=2 a1=2 ...
+(defun parse-cell-values (cvs)
+  )
+
+(defun if-valid-solution ()
+  (print-game *cur-game*) 
+  (format t "Congratulations!")
+  t)
+
+
+  
