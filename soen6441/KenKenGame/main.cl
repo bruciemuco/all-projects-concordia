@@ -13,7 +13,7 @@
 
 ; data structure of how to present a list of games
 ; more information about it please refer to readme.pdf.
-(defparameter *games* 
+(defvar *games* 
   (list              ; list of games
    (list 'game1 1 (list (list 1 '= 'a1)))
    
@@ -229,7 +229,7 @@
           (return-from select-a-game nil)              ; exit
         (dolist (e *games*)
           (if (string-equal game (car e))
-              (progn (defparameter *cur-game* e)
+              (progn (setf *cur-game* e)
                 (return-from select-a-game e))
             nil)))
         (format t "Invalid game name! ~%"))))
@@ -293,25 +293,30 @@
 ; lst: (("a1" 1) ("a2" 2) ("b1" 2))
 ; ele: ("a2" 1)
 (defun replace-a-value (lst ele)
-  (if (null ele)
-      lst
-    (if (null lst)
-        (list ele)
-      (if (string-equal (caar lst) (car ele))
-          (cons ele (cdr lst))
-        (cons (car lst) (replace-a-value (cdr lst) ele))))))
+  (if (null lst)
+      (list ele)
+    (if (string-equal (caar lst) (car ele))
+        (cons ele (cdr lst))
+      (cons (car lst) (replace-a-value (cdr lst) ele)))))
 
 ; input c: ("a2" 1)
 (defun store-cell-value (c)
-  ; discard the cells beyond the game coordinates.
-  (if (if-valid-cell c)
-      (setf *cur-values* (replace-a-value *cur-values* c))
-    nil))
+  (if (null c)
+      nil
+    ; discard the cells beyond the game coordinates.
+    (if (if-valid-cell c)
+        (setf *cur-values* (replace-a-value *cur-values* c))
+      nil)))
 
 ; input c: ("a2" 1)
-; invalid cells like ("g1" 1) ("a99" 1) ("a1" 99) ("a1" 0)
+; invalid cells like ("h1" 1) ("a99" 1) ("a1" 99) ("a1" 0)
 (defun if-valid-cell (c)
-  )
+  (let ((i (char-code (char (string-downcase (car c)) 0))) 
+        (j (char-code (char (car c) 1))) 
+        (v (cadr c))
+        (size (cadr *cur-game*)))
+    (and (>= i 97) (< i (+ 97 size)) (>= j 49) (< j (+ 49 size))
+         (>= v 1) (<= v size))))   
 
 ; check if the values of all cells of every cage satisfy the operator and value of the cage. 
 (defun if-valid-solution ()
@@ -319,5 +324,48 @@
   t)
 
 
+;; ==================== Unit Test Framework ====================
+;; The following source code of unit test framework is copied 
+;; from chapter 9 of the book:
+;; Practical Common Lisp, by Peter Seibel, 2005
+(defvar *t-name* nil)
+(defun report-result (result form)
+  (format t "~:[FAIL~;pass~] ... ~a: ~a~%" result *t-name* form)
+  result)
+(defmacro check (&body forms)
+  `(combine-results
+    ,@(loop for f in forms collect `(report-result ,f ',f))))
+(defmacro combine-results (&body forms)
+  (with-gensyms (result)
+    `(let ((,result t))
+       ,@(loop for f in forms collect `(unless ,f (setf ,result nil)))
+       ,result)))
+(defmacro deftest (name parameters &body body)
+  `(defun ,name ,parameters
+     (let ((*t-name* ',name))
+       ,@body)))
 
-  
+;; ==================== Unit Test cases ====================
+(defun test-all ()
+  (combine-results
+   (t-if-valid-cell)
+   ))
+
+(deftest t-if-valid-cell ()
+  (setf *cur-game* (cadr *games*))
+  (check
+   (if-valid-cell '("a1" 1))
+   (if-valid-cell '("b1" 1))
+   (if-valid-cell '("b1" 1))
+   (if-valid-cell '("b2" 1))
+   (if-valid-cell '("a1" 1))
+   (if-valid-cell '("a1" 2))
+   (null (if-valid-cell '("11" 1)))
+   (null (if-valid-cell '("c1" 1)))
+   (null (if-valid-cell '("a0" 1)))
+   (null (if-valid-cell '("a3" 1)))
+   (null (if-valid-cell '("a1" 0)))
+   (null (if-valid-cell '("a1" 3)))
+   ))
+
+
