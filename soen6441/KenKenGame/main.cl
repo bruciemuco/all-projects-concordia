@@ -51,7 +51,7 @@
 ; the game which user is playing
 (defparameter *cur-game* nil)
 
-; ((GAME1 2 ((= 2 A1) (* 2 A2 B1 B2))))
+; ((GAME1 2 ((= 2 A1) (2 * A2 B1 B2))))
 ; the format of above game layout:
 ;
 ;        1       2               ; first line of layout
@@ -118,14 +118,14 @@
           (format t "    ")
           
           ; first column
-          (let ((v (get-value-of-cell i 1)))
+          (let ((v (get-cell-value i 1)))
             (if (null v)
                 (format t "|       ")
               (format t "|   ~D   " v)))
           
           ; other columns
           (loop for j from 2 to size do 
-                (let ((v (get-value-of-cell i j)))
+                (let ((v (get-cell-value i j)))
                   ; if current cell is connceted with left cell
                   (if (if-2cells-connected i (- j 1) i j)
                       (if (null v)
@@ -159,8 +159,8 @@
 
 ; get a list containing the operator and the value of the cage which has the element (i j)
 ; i j are the coordinate of the cell
-; e.g ; ((GAME1 2 ((= 2 A1) (* 2 A2 B1 B2))))
-; i=2 j=1 (B1) ==>  (* 2 A2 B1 B2)
+; e.g ; ((GAME1 2 ((= 2 A1) (2 * A2 B1 B2))))
+; i=2 j=1 (B1) ==>  (2 * A2 B1 B2)
 (defun get-op-and-value (i j)
   (dolist (e (caddr *cur-game*))
     (dolist (k (cddr e))
@@ -188,16 +188,18 @@
 ; get value of the cell from the values list
 ; e.g. ((A1 1) (A2 2))
 ; i=1 j=2 (A2) ==>  2
-(defun get-value-of-cell (i j)
-  (let ((c (get-cell-name i j)))
-    (dolist (e *cur-values*)
-      (if (string-equal c (car e))
-          (if (null (cadr e))
-              (return-from get-value-of-cell nil)
-            (if (or (< (cadr e) 1) (> (cadr e) (cadr *cur-game*)))
-                (return-from get-value-of-cell nil)
-              (return-from get-value-of-cell (cadr e))))
-        nil))))
+(defun get-cell-value (i j)
+  (get-cell-value-byname (get-cell-name i j)))
+
+(defun get-cell-value-byname (cn)
+  (dolist (e *cur-values*)
+    (if (string-equal cn (car e))
+        (if (null (cadr e))
+            (return-from get-cell-value-byname nil)
+          (if (or (< (cadr e) 1) (> (cadr e) (cadr *cur-game*)))
+              (return-from get-cell-value-byname nil)
+            (return-from get-cell-value-byname (cadr e))))
+      nil)))
 
 ; print the value and operator of the cage
 (defun print-cage-info (num op)
@@ -322,7 +324,68 @@
 ; check if the values of all cells of every cage satisfy the operator and value of the cage. 
 (defun if-valid-solution ()
   (print-a-game *cur-game*) 
+  ; start to check every cage [e: (* 2 A2 B1 B2)]
+  (dolist (e (caddr *cur-game*))
+    ; operator =
+    (cond ((equal '= (cadr e))
+           (if (/= 1 (length (cddr e))) (return-from if-valid-solution nil))
+           (if (not (equal (car e) (get-cell-value-byname (caddr e))))
+               (return-from if-valid-solution nil)))
+          
+          ; operator +
+          ((equal '+ (cadr e))
+           (if (/= (car e) (cage-cells-+ (cddr e)))
+               (return-from if-valid-solution nil)))          
+          ; operator *
+          ((equal '+ (cadr e))
+           (if (/= (car e) (cage-cells-* (cddr e)))
+               (return-from if-valid-solution nil)))          
+          ; operator -
+          ((equal '- (cadr e)) 
+           (if (not (cage-cells-- e)) (return-from if-valid-solution nil)))
+          ; operator /
+          ((equal '/ (cadr e)) 
+           (if (not (cage-cells-/ e)) (return-from if-valid-solution nil)))
+          ))
   t)
+
+; get addition of all cell values of the cage
+; c: (b1 c1)
+; return: b1 + c1
+(defun cage-cells-+ (c)
+  (let ((sum 0))
+    (dolist (e c)
+      (setf sum (+ sum (get-cell-value-byname e))))
+    sum))
+
+; get multiplication of all cell values of the cage
+; c: (b1 c1)
+; return: b1 * c1
+(defun cage-cells-* (c)
+  (let ((sum 1))
+    (dolist (e c)
+      (setf sum (* sum (get-cell-value-byname e))))
+    sum))
+
+; check if the cage value = subtraction of cell values within the cage
+; c: (3 - B1 C1)
+(defun cage-cells-- (c)
+  ; first, find out the max value between cell values
+  (let ((maxval 0) (sum 0))
+    (dolist (e (cddr c))
+      (setf maxval (max maxval (get-cell-value-byname e)))
+      (setf sum (+ sum (get-cell-value-byname e))))
+    (= (+ sum (car c)) (* maxval 2))))
+
+; check if the cage value = division of cell values within the cage
+; c: (3 / B1 C1)
+(defun cage-cells-/ (c)
+  ; first, find out the max value between cell values
+  (let ((maxval 0) (sum 1))
+    (dolist (e (cddr c))
+      (setf maxval (max maxval (get-cell-value-byname e)))
+      (setf sum (* sum (get-cell-value-byname e))))
+    (= (* sum (car c)) (* maxval maxval))))
 
 
 ;; ==================== Unit Test Framework ====================
@@ -354,11 +417,14 @@
   (combine-results
    (t-get-op-and-value)
    (t-if-first-cell-of-cage)
-   (t-get-value-of-cell)
+   (t-get-cell-value)
    (t-get-key-value-pair)
    (t-replace-a-value)
    (t-if-valid-cell)
-   (t-parse-cell-values)))
+   (t-parse-cell-values)
+   (t-cage-cells--)
+   (t-cage-cells-/)
+   (t-if-valid-solution)))
 
 (deftest t-get-op-and-value ()
   (setf *cur-game* '(GAME2 2 ((2 = A1) (2 * A2 B1 B2))))
@@ -380,15 +446,15 @@
    (null (if-first-cell-of-cage 2 3))
    (null (if-first-cell-of-cage 3 1))))
 
-(deftest t-get-value-of-cell ()
+(deftest t-get-cell-value ()
   (setf *cur-game* '(GAME2 2 ((2 = A1) (2 * A2 B1 B2))))
   (setf *cur-values* '((A1 1) (A2 2) (B1 2)))
   (check
-   (= (get-value-of-cell 1 1) 1)
-   (= (get-value-of-cell 1 2) 2)
-   (= (get-value-of-cell 2 1) 2)
-   (/= (get-value-of-cell 1 1) 2)
-   (/= (get-value-of-cell 1 2) 1)))
+   (= (get-cell-value 1 1) 1)
+   (= (get-cell-value 1 2) 2)
+   (= (get-cell-value 2 1) 2)
+   (/= (get-cell-value 1 1) 2)
+   (/= (get-cell-value 1 2) 1)))
 
 (deftest t-get-key-value-pair ()
   (check
@@ -424,7 +490,7 @@
 
 (deftest t-parse-cell-values ()
   (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
-  (setf *cur-values* '())
+  (setf *cur-values* '(("a1" 0)))
   (check
    (progn 
      (parse-cell-values "a1=1")
@@ -442,4 +508,44 @@
      (parse-cell-values "a1=1 c2=3 b4=2")
      (equal *cur-values* '(("a1" 1) ("c2" 3))))))
 
+(deftest t-cage-cells-- ()
+  (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
+  (setf *cur-values* '(("a1" 1) ("a2" 3) ("a3" 2)))
+  (check 
+   (cage-cells-- '(0 - a1 a2 a3))
+   (progn
+     (setf *cur-values* '(("a1" 3) ("a2" 1) ("a3" 1)))
+     (cage-cells-- '(1 - a1 a2 a3)))
+   (progn
+     (setf *cur-values* '(("a1" 1) ("a2" 2) ("a3" 3)))
+     (null (cage-cells-- '(1 - a1 a2 a3))))))
+
+(deftest t-cage-cells-/ ()
+  (setf *cur-game* '(GAME3 4 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
+  (setf *cur-values* '(("a1" 1) ("a2" 3)))
+  (check 
+   (cage-cells-/ '(3 / a1 a2))
+   (progn
+     (setf *cur-values* '(("a1" 4) ("a2" 2)))
+     (cage-cells-/ '(2 / a1 a2)))
+   (progn
+     (setf *cur-values* '(("a1" 4) ("a2" 2) ("a3" 2)))
+     (cage-cells-/ '(1 / a1 a2 a3)))
+   (progn
+     (setf *cur-values* '(("a1" 2) ("a2" 3) ("a3" 4)))
+     (null (cage-cells-/ '(1 / a1 a2 a3))))))
+
+(deftest t-if-valid-solution ()
+  (setf *cur-game* '(GAME1 1 ((1 = A1))))
+  (check
+   (progn
+     (setf *cur-values* '(("a1" 0)))
+     (null (if-valid-solution)))
+   (progn
+     (setf *cur-values* '(("a1" 1)))
+     (if-valid-solution))
+   (progn
+     (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
+     (setf *cur-values* '(("a1" 1) ("a2" 3) ("a3" 2) ("b2" 3) ("b3" 2) ("b1" 2) ("c1" 1) ("c2" 3) ("c3" 1)))
+     (if-valid-solution))))
 
