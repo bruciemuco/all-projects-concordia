@@ -14,35 +14,36 @@
 ; data structure of how to present a list of games
 ; more information about it please refer to readme.pdf.
 (defvar *games* 
-  (list              ; list of games
-   (list 'game1 1 (list (list 1 '= 'a1)))
-   
-   (list             ; list of elements of a game 
-    'game2           ; game name or number
-    2                ; game size
-    (list            ; list of cages.
-     (list           ; list of elements of a cage
-      2 '=           ; value & operator of the cage.  
-      'a1)           ; cells of the cage
-     (list 
-      2 '*
-      'a2 'b1 'b2)
+    (list              ; list of games
+     (list 'game1 1 (list (list 1 '= 'a1)))
+     
+     (list             ; list of elements of a game 
+      'game2           ; game name or number
+      2                ; game size
+      (list            ; list of cages.
+       (list           ; list of elements of a cage
+        2 '=           ; value & operator of the cage.  
+        'a1)           ; cells of the cage
+       (list 
+        2 '*
+        'a2 'b1 'b2)
+       ))
+     
+     (list 'game3 3 (list (list 2 '- 'a1 'a2) (list 12 '* 'a3 'b2 'b3) (list 3 '+ 'b1 'c1)
+                          (list 3 '/ 'c2 'c3)))
+     (list 'game4 4 (list (list 2 '= 'a1) (list 7 '+ 'a2 'a3) (list 2 '- 'a4 'b4)
+                          (list 12 '* 'b1 'c1) (list 3 '+ 'b2 'c2) (list 1 '= 'b3)
+                          (list 3 '- 'd1 'd2) (list 1 '- 'c3 'd3) (list 2 '/ 'c4 'd4)))
+     (list 'game5 5 (list (list 2 '/ 'a1 'a2) (list 1 '- 'a3 'b3) (list 15 '* 'a4 'a5)
+                          (list 9 '+ 'b1 'b2) (list 4 '+ 'b4 'c4) (list 3 '- 'b5 'c5)
+                          (list 4 '+ 'c1 'd1) (list 6 '* 'c2 'd2) (list 1 '- 'c3 'd3)
+                          (list 3 '- 'd4 'd5) (list 4 '- 'e1 'e2) (list 9 '+ 'e3 'e4 'e5)))
+     (list 'game6 6 (list (list 5 '- 'a1 'a2) (list 9 '* 'a3 'b3 'b4) (list 120 '* 'a4 'a5 'b5) (list 2 '/ 'a6 'b6)
+                          (list 14 '+ 'b1 'b2 'c1 'd1) (list 6 '+ 'c2 'd2) (list 9 '+ 'c3 'd3) (list 11 '+ 'c4 'c5 'd5)
+                          (list 5 '- 'c6 'd6) (list 48 '* 'e1 'f1 'f2) (list 1 '- 'd4 'e4) (list 3 '- 'e2 'e3)
+                          (list 3 '- 'f4 'f3) (list 5 '+ 'e5 'f5) (list 2 '- 'e6 'f6)))
      ))
-   
-   (list 'game3 3 (list (list 2 '- 'a1 'a2) (list 12 '* 'a3 'b2 'b3) (list 3 '+ 'b1 'c1)
-                        (list 3 '/ 'c2 'c3)))
-   (list 'game4 4 (list (list 2 '= 'a1) (list 7 '+ 'a2 'a3) (list 2 '- 'a4 'b4)
-                        (list 12 '* 'b1 'c1) (list 3 '+ 'b2 'c2) (list 1 '= 'b3)
-                        (list 3 '- 'd1 'd2) (list 1 '- 'c3 'd3) (list 2 '/ 'c4 'd4)))
-   (list 'game5 5 (list (list 2 '/ 'a1 'a2) (list 1 '- 'a3 'b3) (list 15 '* 'a4 'a5)
-                        (list 9 '+ 'b1 'b2) (list 4 '+ 'b4 'c4) (list 3 '- 'b5 'c5)
-                        (list 4 '+ 'c1 'd1) (list 6 '* 'c2 'd2) (list 1 '- 'c3 'd3)
-                        (list 3 '- 'd4 'd5) (list 4 '- 'e1 'e2) (list 9 '+ 'e3 'e4 'e5)))
-   (list 'game6 6 (list (list 5 '- 'a1 'a2) (list 9 '* 'a3 'b3 'b4) (list 120 '* 'a4 'a5 'b5) (list 2 '/ 'a6 'b6)
-                        (list 14 '+ 'b1 'b2 'c1 'd1) (list 6 '+ 'c2 'd2) (list 9 '+ 'c3 'd3) (list 11 '+ 'c4 'c5 'd5)
-                        (list 5 '- 'c6 'd6) (list 48 '* 'e1 'f1 'f2) (list 1 '- 'd4 'e4) (list 3 '- 'e2 'e3)
-                        (list 3 '- 'f4 'f3) (list 5 '+ 'e5 'f5) (list 2 '- 'e6 'f6)))
-   ))
+
 
 ; cell values of current game
 (defparameter *cur-values* (list (list 'a1 0)))
@@ -141,11 +142,11 @@
       (format t "+-------"))
     (format t "+~%")
     ))
-	  
+
 (defun print-games ()
   (dolist (e *games*)
     (setf *cur-game* e)
-	(print-a-game e)))
+    (print-a-game e)))
 
 (defun get-letter-from-num (num)
   (cond ((= num 1) 'A)
@@ -218,8 +219,8 @@
       (if (null (check-cell-values))
           (return-from play-game nil)
         (if (prompt-play-again)
-			t
-            (return-from play-game nil))))))
+            t
+          (return-from play-game nil))))))
 
 ; recusively asking user to select a game
 (defun select-a-game ()
@@ -232,13 +233,13 @@
               (progn (setf *cur-game* e)
                 (return-from select-a-game e))
             nil)))
-        (format t "Invalid game name! ~%"))))
+      (format t "Invalid game name! ~%"))))
 
 (defun prompt-select-game ()
   (format t "Please select a game by name (type q to exit game):~%")
   (read-line *query-io*))
 
-; check cell values. if all cells have a value, check the solution.
+; check cell values. if every cell has a value, check the solution.
 ; otherwise, continue asking user to input cell values.
 (defun check-cell-values ()
   (loop
@@ -259,7 +260,7 @@
           (progn
             (format t "Invalid solution, please check cell values.~%")))
       nil)))
-      
+
 (defun prompt-cell-values ()
   (print-a-game *cur-game*)    
   (format t "Please set values of cells (e.g. a1=1 b2=2 a1=2) (type q to exit game):~%")
@@ -278,10 +279,10 @@
 ; Note: Two consecutive spaces will be seen as if there were an empty string between them."
 ; This function is copied from http://cl-cookbook.sourceforge.net/strings.html
 (defun split-by-one-space (string)
-    (loop for i = 0 then (1+ j)
-          as j = (position #\Space string :start i)
-          collect (subseq string i j)
-        while j))
+  (loop for i = 0 then (1+ j)
+      as j = (position #\Space string :start i)
+      collect (subseq string i j)
+      while j))
 
 ; returns a list with two elements: key and value, from input string of "key=value"
 (defun get-key-value-pair (string)
@@ -335,6 +336,9 @@
 (defmacro check (&body forms)
   `(combine-results
     ,@(loop for f in forms collect `(report-result ,f ',f))))
+(defmacro with-gensyms ((&rest names) &body body)
+  `(let ,(loop for n in names collect `(,n (gensym)))
+     ,@body))
 (defmacro combine-results (&body forms)
   (with-gensyms (result)
     `(let ((,result t))
@@ -348,11 +352,61 @@
 ;; ==================== Unit Test cases ====================
 (defun test-all ()
   (combine-results
+   (t-get-op-and-value)
+   (t-if-first-cell-of-cage)
+   (t-get-value-of-cell)
+   (t-get-key-value-pair)
+   (t-replace-a-value)
    (t-if-valid-cell)
-   ))
+   (t-parse-cell-values)))
+
+(deftest t-get-op-and-value ()
+  (setf *cur-game* '(GAME2 2 ((2 = A1) (2 * A2 B1 B2))))
+  (check
+   (null (get-op-and-value 2 3))
+   (equal (get-op-and-value 1 1) '(2 = A1))
+   (equal (get-op-and-value 2 1) '(2 * A2 B1 B2))
+   (equal (get-op-and-value 2 2) '(2 * A2 B1 B2))))
+
+(deftest t-if-first-cell-of-cage ()
+  (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
+  (check
+   (if-first-cell-of-cage 1 1)
+   (if-first-cell-of-cage 1 3)
+   (if-first-cell-of-cage 2 1)
+   (if-first-cell-of-cage 3 2)
+   (null (if-first-cell-of-cage 1 2))
+   (null (if-first-cell-of-cage 2 2))
+   (null (if-first-cell-of-cage 2 3))
+   (null (if-first-cell-of-cage 3 1))))
+
+(deftest t-get-value-of-cell ()
+  (setf *cur-game* '(GAME2 2 ((2 = A1) (2 * A2 B1 B2))))
+  (setf *cur-values* '((A1 1) (A2 2) (B1 2)))
+  (check
+   (= (get-value-of-cell 1 1) 1)
+   (= (get-value-of-cell 1 2) 2)
+   (= (get-value-of-cell 2 1) 2)
+   (/= (get-value-of-cell 1 1) 2)
+   (/= (get-value-of-cell 1 2) 1)))
+
+(deftest t-get-key-value-pair ()
+  (check
+   (equal (get-key-value-pair "A1=3") '("A1" 3))
+   (equal (get-key-value-pair "B3=3") '("B3" 3))))
+
+(deftest t-replace-a-value ()
+  (check
+   (equal (replace-a-value '() '("a2" 1)) '(("a2" 1)))   
+   (equal (replace-a-value '(("a1" 1) ("a2" 2) ("b1" 2)) '("a2" 1)) 
+          '(("a1" 1) ("a2" 1) ("b1" 2)))
+   (equal (replace-a-value '(("a1" 1) ("b1" 2)) '("a2" 1)) 
+          '(("a1" 1) ("b1" 2) ("a2" 1)))
+   (null (equal (replace-a-value '(("a1" 1) ("b1" 2)) '("a2" 1)) 
+                '(("a1" 1) ("a2" 1) ("b1" 2))))))
 
 (deftest t-if-valid-cell ()
-  (setf *cur-game* (cadr *games*))
+  (setf *cur-game* '(GAME2 2 ((2 = A1) (2 * A2 B1 B2))))
   (check
    (if-valid-cell '("a1" 1))
    (if-valid-cell '("b1" 1))
@@ -367,5 +421,25 @@
    (null (if-valid-cell '("a1" 0)))
    (null (if-valid-cell '("a1" 3)))
    ))
+
+(deftest t-parse-cell-values ()
+  (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
+  (setf *cur-values* '())
+  (check
+   (progn 
+     (parse-cell-values "a1=1")
+     (equal *cur-values* '(("a1" 1))))
+   (progn
+     (parse-cell-values "a1=0")
+     (equal *cur-values* '(("a1" 1))))
+   (progn
+     (parse-cell-values "a1=1 c2=3")   
+     (equal *cur-values* '(("a1" 1) ("c2" 3))))
+   (progn
+     (parse-cell-values "a1=1 c2=3 b3=4")
+     (equal *cur-values* '(("a1" 1) ("c2" 3))))
+   (progn
+     (parse-cell-values "a1=1 c2=3 b4=2")
+     (equal *cur-values* '(("a1" 1) ("c2" 3))))))
 
 
