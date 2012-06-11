@@ -218,10 +218,10 @@
     (print-games)
     (if (null (select-a-game))
         (return-from play-game nil)
-      (if (null (check-cell-values))
+      (if (null (input-cell-values))
           (return-from play-game nil)
         (if (prompt-play-again)
-            t
+            (setf *cur-values* '(("a1" 0)))
           (return-from play-game nil))))))
 
 ; recusively asking user to select a game
@@ -243,24 +243,31 @@
 
 ; check cell values. if every cell has a value, check the solution.
 ; otherwise, continue asking user to input cell values.
-(defun check-cell-values ()
+(defun input-cell-values ()
   (loop
     ; keep inputing cell values
     (let ((cvs (prompt-cell-values)))
       (if (or (string-equal cvs "q") (string-equal cvs "quit"))
-          (return-from check-cell-values nil)          ; exit
+          (return-from input-cell-values nil)          ; exit
         (parse-cell-values cvs))
       ;(print *cur-values*)
       )
     
-    ; if all cells of the game have a value, check if the values are right
-    (if (= (length *cur-values*) (* (cadr *cur-game*) (cadr *cur-game*)))
-        (if (if-valid-solution)
-            (progn
-              (format t "Congratulations!~%")
-              (return-from check-cell-values t))       ; OK
-          (progn
-            (format t "Invalid solution, please check cell values.~%")))
+    ; if all cells of the game have a value, check if all values are right
+    (if (or (and (= (length *cur-values*) 1) (/= 0 (cadar *cur-values*)))
+            (and (> (length *cur-values*) 1) 
+                 (= (length *cur-values*) 
+                    (* (cadr *cur-game*) (cadr *cur-game*)))))
+        (progn
+          (print *cur-values*)
+          (if (check-line-column)
+              (if (check-cell-values)
+                  (progn
+                    (print-a-game *cur-game*)
+                    (format t "Congratulations!~%")
+                    (return-from input-cell-values t))       ; OK
+                (format t "~%ERROR: Invalid solution, please check cell values.~%~%"))
+            (format t "~%ERROR: Each line or column should not have same value, please input cell values again.~%~%")))
       nil)))
 
 (defun prompt-cell-values ()
@@ -321,31 +328,55 @@
     (and (>= i 97) (< i (+ 97 size)) (>= j 49) (< j (+ 49 size))
          (>= v 1) (<= v size))))   
 
-; check if the values of all cells of every cage satisfy the operator and value of the cage. 
-(defun if-valid-solution ()
-  (print-a-game *cur-game*) 
+; check if all cell values are a right solution based on following conditions:
+; 1. every line or column does not have same values. see check-line-column.
+; 2. cell values within the cage satisfy the operator and value of the cage. see check-cell-values
+(defun check-line-column ()
+  ; first, check every line
+  (loop for i from 1 to (cadr *cur-game*)
+      do (if (not (if-has-same-value (get-line-list i)))
+             (return-from check-line-column nil)))
+  ; check every column
+  (loop for i from 1 to (cadr *cur-game*)
+      do (if (not (if-has-same-value (get-column-list i)))
+             (return-from check-line-column nil)))
+  t)
+
+(defun get-line-list (lineno)
+  (loop for j from 1 to (cadr *cur-game*)
+      collect (get-cell-value lineno j)))
+(defun get-column-list (colno)
+  (loop for j from 1 to (cadr *cur-game*)
+      collect (get-cell-value j colno)))
+
+(defun if-has-same-value (lst)
+  (if (null lst) nil
+    (equal lst (remove-duplicates lst))))
+
+; check if cell values within the cage satisfy the operator and value of the cage.
+(defun check-cell-values ()   
   ; start to check every cage [e: (* 2 A2 B1 B2)]
   (dolist (e (caddr *cur-game*))
     ; operator =
     (cond ((equal '= (cadr e))
-           (if (/= 1 (length (cddr e))) (return-from if-valid-solution nil))
+           (if (/= 1 (length (cddr e))) (return-from check-cell-values nil))
            (if (not (equal (car e) (get-cell-value-byname (caddr e))))
-               (return-from if-valid-solution nil)))
+               (return-from check-cell-values nil)))
           
           ; operator +
           ((equal '+ (cadr e))
            (if (/= (car e) (cage-cells-+ (cddr e)))
-               (return-from if-valid-solution nil)))          
+               (return-from check-cell-values nil)))          
           ; operator *
           ((equal '+ (cadr e))
            (if (/= (car e) (cage-cells-* (cddr e)))
-               (return-from if-valid-solution nil)))          
+               (return-from check-cell-values nil)))          
           ; operator -
           ((equal '- (cadr e)) 
-           (if (not (cage-cells-- e)) (return-from if-valid-solution nil)))
+           (if (not (cage-cells-- e)) (return-from check-cell-values nil)))
           ; operator /
           ((equal '/ (cadr e)) 
-           (if (not (cage-cells-/ e)) (return-from if-valid-solution nil)))
+           (if (not (cage-cells-/ e)) (return-from check-cell-values nil)))
           ))
   t)
 
@@ -387,6 +418,8 @@
       (setf sum (* sum (get-cell-value-byname e))))
     (= (* sum (car c)) (* maxval maxval))))
 
+(defun main ()
+  (play-game))
 
 ;; ==================== Unit Test Framework ====================
 ;; The following source code of unit test framework is copied 
@@ -396,12 +429,12 @@
 (defun report-result (result form)
   (format t "~:[FAIL~;pass~] ... ~a: ~a~%" result *t-name* form)
   result)
-(defmacro check (&body forms)
-  `(combine-results
-    ,@(loop for f in forms collect `(report-result ,f ',f))))
 (defmacro with-gensyms ((&rest names) &body body)
   `(let ,(loop for n in names collect `(,n (gensym)))
      ,@body))
+(defmacro check (&body forms)
+  `(combine-results
+    ,@(loop for f in forms collect `(report-result ,f ',f))))
 (defmacro combine-results (&body forms)
   (with-gensyms (result)
     `(let ((,result t))
@@ -422,9 +455,10 @@
    (t-replace-a-value)
    (t-if-valid-cell)
    (t-parse-cell-values)
+   (t-check-line-column)
    (t-cage-cells--)
    (t-cage-cells-/)
-   (t-if-valid-solution)))
+   (t-check-cell-values)))
 
 (deftest t-get-op-and-value ()
   (setf *cur-game* '(GAME2 2 ((2 = A1) (2 * A2 B1 B2))))
@@ -508,6 +542,21 @@
      (parse-cell-values "a1=1 c2=3 b4=2")
      (equal *cur-values* '(("a1" 1) ("c2" 3))))))
 
+(deftest t-check-line-column ()
+  (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
+  (setf *cur-values* '(("a1" 1) ("a2" 1) ("a3" 2) ("b1" 1) ("b2" 2) ("b3" 3) ("c1" 1) ("c2" 2) ("c3" 3)))
+  (check
+   (null (check-line-column))
+   (progn
+     (setf *cur-values* '(("a1" 1) ("a2" 3) ("a3" 2) ("b1" 1) ("b2" 2) ("b3" 3) ("c1" 1) ("c2" 2) ("c3" 3)))
+     (null (check-line-column)))
+   (progn
+     (setf *cur-values* '(("a1" 1) ("a2" 3) ("a3" 2) ("b1" 2) ("b2" 1) ("b3" 3) ("c1" 3) ("c2" 2) ("c3" 3)))
+     (null (check-line-column)))
+   (progn
+     (setf *cur-values* '(("a1" 1) ("a2" 3) ("a3" 2) ("b1" 2) ("b2" 1) ("b3" 3) ("c1" 3) ("c2" 2) ("c3" 1)))
+     (check-line-column))))
+
 (deftest t-cage-cells-- ()
   (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
   (setf *cur-values* '(("a1" 1) ("a2" 3) ("a3" 2)))
@@ -535,17 +584,21 @@
      (setf *cur-values* '(("a1" 2) ("a2" 3) ("a3" 4)))
      (null (cage-cells-/ '(1 / a1 a2 a3))))))
 
-(deftest t-if-valid-solution ()
+(deftest t-check-cell-values ()
   (setf *cur-game* '(GAME1 1 ((1 = A1))))
   (check
    (progn
      (setf *cur-values* '(("a1" 0)))
-     (null (if-valid-solution)))
+     (null (check-cell-values)))
    (progn
      (setf *cur-values* '(("a1" 1)))
-     (if-valid-solution))
+     (check-cell-values))
+   (progn
+     (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
+     (setf *cur-values* '(("a1" 1) ("a2" 3) ("a3" 2) ("b2" 3) ("b3" 2) ("b1" 2) ("c1" 1) ("c2" 3) ("c3" 2)))
+     (null (check-cell-values)))
    (progn
      (setf *cur-game* '(GAME3 3 ((2 - A1 A2) (12 * A3 B2 B3) (3 + B1 C1) (3 / C2 C3))))
      (setf *cur-values* '(("a1" 1) ("a2" 3) ("a3" 2) ("b2" 3) ("b3" 2) ("b1" 2) ("c1" 1) ("c2" 3) ("c3" 1)))
-     (if-valid-solution))))
+     (check-cell-values))))
 
