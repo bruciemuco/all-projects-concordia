@@ -51,6 +51,9 @@
 ; the game which user is playing
 (defparameter *cur-game* nil)
 
+; error message
+(defparameter *err-msg* "")
+
 ; ((GAME1 2 ((= 2 A1) (2 * A2 B1 B2))))
 ; the format of above game layout:
 ;
@@ -250,7 +253,6 @@
       (if (or (string-equal cvs "q") (string-equal cvs "quit"))
           (return-from input-cell-values nil)          ; exit
         (parse-cell-values cvs))
-      ;(print *cur-values*)
       )
     
     ; if all cells of the game have a value, check if all values are right
@@ -259,20 +261,22 @@
                  (= (length *cur-values*) 
                     (* (cadr *cur-game*) (cadr *cur-game*)))))
         (progn
-          (print *cur-values*)
           (if (check-line-column)
               (if (check-cell-values)
                   (progn
                     (print-a-game *cur-game*)
                     (format t "Congratulations!~%")
                     (return-from input-cell-values t))       ; OK
-                (format t "~%ERROR: Invalid solution, please check cell values.~%~%"))
-            (format t "~%ERROR: Each line or column should not have same value, please input cell values again.~%~%")))
+                (setf *err-msg* "ERROR: Invalid solution, please check cell values.~%"))
+            (setf *err-msg* "ERROR: Each line or column should not have same value, please input cell values again.~%")))
       nil)))
 
 (defun prompt-cell-values ()
-  (print-a-game *cur-game*)    
-  (format t "Please set values of cells (e.g. a1=1 b2=2 a1=2) (type q to exit game):~%")
+  (print-a-game *cur-game*) 
+  (if (> (length *err-msg*) 0)
+      (format t *err-msg*))
+  (setf *err-msg* "")
+  (format t "Please set values to cells (e.g. a1=1 b2=2 a1=2) (type q to exit game):~%")
   (read-line *query-io*))
 
 (defun prompt-play-again ()
@@ -418,7 +422,14 @@
       (setf sum (* sum (get-cell-value-byname e))))
     (= (* sum (car c)) (* maxval maxval))))
 
+(defun prompt-greetings ()
+  (format t "Welcome to SOEN 6441 KENKEN Puzzle (Common LISP) v0.1~%")
+  (format t "Instructor: Dr. C. Constantinides~%")
+  (format t "Developed by Yuan Tao~%")
+  (format t "Before running the game, please read readme.pdf first.~%~%"))
+
 (defun main ()
+  (prompt-greetings)
   (play-game))
 
 ;; ==================== Unit Test Framework ====================
