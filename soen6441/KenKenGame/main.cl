@@ -2,14 +2,27 @@
 ;;; 
 ;;; KENKEN Puzzle (http://www.kenken.com/) developed with Common LISP.
 ;;; 
-;;; This file is created by Yuan Tao (ewan.msn@gmail.com)
+;;; Developed by Yuan Tao (ewan.msn@gmail.com)
 ;;; Licensed under GNU GPL v3
-
+;;;
 ;;; $Author$
 ;;; $Date$
 ;;; $Rev$
 ;;; $HeadURL$
 ;;;
+
+;; !!!
+;; A possible compiling error with Allegro CL Free Express Edition 8.2
+;; Error: attempt to call `WITH-GENSYMS' which is an undefined function.
+;; In this case, please do as the following steps:
+;; 1. Backup the definition of combine-results macro.
+;; 2. Delete the body of combine-results macro, like this:
+;;    (defmacro combine-results (&body forms))
+;; 3. Compile.
+;; 4. Restore the macro definition.
+;; 5. Compile again.
+;;
+;; (There is no such error if you compile with LispWorks 6.0 Personal.)
 
 ; data structure of how to present a list of games
 ; more information about it please refer to readme.pdf.
@@ -268,7 +281,7 @@
                     (format t "Congratulations!~%")
                     (return-from input-cell-values t))       ; OK
                 (setf *err-msg* "ERROR: Invalid solution, please check cell values.~%"))
-            (setf *err-msg* "ERROR: Each line or column should not have same value, please input cell values again.~%")))
+            (setf *err-msg* "ERROR: Each line/column should not have same values, please input cell values again.~%")))
       nil)))
 
 (defun prompt-cell-values ()
@@ -280,7 +293,7 @@
   (read-line *query-io*))
 
 (defun prompt-play-again ()
-  (y-or-n-p "Play again?"))
+  (y-or-n-p "Congratulations! Play again?"))
 
 ; parse and store cell values from user input
 ; input format: a1=1 b2=2 a1=2 ...
