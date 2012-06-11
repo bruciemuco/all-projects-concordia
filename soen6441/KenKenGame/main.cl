@@ -18,7 +18,7 @@
 ;; 1. Backup the definition of combine-results macro.
 ;; 2. Delete the body of combine-results macro, like this:
 ;;    (defmacro combine-results (&body forms))
-;; 3. Compile.
+;; 3. Compile (Ignore the warnings).
 ;; 4. Restore the macro definition.
 ;; 5. Compile again.
 ;;
@@ -72,11 +72,11 @@
 ;
 ;        1       2               ; first line of layout
 ;    +-------+-------+           ; 2th
-; A  |2=     |2*     |           ; 3th  cage value & operator
-;    |   1   |       |           ; 4th  cell value
+;    |2=     |2*     |           ; 3th  cage value & operator
+; A  |   1   |       |           ; 4th  cell value
 ;    +-------+       +           ; 2th
-; B  |               |
 ;    |               |
+; B  |               |
 ;    +-------+-------+           ; last line
 (defun print-a-game (game)
   (format t "Game Name: ~D~%" (car game))
@@ -102,7 +102,7 @@
           (format t "+~%")
           
           ; 3th line
-          (format t " ~D  " (get-letter-from-num i))
+          (format t "    ")
           
           ; first column of cells
           (let ((opv (get-op-and-value i 1)))
@@ -131,8 +131,8 @@
           (format t "|~%")
           
           ; 4th line
-          (format t "    ")
-          
+          (format t " ~D  " (get-letter-from-num i))
+                   
           ; first column
           (let ((v (get-cell-value i 1)))
             (if (null v)
@@ -231,13 +231,14 @@
 ; 3. go back to 1
 (defun play-game ()
   (loop 
+    (setf *cur-values* '(("a1" 0)))
     (print-games)
     (if (null (select-a-game))
         (return-from play-game nil)
       (if (null (input-cell-values))
           (return-from play-game nil)
         (if (prompt-play-again)
-            (setf *cur-values* '(("a1" 0)))
+            t
           (return-from play-game nil))))))
 
 ; recusively asking user to select a game
@@ -312,9 +313,11 @@
 
 ; returns a list with two elements: key and value, from input string of "key=value"
 (defun get-key-value-pair (string)
-  (if (find #\= string :test #'equal)
-      (list (subseq string 0 2) (parse-integer (subseq string 3)))
-    nil))
+  (if (/= (length string) 4)
+      nil
+    (if (find #\= string :test #'equal)
+        (list (subseq string 0 2) (parse-integer (subseq string 3)))
+      nil)))
 
 ; replace an element (which is a list) from a list
 ; lst: (("a1" 1) ("a2" 2) ("b1" 2))
