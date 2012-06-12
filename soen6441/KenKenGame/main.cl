@@ -270,8 +270,8 @@
       )
     
     ; if all cells of the game have a value, check if all values are right
-    (if (or (and (= (length *cur-values*) 1) (/= 0 (cadar *cur-values*)))
-            (and (> (length *cur-values*) 1) 
+    (if (or (and (= (cadr *cur-game*) 1) (/= 0 (cadar *cur-values*)))
+            (and (> (cadr *cur-game*) 1) 
                  (= (length *cur-values*) 
                     (* (cadr *cur-game*) (cadr *cur-game*)))))
         (progn
@@ -439,7 +439,7 @@
     (= (* sum (car c)) (* maxval maxval))))
 
 (defun prompt-greetings ()
-  (format t "Welcome to SOEN 6441 KENKEN Puzzle (Common LISP) v0.1~%")
+  (format t "Welcome to SOEN 6441 KENKEN Puzzle (Common LISP) v0.2~%")
   (format t "Instructor: Dr. C. Constantinides~%")
   (format t "Developed by Yuan Tao~%")
   (format t "Before running the game, please read readme.pdf first.~%~%"))
@@ -450,7 +450,7 @@
 
 ;; ==================== Unit Test Framework ====================
 ;; The following source code of unit test framework is copied 
-;; from chapter 9 of the book:
+;; from chapter 8 & 9 of the book:
 ;; Practical Common Lisp, by Peter Seibel, 2005
 (defvar *t-name* nil)
 (defun report-result (result form)
