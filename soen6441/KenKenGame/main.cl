@@ -11,7 +11,7 @@
 ;;; $HeadURL$
 ;;;
 
-;; !!!
+;; !! NOTICE
 ;; A possible compiling error with Allegro CL Free Express Edition 8.2
 ;; Error: attempt to call `WITH-GENSYMS' which is an undefined function.
 ;; In this case, please do as the following steps:
@@ -23,6 +23,7 @@
 ;; 5. Compile again.
 ;;
 ;; (There is no such error if you compile with LispWorks 6.0 Personal.)
+
 
 ; data structure of how to present a list of games
 ; more information about it please refer to readme.pdf.
@@ -61,11 +62,12 @@
 ; cell values of current game
 (defparameter *cur-values* (list (list 'a1 0)))
 
-; the game which user is playing
+; the game which the user is playing
 (defparameter *cur-game* nil)
 
 ; error message
 (defparameter *err-msg* "")
+
 
 ; ((GAME1 2 ((= 2 A1) (2 * A2 B1 B2))))
 ; the format of above game layout:
