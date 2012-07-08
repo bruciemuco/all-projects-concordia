@@ -2,7 +2,7 @@
  * SOEN6611 Project
  * 
  *  Babylonian Method to compute the square root
- *
+ * 
  * This file is created by Team F
  * Licensed under GNU GPL v3
  * 
