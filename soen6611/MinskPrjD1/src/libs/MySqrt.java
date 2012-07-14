@@ -25,18 +25,18 @@ public enum MySqrt {
 	
 	// NOTE: s MUST be a non-negative real number
 	public double getRoot(double s) {
-		double x = s / 2.0;
-		int cnt = 0;
+		double x = s / 2;
 		
 		if (s < 0) {
 			throw new InvalidParameterException();
 		}
 		while (((x * x - s > 0) && (x * x - s > TOLERANCE)) 
 				|| ((x * x - s < 0) && (s - x * x > TOLERANCE))) {
+			double tmp = x;
+			
 			x = (x + s / x) / 2.0;
 			
-			cnt++;
-			if (cnt > 100) {
+			if (tmp == x) {
 				break;
 			}
 		}
