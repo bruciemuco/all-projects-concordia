@@ -6,7 +6,6 @@
  * This file is created by Team F
  * Licensed under GNU GPL v3
  * 
- * $Author$
  * $Date$
  * $Rev$
  * $HeadURL$
