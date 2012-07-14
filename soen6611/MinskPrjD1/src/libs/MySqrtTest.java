@@ -21,6 +21,7 @@ public class MySqrtTest {
 		assertTrue(1.7320508075688772 == mysqrt.getRoot(3));
 		assertTrue(2.0 == mysqrt.getRoot(4));
 		assertTrue(3.0 == mysqrt.getRoot(9));
+		assertTrue(800 < mysqrt.getRoot(730000.0));
 
 	}
 
