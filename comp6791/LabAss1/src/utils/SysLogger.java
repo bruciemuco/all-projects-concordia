@@ -4,12 +4,12 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
- * $Author: yua_t $
- * $Date: 2012-04-08 17:25:55 -0400 (Sun, 08 Apr 2012) $
- * $Rev: 41 $
- * $HeadURL: svn+ssh://yua_t@login.encs.concordia.ca/home/y/yua_t/svn_resp/comp6421/src/utils/SysLogger.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  *  
- */
+ */ 
 
 package utils;
 

@@ -4,10 +4,10 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
- * $Author: yua_t $
- * $Date: 2012-04-03 01:05:44 -0400 (Tue, 03 Apr 2012) $
- * $Rev: 27 $
- * $HeadURL: svn+ssh://yua_t@login.encs.concordia.ca/home/y/yua_t/svn_resp/comp6421/src/LexicalAnalyzer/InputLoader.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  * 
  */
 

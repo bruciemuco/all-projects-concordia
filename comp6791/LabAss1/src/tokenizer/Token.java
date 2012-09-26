@@ -4,10 +4,10 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
- * $Author: yua_t $
- * $Date: 2012-02-23 16:31:48 -0500 (Thu, 23 Feb 2012) $
- * $Rev: 12 $
- * $HeadURL: svn+ssh://yua_t@login.encs.concordia.ca/home/y/yua_t/svn_resp/comp6421/src/LexicalAnalyzer/Token.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  * 
  */
 
