@@ -4,10 +4,10 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
- * $Author: yua_t $
- * $Date: 2012-04-04 23:08:26 -0400 (Wed, 04 Apr 2012) $
- * $Rev: 30 $
- * $HeadURL: svn+ssh://yua_t@login.encs.concordia.ca/home/y/yua_t/svn_resp/comp6421/src/LexicalAnalyzer/LexicalAnalyzer.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  * 
  */
 
