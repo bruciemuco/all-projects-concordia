@@ -1,2 +1,0 @@
-INFO: DRSServer_Montreal is ready!
-SEVERE: checkStock: Invalid params. 101
