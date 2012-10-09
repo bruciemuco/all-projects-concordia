@@ -13,42 +13,52 @@
 
 package client;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 
 import common.DRSCommon;
+import common.DRSServerCommon;
 import common.SvrInfo;
 import common.SysLogger;
 
 public class DRSClient {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		// initialize SysLogger
 		SysLogger.init();
-
+		
 		try {
-			System.setSecurityManager(new RMISecurityManager());
-			DRSCommon svr = (DRSCommon) Naming.lookup("rmi://localhost/" + SvrInfo.SVR_NAME_TORONTO);
-			
-			String customerID = "A100001";
-			String itemID = "1101";
-			String ret = svr.checkStock(itemID);
-			SysLogger.info("checkStock " + itemID + ": " + ret);
-			
-			int buyRet = -1;
+			// simple test
+			// one customer, one item, three stores
+			String svrName = SvrInfo.SVR_NAME_MONTREAL;
+			String customerID = "M10001";
+			String itemID = DRSServerCommon.TEST_ITEMID;
 			int numberOfItem = 10;
-			buyRet = svr.buy(customerID, itemID, numberOfItem);
-			if (buyRet != 0) {
-				SysLogger.info("buy successfully. " + customerID + ", " + itemID + ", " + numberOfItem);
-			}
 			
+			ConcurrentTest t = new ConcurrentTest(svrName, customerID, itemID, numberOfItem);
+			t.simpleTest(svrName, customerID, itemID, numberOfItem);
+
+//			t = new ConcurrentTest();
+//			t.svrName = SvrInfo.SVR_NAME_TORONTO;
+//			t.simpleTest();
+
+			// concurrent test 
+			// three users concurrently accessing one item
+			itemID = DRSServerCommon.TEST_ITEMID_CON;
+			
+			ConcurrentTest.concurrentTest(SvrInfo.SVR_NAME_MONTREAL, "M10001", itemID, numberOfItem);
+			ConcurrentTest.concurrentTest(SvrInfo.SVR_NAME_TORONTO, "T10001", itemID, numberOfItem);
+			ConcurrentTest.concurrentTest(SvrInfo.SVR_NAME_VANCOUVER, "V10001", itemID, numberOfItem);
+			
+			Thread.sleep(10*1000);
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringWriter err = new StringWriter();
+			e.printStackTrace(new PrintWriter(err));
+			SysLogger.err(err.toString());
 		}
 
 	}
-
 }
