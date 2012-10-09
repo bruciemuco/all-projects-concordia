@@ -1,8 +1,6 @@
 /*
  * COMP6231 Project
  * 
- * SysLogger
- * 
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
@@ -24,13 +22,14 @@ import java.rmi.server.UnicastRemoteObject;
 
 import common.DRSCommon;
 import common.DRSServerCommon;
+import common.SvrInfo;
 import common.SysLogger;
 
 public class DRSServerImpl extends UnicastRemoteObject implements DRSCommon {
 	private DRSServerCommon svr = new DRSServerCommon();
 	
 	protected DRSServerImpl(String name) throws RemoteException {
-		svr.init(name);
+		svr.init(name, SvrInfo.SVR_PORT_MONTREAL);
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class DRSServerImpl extends UnicastRemoteObject implements DRSCommon {
 
 		try {
 			Registry reg = LocateRegistry.getRegistry();
-			String name = "DRSServer_Montreal";
+			String name = SvrInfo.SVR_NAME_MONTREAL;
 			reg.rebind(name, new DRSServerImpl(name));
 			SysLogger.info(name + " is ready!");
 			

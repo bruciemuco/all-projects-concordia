@@ -1,8 +1,6 @@
 /*
  * COMP6231 Project
  * 
- * SysLogger
- * 
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
@@ -19,6 +17,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
@@ -31,15 +31,18 @@ import java.util.Random;
 public class DRSServerCommon {
 	
 	// create a hash table to store the items <itemID, number_available>
+	// Hashtable is thread safe
 	private Hashtable<String, Integer> htItems = new Hashtable<String, Integer>();
 	
 	// hash table of <UserID, ItemID, NumberOfItem> for storing the items info of the users.
 	private Hashtable<String, Hashtable<String, Integer>> htUsers = new Hashtable<String, Hashtable<String, Integer>>();
 	
 	private String svrName;
-
+	
+	private UDPLibs udpLibs = new UDPLibs();
+	
 	// initialize the store
-	public int init(String name) {
+	public int init(String name, int localSvrPort) {
 		// initialize SysLogger
 		SysLogger.init();
 
@@ -64,7 +67,26 @@ public class DRSServerCommon {
 			htItems.put(key, value);
 		}
 		
+		// start UDP server
+		udpLibs.svr = this;
+		udpLibs.udpLocalSvrPort = localSvrPort;
+		udpLibs.udpServerStart();
+		
+		// TODO: use semaphore to check if the thread has already started
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			StringWriter err = new StringWriter();
+			e.printStackTrace(new PrintWriter(err));
+			SysLogger.err(err.toString());
+		}
 		return 0;
+	}
+	
+	public void exit() {
+		UDPLibs.bExitThread = true;
+		// TODO: send a packet
+		//udpLibs.udpCheckOtherStock("2233", SvrInfo.SVR_PORT_MONTREAL);
 	}
 
 	// save the items and their numbers of the user into the corresponding file.
@@ -128,10 +150,47 @@ public class DRSServerCommon {
 		return true;
 	}
 	
+	// try to buy the items from other stores
+	public int buyFromOtherServers(String customerID, String itemID, int numberOfItem) {
+		// change the customerID to indicate that it is a server request
+		if (customerID.charAt(0) == 'S') {  	// TODO: need a better way 
+			return -1;		// avoid the loop
+		}
+		customerID = 'S' + customerID.substring(1, 6);
+		
+		try {
+			System.setSecurityManager(new RMISecurityManager());
+			DRSCommon svr = null;
+			int ret = 0;
+			
+			if (svrName.equals(SvrInfo.SVR_NAME_MONTREAL)) {
+				svr = (DRSCommon) Naming.lookup("rmi://localhost/" + SvrInfo.SVR_NAME_TORONTO);
+				ret = svr.buy(customerID, itemID, numberOfItem);
+				if (ret != 0) {
+					svr = (DRSCommon) Naming.lookup("rmi://localhost/" + SvrInfo.SVR_NAME_VANCOUVER);
+					ret = svr.buy(customerID, itemID, numberOfItem);
+				}
+				if (ret != 0) {
+					return -1;
+				}
+				return ret;
+			}
+			
+			
+		} catch (Exception e) {
+			StringWriter err = new StringWriter();
+			e.printStackTrace(new PrintWriter(err));
+			SysLogger.err(err.toString());
+			return -1;
+		}
+		
+		return 0;
+	}
+	
 	public int buy(String customerID, String itemID, int numberOfItem) {
 		if (!ifValidCustomerID(customerID) || !ifValidItemID(itemID) || numberOfItem < 1) {
 			SysLogger.err("buy: Invalid params. " + customerID + ", " + itemID + ", " + numberOfItem);
-			return 1;
+			return -1;
 		}
 		
 		if (htItems.get(itemID) != null) {
@@ -164,8 +223,7 @@ public class DRSServerCommon {
 		}
 		
 		// the required item is not available at this store, try to buy them from other stores
-		
-		return 1;
+		return buyFromOtherServers(customerID, itemID, numberOfItem);
 	}
 	
 	public int returnNumOfItem(String customerID, String itemID, int numberOfItem) {
@@ -206,10 +264,11 @@ public class DRSServerCommon {
 		return 0;
 	}
 	
-	public String checkStock(String itemID) {
+	// get the number of available item by itemID in the local stock
+	public int checkLocalStock(String itemID) {
 		if (!ifValidItemID(itemID)) {
 			SysLogger.err("checkStock: Invalid params. " + itemID);
-			return "ERROR. Invalid itemID";
+			return -1;
 		}
 		
 		// get the number of item from local store		
@@ -219,10 +278,48 @@ public class DRSServerCommon {
 			htItems.put(itemID, 0);
 		}
 		
-		String ret = svrName + ": " + htItems.get(itemID);
+		return htItems.get(itemID);
+	}
+	
+	// get num of items from other stores
+	private String checkOtherStocks(String itemID) {
+		String ret = "";
+		
+		if (svrName.equals(SvrInfo.SVR_NAME_MONTREAL)) {
+			String remoteRet = udpLibs.udpCheckOtherStock(itemID, SvrInfo.SVR_PORT_TORONTO);
+			//SysLogger.info("udpCheckOtherStock from Toronto: " + remoteRet);
+			ret += SvrInfo.SVR_NAME_TORONTO + "=" + remoteRet + ";";
+			
+			remoteRet = udpLibs.udpCheckOtherStock(itemID, SvrInfo.SVR_PORT_VANCOUVER);
+			//SysLogger.info("udpCheckOtherStock from Vancouver: " + remoteRet);
+			ret += SvrInfo.SVR_NAME_VANCOUVER + "=" + remoteRet + ";";
+			
+		} else if (svrName.equals(SvrInfo.SVR_NAME_TORONTO)) {
+			String remoteRet = udpLibs.udpCheckOtherStock(itemID, SvrInfo.SVR_PORT_MONTREAL);
+			ret += SvrInfo.SVR_NAME_MONTREAL + "=" + remoteRet + ";";
+			
+			remoteRet = udpLibs.udpCheckOtherStock(itemID, SvrInfo.SVR_PORT_VANCOUVER);
+			ret += SvrInfo.SVR_NAME_VANCOUVER + "=" + remoteRet + ";";
+			
+		} else if (svrName.equals(SvrInfo.SVR_NAME_VANCOUVER)) {
+			String remoteRet = udpLibs.udpCheckOtherStock(itemID, SvrInfo.SVR_PORT_MONTREAL);
+			ret += SvrInfo.SVR_NAME_MONTREAL + "=" + remoteRet + ";";
+			
+			remoteRet = udpLibs.udpCheckOtherStock(itemID, SvrInfo.SVR_PORT_TORONTO);
+			ret += SvrInfo.SVR_NAME_TORONTO + "=" + remoteRet + ";";
+		}
+		return ret;
+	}
+	
+	public String checkStock(String itemID) {
+		int numLocal = checkLocalStock(itemID); 
+		if (numLocal == -1) {
+			return "ERROR. Invalid itemID";
+		}
+		
+		String ret = svrName + "=" + numLocal + ";";
 		
 		// try to get the number from remote servers
-		
-		return ret;
+		return ret + checkOtherStocks(itemID);
 	}
 }
