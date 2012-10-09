@@ -41,6 +41,9 @@ public class DRSServerCommon {
 	
 	private UDPLibs udpLibs = new UDPLibs();
 	
+	public static final String TEST_ITEMID = "1234";
+	public static final String TEST_ITEMID_CON = "4321";
+	
 	// initialize the store
 	public int init(String name, int localSvrPort) {
 		// initialize SysLogger
@@ -66,6 +69,8 @@ public class DRSServerCommon {
 			int value = Math.abs(rd.nextInt() % 100);
 			htItems.put(key, value);
 		}
+		htItems.put(TEST_ITEMID, 10);
+		htItems.put(TEST_ITEMID_CON, 15);
 		
 		// start UDP server
 		udpLibs.svr = this;
@@ -116,7 +121,11 @@ public class DRSServerCommon {
 	
 	public boolean ifValidCustomerID(String customerID) {
 		if (customerID.length() != 6) {
-			return false;
+			if (customerID.length() == 7) { 
+				customerID = customerID.substring(1, 7);
+			} else {
+				return false;
+			}
 		}
 		
 		char ch = customerID.charAt(0);
@@ -153,10 +162,18 @@ public class DRSServerCommon {
 	// try to buy the items from other stores
 	public int buyFromOtherServers(String customerID, String itemID, int numberOfItem) {
 		// change the customerID to indicate that it is a server request
-		if (customerID.charAt(0) == 'S') {  	// TODO: need a better way 
+		if ((customerID.length() == 7)) {  	// TODO: need a better way 
 			return -1;		// avoid the loop
 		}
-		customerID = 'S' + customerID.substring(1, 6);
+		if (svrName.equals(SvrInfo.SVR_NAME_MONTREAL)) {
+			customerID = 'M' + customerID;
+		}
+		if (svrName.equals(SvrInfo.SVR_NAME_TORONTO)) {
+			customerID = 'T' + customerID;
+		}
+		if (svrName.equals(SvrInfo.SVR_NAME_VANCOUVER)) {
+			customerID = 'V' + customerID;
+		}
 		
 		try {
 			System.setSecurityManager(new RMISecurityManager());
@@ -174,9 +191,32 @@ public class DRSServerCommon {
 					return -1;
 				}
 				return ret;
+				
+			} else if (svrName.equals(SvrInfo.SVR_NAME_TORONTO)) {
+				svr = (DRSCommon) Naming.lookup("rmi://localhost/" + SvrInfo.SVR_NAME_MONTREAL);
+				ret = svr.buy(customerID, itemID, numberOfItem);
+				if (ret != 0) {
+					svr = (DRSCommon) Naming.lookup("rmi://localhost/" + SvrInfo.SVR_NAME_VANCOUVER);
+					ret = svr.buy(customerID, itemID, numberOfItem);
+				}
+				if (ret != 0) {
+					return -1;
+				}
+				return ret;
+				
+			} else if (svrName.equals(SvrInfo.SVR_NAME_VANCOUVER)) {
+				svr = (DRSCommon) Naming.lookup("rmi://localhost/" + SvrInfo.SVR_NAME_MONTREAL);
+				ret = svr.buy(customerID, itemID, numberOfItem);
+				if (ret != 0) {
+					svr = (DRSCommon) Naming.lookup("rmi://localhost/" + SvrInfo.SVR_NAME_TORONTO);
+					ret = svr.buy(customerID, itemID, numberOfItem);
+				}
+				if (ret != 0) {
+					return -1;
+				}
+				return ret;
 			}
-			
-			
+
 		} catch (Exception e) {
 			StringWriter err = new StringWriter();
 			e.printStackTrace(new PrintWriter(err));
@@ -259,7 +299,7 @@ public class DRSServerCommon {
 		// update user info in file
 		saveUserInfo2File(customerID);
 		
-		SysLogger.info("buy: " + customerID + ", " + itemID + ", " + numberOfItem
+		SysLogger.info("return: " + customerID + ", " + itemID + ", " + numberOfItem
 				+ ". Num Before: " + num);
 		return 0;
 	}
