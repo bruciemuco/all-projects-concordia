@@ -1,8 +1,6 @@
 /*
  * COMP6231 Project
  * 
- * SysLogger
- * 
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
@@ -19,6 +17,7 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 
 import common.DRSCommon;
+import common.SvrInfo;
 import common.SysLogger;
 
 public class DRSClient {
@@ -32,10 +31,20 @@ public class DRSClient {
 
 		try {
 			System.setSecurityManager(new RMISecurityManager());
-			DRSCommon svr = (DRSCommon) Naming.lookup("rmi://localhost/DRSServer_Montreal");
+			DRSCommon svr = (DRSCommon) Naming.lookup("rmi://localhost/" + SvrInfo.SVR_NAME_TORONTO);
 			
-			String ret = svr.checkStock("1011");
-			System.out.println("ret: " + ret);
+			String customerID = "A100001";
+			String itemID = "1101";
+			String ret = svr.checkStock(itemID);
+			SysLogger.info("checkStock " + itemID + ": " + ret);
+			
+			int buyRet = -1;
+			int numberOfItem = 10;
+			buyRet = svr.buy(customerID, itemID, numberOfItem);
+			if (buyRet != 0) {
+				SysLogger.info("buy successfully. " + customerID + ", " + itemID + ", " + numberOfItem);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

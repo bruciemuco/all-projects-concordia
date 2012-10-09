@@ -1,8 +1,6 @@
 /*
  * COMP6231 Project
  * 
- * SysLogger
- * 
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
