@@ -38,7 +38,7 @@ public class UDPLibs implements Runnable {
 				udpSock.receive(request);
 				
 				String itemID = new String(request.getData(), 0, request.getLength());
-				SysLogger.info("UDPSVR RECV: " + itemID);
+				SysLogger.info("UDPSVR RECV: checkStock request: " + itemID);
 				if (svr == null) {
 					SysLogger.err("UDPSVR svr == null");
 					break;
@@ -74,7 +74,7 @@ public class UDPLibs implements Runnable {
 			
 			DatagramPacket request = new DatagramPacket(buf, itemID.length(), host, port);
 			udpSock.send(request);
-			SysLogger.info("UDP send " + new String(request.getData()) + " [" + request.getData().length + "] to " + request.getAddress() + ":" + request.getPort());
+			SysLogger.info("UDP SEND: checkStock request: " + new String(request.getData()) + " to " + request.getAddress() + ":" + request.getPort());
 
 			// wait for the result
 			buf = new byte[UDPBUFSIZE];
@@ -82,7 +82,7 @@ public class UDPLibs implements Runnable {
 			udpSock.receive(reply);
 			
 			String ret = new String(reply.getData(), 0, reply.getLength());
-			SysLogger.info("UDP get reply:" + ret);
+			SysLogger.info("UDP RECV: " + ret);
 			udpSock.close();
 			
 			return ret;
