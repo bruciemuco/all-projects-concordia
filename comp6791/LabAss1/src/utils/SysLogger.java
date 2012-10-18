@@ -98,6 +98,7 @@ public class SysLogger {
 
 	public static void info(String msg) {
 		if (logEnable) {
+			System.out.println(msg);
 			log.info(msg);
 			result.info(msg);
 		}

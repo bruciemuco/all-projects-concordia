@@ -1,8 +1,8 @@
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+
+import parser.Tokenizer;
  
-import tokenizer.InputLoader;
-import tokenizer.Tokenizer;
 import utils.SysLogger;
 
 
@@ -43,28 +43,16 @@ public class LabAss1 {
 //			
 //		}
 	
-		// load all test input files
-		InputLoader testFilesLoader = new InputLoader();
-		String path = System.getProperty("user.dir");
+		String path = System.getProperty("user.dir") + "\\input\\";;
 		
-		if (testFilesLoader.loadTextFiles(path) != 0) {
+		// create a Tokenizer
+		Tokenizer scanner = new Tokenizer();
+		
+		if (scanner.init(path) != 0) {
 			return;
 		}
-
-		// begin to tokenize each file
-		for (int i = 0; i < testFilesLoader.lstFiles.size(); i++) {
-			//create output file first
-	    	SysLogger.setOutputFilenames(testFilesLoader.lstResultFiles.get(i));
-
-			// create a Tokenizer
-			Tokenizer scanner = new Tokenizer();
-			
-			if (scanner.init(testFilesLoader.lstFiles.get(i)) != 0) {
-				continue;
-			}
-			
-			scanner.getAllTokens();
-		}
+		
+		scanner.getAllTokens();
 
 		System.out.println("\nThe program ends successfully!");
 	}
