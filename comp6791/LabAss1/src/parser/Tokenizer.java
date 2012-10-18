@@ -29,13 +29,6 @@ public class Tokenizer {
 	public static final int TAB_LEN = 4;
 	public static final int FILEBUF_SIZE = 16384; //16 * 1024;
 	
-	// filter options:
-	public static boolean OP_NONUMBERS = true;
-	public static boolean OP_CASEFOLDING = true;
-	public static boolean OP_30STOPWORDS = true;
-	public static boolean OP_150STOPWORDS = true;
-	public static boolean OP_STEMMING = true;
-	
 	public static final int MAX_FILES = 50;
 	public static final int MAX_FILE_SIZE = 8*1024*1024;	// 8M bytes
 	
@@ -51,7 +44,7 @@ public class Tokenizer {
 	private int curPos = 0;
 	private String curToken = "";
 	
-	private String curDocID = "";
+	public String curDocID = "";
 	
 	// stopwords
 	StopWords stopWords = new StopWords();
@@ -161,12 +154,12 @@ public class Tokenizer {
 	}
 	
 	private void dump() {
-		SysLogger.log("--------------------");
-		SysLogger.log("strFile = " + lstFiles.get(lstFilesIndex - 1));
-		SysLogger.log("curPos = " + curPos);
-		SysLogger.log("curToken = " + curToken);
-		SysLogger.log("curChar = " + curChar + ", " + (int)curChar);
-		SysLogger.log("--------------------\n");
+		SysLogger.info("--------------------");
+		SysLogger.info("strFile = " + lstFiles.get(lstFilesIndex - 1));
+		SysLogger.info("curPos = " + curPos);
+		SysLogger.info("curToken = " + curToken);
+		SysLogger.info("curChar = " + curChar + ", " + (int)curChar);
+		SysLogger.info("--------------------\n");
 	}
 	
 	private int fatalerrorHandler() {
@@ -182,7 +175,7 @@ public class Tokenizer {
 			if ((curChar >= 'a' && curChar <= 'z') || (curChar >= 'A' && curChar <= 'Z')) {
 				if (curChar >= 'A' && curChar <= 'Z') {
 					// lowercase the letter
-					if (OP_CASEFOLDING) {
+					if (IndexConstructor.OP_CASEFOLDING) {
 						curChar = (char)(curChar + 32);
 					}
 				}
@@ -327,6 +320,9 @@ public class Tokenizer {
 		return 0;
 	}
 	
+	
+	// --------------------- unit test ------------------------
+	
 	public void printToken(Token tk) {
 		if (tk == null || (tk != null && tk.token == null)) {
 			return;
@@ -335,37 +331,13 @@ public class Tokenizer {
 		SysLogger.info(tk.token);
 	}
 	
+	// 
 	public int getAllTokens() {
 		Token tk = nextToken();
 		Stemmer s = new Stemmer();
 		
 		while (tk != null) {	
 			printToken(tk);
-
-			// filter numbers
-			if (OP_NONUMBERS && tk.type == Token.TK_TYPE_NUM) {
-				tk = nextToken();
-				continue;
-			}
-			
-			if (tk.type == Token.TK_TYPE_STRING) {
-				// remove stop words
-				if (OP_30STOPWORDS && stopWords.ifStopWord(tk.token)) {
-					tk = nextToken();
-					continue;
-				}
-				if (OP_150STOPWORDS && stopWords.if150StopWord(tk.token)) {
-					tk = nextToken();
-					continue;
-				}
-
-				// stemmer the tokens with Porter Stemmer Algorithm
-				s.add(tk.token.toCharArray(), tk.token.length());
-				s.stem();
-				tk.token = s.toString();
-				
-				printToken(tk);
-			}
 
 			tk = nextToken();
 		}
