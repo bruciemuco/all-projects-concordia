@@ -13,8 +13,6 @@
 
 package parser;
 
-import java.util.ArrayList;
-
 public class InvertedIndex {
 	public static final int POSTINGSLIST_INIT_SIZE = 100; 
 	public static final int SIZE_OF_POINTER = 4;
@@ -25,5 +23,5 @@ public class InvertedIndex {
 	
 	public int docFreq;  	// the actual length of postings 
 	
-	public long[] postings = new long[POSTINGSLIST_INIT_SIZE];		 
+	public long[] postings = new long[POSTINGSLIST_INIT_SIZE];
 }

@@ -9,11 +9,11 @@ import java.util.Arrays;
 
  */
 public class ByteArrayWrapper implements Comparable<ByteArrayWrapper> {
-	public final byte[] data; // Changed from private to public
+	public byte[] data; // Changed from private to public
 
 	public ByteArrayWrapper(byte[] data) {
 		if (data == null) {
-			throw new NullPointerException();
+			//throw new NullPointerException();
 		}
 		this.data = data;
 	}

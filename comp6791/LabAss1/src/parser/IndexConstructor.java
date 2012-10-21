@@ -82,10 +82,11 @@ public class IndexConstructor {
 		
 		// 
 		if (spimi.memSizeUsed > 0) {
-			spimi.store2File();
+			spimi.writeSPIMITempFile();
 		}
-
+		
 		// merge the temporary files of sorted inverted index
+		spimi.mergeSortedFiles();
 		
 		return 0;
 	}
