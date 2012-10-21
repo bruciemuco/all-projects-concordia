@@ -19,7 +19,7 @@ public class IndexConstructor {
 	public static boolean OP_CASEFOLDING = true;  // used by the tokenizer
 	public static boolean OP_30STOPWORDS = true;
 	public static boolean OP_150STOPWORDS = true;
-	public static boolean OP_STEMMING = false;	
+	public static boolean OP_STEMMING = true;	
 	
 	private StopWords stopWords = new StopWords();
 	private SPIMI spimi = null;

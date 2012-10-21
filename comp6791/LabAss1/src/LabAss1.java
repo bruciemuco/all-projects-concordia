@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import parser.InvertedIndex;
 import parser.IndexConstructor;
 import parser.Tokenizer;
+import retrieval.InfoRetrieval;
  
 import utils.Mergesort;
 import utils.SysLogger;
@@ -55,6 +56,15 @@ public class LabAss1 {
 		IndexConstructor ic = new IndexConstructor();
 		ic.buildInvertedIndex();
 		showCurrentTime();
+		
+		InfoRetrieval ir = new InfoRetrieval();
+		ir.init();
+		String[] s = new String[3];
+		s[0] = "largely";
+		s[1] = "last";
+		s[2] = "large";
+		System.out.println(ir.search(s));
+		
 //		
 //		System.out.println("\nThe program ends successfully!");
 //		String s1 = "12345";

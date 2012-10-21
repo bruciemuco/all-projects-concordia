@@ -36,6 +36,8 @@ import java.util.TreeSet;
 
 import javax.print.DocFlavor;
 
+import retrieval.InfoRetrieval;
+
 import utils.ByteArrayWrapper;
 import utils.Mergesort;
 import utils.SysLogger;
@@ -134,9 +136,9 @@ public class SPIMI {
 			return -1;
 		}
 
+		String filename = filePath + invertedIndexPrefix + invertedIndexFileCount;
 		try {
-			BufferedWriter out = new BufferedWriter(
-					new FileWriter(filePath + invertedIndexPrefix + invertedIndexFileCount));
+			BufferedWriter out = new BufferedWriter(new FileWriter(filename));
 			int count = 0;
 			StringBuffer buf2File = new StringBuffer();
 			
@@ -173,9 +175,13 @@ public class SPIMI {
 			out.close();
 			
 			// clear data
-			map.clear();
-			
+			map.clear();			
 			invertedIndexFileCount++;
+			
+			// record the last term with the filename for searching
+			ByteArrayWrapper lastTerm = (ByteArrayWrapper) map.lastKey();
+			InfoRetrieval.arrTerm2File.add((new String(lastTerm.data)) + "," + filename);
+
 			return 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -291,7 +297,32 @@ public class SPIMI {
 	// have the sorted inverted index.
 	public int mergeSortedFiles() {
 		if (fileCount < 2) {
-			return 0; 		// do not need to merge
+			// do not need to merge, just copy the file
+			String filenameIn = filePath + fileNamePrefix + 0;
+			String filenameOut = filePath + invertedIndexPrefix + 0;
+			try {
+				BufferedInputStream in = new BufferedInputStream(new FileInputStream(filenameIn));
+				BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(filenameOut));
+				byte[] buf = new byte[Tokenizer.FILEBUF_SIZE];
+				int nRead = -1;
+				while (true) {
+					nRead = in.read(buf, 0, Tokenizer.FILEBUF_SIZE);
+					if (nRead == -1) {
+						in.close();
+						out.close();
+						break;
+					}
+					out.write(buf, 0, nRead);
+				}
+					
+			} catch (Exception e) {
+				e.printStackTrace();
+				SysLogger.err(e.getMessage());
+				return -1;
+			}
+
+			InfoRetrieval.arrTerm2File.add("null," + filenameOut);
+			return 0; 
 		}
 		
 		BufferedReader[] arrInFile = new BufferedReader[fileCount];
@@ -300,9 +331,8 @@ public class SPIMI {
 		for (int i = 0; i < fileCount; i++) {
 			try {
 				// read one line from each file
-				BufferedReader in = new BufferedReader(new FileReader(filePath
+				arrInFile[i] = new BufferedReader(new FileReader(filePath
 						+ fileNamePrefix + i));
-				arrInFile[i] = new BufferedReader(in);
 
 			} catch (FileNotFoundException e) {
 				SysLogger.err("File not found: " + filePath + fileNamePrefix
@@ -322,9 +352,9 @@ public class SPIMI {
 
 		// keep reading data from SPIMI temp files
 		while (true) {
-			// read data from files if any of arrTerm is null
 			for (int i = 0; i < arrInFile.length; i++) {
 				try {
+					// read data from files if any of arrTerm is null
 					if (arrTerm[i] == null && arrInFile[i] != null) {
 						String buf = arrInFile[i].readLine();
 						
@@ -361,54 +391,56 @@ public class SPIMI {
 				}
 			}
 
+			// start to merge
+			// first find out the lexicographically smallest one
+			int k = -1;
+			for (int i = 0; i < arrInFile.length; i++) {
+				if (arrTerm[i] == null) {
+					continue;
+				}
+				k = i;
+				break;
+			}
+			if (k == -1) {
+				break; 		// end of all files.
+			}
+			
+			for (int i = k + 1; i < arrInFile.length; i++) {
+				if (arrTerm[i] == null) {
+					continue;
+				}
+				if (sorter.compare(arrTerm[k].data, arrTerm[i].data) > 0) {
+					k = i;
+				}
+			}
+			
+			// merge the smallest one to the tree
+			add2Tree(treeIndex, arrTerm[k], arrPostings[k]);
+
+			// reset the memory size used
+			memSizeUsed += InvertedIndex.SIZE_OF_POINTER;		// map key
+			memSizeUsed += arrTerm[k].data.length;			// term length
+			memSizeUsed += InvertedIndex.SIZE_OF_LONG * arrPostings[k].docFreq;
+			
+			// reset term and postings
+			arrTerm[k] = null;
+			arrPostings[k] = null;
+			
+			// 
 			if (memSizeUsed >= MAX_MEM_SIZE) {
 				// write the result to a new file.
 				writeInvertedIndexFile(treeIndex);
-				treeIndex.clear();
 				memSizeUsed = 0;
-
-			} else {
-				// start to merge
-				// first find out the lexicographically smallest one
-				int k = -1;
-				for (int i = 0; i < arrInFile.length; i++) {
-					if (arrTerm[i] == null) {
-						continue;
-					}
-					k = i;
-					break;
-				}
-				if (k == -1) {
-					break; 		// end of all files.
-				}
-				
-				for (int i = k + 1; i < arrInFile.length; i++) {
-					if (arrTerm[i] == null) {
-						continue;
-					}
-					if (sorter.compare(arrTerm[k].data, arrTerm[i].data) > 0) {
-						k = i;
-					}
-				}
-				
-				// merge the smallest one to the tree
-				add2Tree(treeIndex, arrTerm[k], arrPostings[k]);
-
-				// reset the memory size used
-				memSizeUsed += InvertedIndex.SIZE_OF_POINTER;		// map key
-				memSizeUsed += arrTerm[k].data.length;			// term length
-				memSizeUsed += InvertedIndex.SIZE_OF_LONG * arrPostings[k].docFreq;
-				
-				// reset term and postings
-				arrTerm[k] = null;
-				arrPostings[k] = null;
+				continue;
 			}
+
 		}
 		
 		if (memSizeUsed > 0) {
 			// write the result to a new file.
 			writeInvertedIndexFile(treeIndex);
 			//SysLogger.info("memSize: " + memSizeUsed);
+			
 			memSizeUsed = 0;
 		}
 		
