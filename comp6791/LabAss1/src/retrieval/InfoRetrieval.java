@@ -13,34 +13,42 @@
 
 package retrieval;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeSet;
-
-import javax.crypto.spec.PSource;
 
 import parser.InvertedIndex;
 import parser.Stemmer;
+import parser.Tokenizer;
 
 import utils.ByteArrayWrapper;
 import utils.SysLogger;
 
 public class InfoRetrieval {
-	// array of the last term and the file that has the term
+	// array of the last term of the merged inverted index file and the file name
 	// "null,c:\\inverted-index-0"		// first one 
-	// "term,c:\\inverted-index-0"
+	// "term,c:\\inverted-index-1"
 	public static ArrayList<String> arrTerm2File = new ArrayList<String>();
 	
-	// array of the last docID and the file that has the docID
-	// "3008,c:\\inverted-index-0"
+	// array of the last docID of the raw file and the file name
+	// "3008,c:\\reut2-000.sgm"
 	public static ArrayList<String> arrDocID2File = new ArrayList<String>();
 	
 	// inverted index in memory for the first file
 	// because the memory size only allowed to load one file
 	// we keep the data of first file in memory
 	private HashMap<ByteArrayWrapper, InvertedIndex> mapDic = new HashMap<ByteArrayWrapper, InvertedIndex>();
+	
+	public static final int MAX_NUMBER_FILES_RETRIEVAL = 20;
+	public static String filenameResult = ""; 
+
 	
 	public int init() {
 		// load the inverted index into memory from the first file
@@ -80,7 +88,7 @@ public class InfoRetrieval {
 		String filename = null;
 		for (int i = 1; i < arrTerm2File.size(); i++) {		// start from the second file
 			String[] tmp = arrTerm2File.get(i).split(","); 
-			if (tmp[0].compareTo(term) <= 0) {
+			if (term.compareTo(tmp[0]) <= 0) {
 				filename = tmp[1];
 				break;
 			}
@@ -156,20 +164,118 @@ public class InfoRetrieval {
 			}
 		}
 		
-		for (Long l : ret) {
-			SysLogger.info(l.toString() + " ");
-		}
+//		for (Long l : ret) {
+//			SysLogger.info(l.toString() + " ");
+//		}
 		return ret;
+	}
+	
+	private BufferedReader fileIn = null;
+	private String lastFilename = "";
+	private StringBuffer getDocDataFromFile(String filename, String docID) {
+		StringBuffer sbRet = new StringBuffer();
+		String docIDXMLTag = "NEWID=\"" + docID + "\">";
+
+		// if the file has not been opened, open it
+		if (fileIn == null || !lastFilename.equals(filename)) {
+			try {			
+				if (fileIn != null) {
+					fileIn.close();
+				}
+				fileIn = new BufferedReader(new FileReader(filename));
+				lastFilename = filename;
+			} catch (Exception e) {
+				e.printStackTrace();
+				SysLogger.err(e.getMessage());
+				SysLogger.err(filename + ", " + docID);
+				return sbRet;
+			}
+		}
+		
+		if (fileIn == null) {
+			SysLogger.err("getDocDataFromFile: file == null");
+			SysLogger.err(filename + ", " + docID);
+			return sbRet;
+		}
+		
+		// find out the doc ID from the file
+		boolean bCopying = false;
+		while (true) {
+			try {
+				String buf = fileIn.readLine();
+				if (buf == null) {
+					fileIn.close();
+					break;
+				}
+				
+				if (!bCopying) {
+					if (buf.indexOf(docIDXMLTag) == -1) {
+						continue;		// do not find the xml tag for docID
+					}
+					bCopying = true;
+				}
+				
+				// copy the data
+				sbRet.append(buf + "\n");
+				if (buf.equals("</REUTERS>")) {
+					break;
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				SysLogger.err(e.getMessage());
+				SysLogger.err(filename + ", " + docID);
+				break;
+			}
+		}
+
+		return sbRet;
 	}
 	
 	private StringBuffer getDocData(ArrayList<Long> docIDs) {
 		StringBuffer sbRet = new StringBuffer();
 		
+		int j = 0;
+		
+		// traverse all raw files
+		for (int i = 0; i < arrDocID2File.size(); i++) {
+			String[] tmp = arrDocID2File.get(i).split(",");
+			long docID = Long.parseLong(tmp[0]);
+
+			// traverse list of docID 
+			for (; j < docIDs.size(); j++) {
+				long dID = docIDs.get(j);
+				if (dID <= docID) {
+					sbRet.append(getDocDataFromFile(tmp[1], dID + ""));
+					sbRet.append("\n");
+					continue;
+				}
+				break;
+			}
+		}
 		return sbRet;
 	}
 	
-	public StringBuffer search(String[] terms) {
+	public String[] parseQuery(String query) {
+		String[] terms = query.toLowerCase().split(" ");
+		
+		if (terms.length < 1) {
+			return null;
+		}
+		return terms;
+	}
+	
+	public StringBuffer search(String query) {
 		StringBuffer sbRet = new StringBuffer();
+		String[] terms = parseQuery(query);		
+
+		if (terms == null) {
+			sbRet.append("Wrong query, please check it.");
+			return sbRet;
+		}
+		
+		sbRet.append("Query: " + query + "\n\n");
+		
 		InvertedIndex[] arrIdx = new InvertedIndex[terms.length];
 		Stemmer s = new Stemmer();
 		
@@ -202,8 +308,46 @@ public class InfoRetrieval {
 			return sbRet;
 		}
 		
-		// get doc from files		
-		return getDocData(docIDs);
+		// show the list of doc id to user
+		sbRet.append("Search result:\n");
+		sbRet.append("Document ID list (In total: " + docIDs.size() + "): \n");
+		for (int i = 0; i < docIDs.size(); i++) {
+			sbRet.append(String.format("%5s ", docIDs.get(i).toString()));
+			if (i % 10 == 9) {
+				sbRet.append("\n");
+			}			
+		}
+		sbRet.append("\n\n");
+		
+		// get doc from raw files
+		// close the filehandle first
+		if (fileIn != null) {
+			try {
+				fileIn.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				SysLogger.err(e.getMessage());
+			}
+			fileIn = null;
+		}
+		sbRet.append(getDocData(docIDs));
+
+		//
+		sbRet.append("\n\nAll the results have been stored to file:\n");
+		sbRet.append(filenameResult + "\n");
+		sbRet.append("\n");
+
+		// output the result to file
+		try {
+			BufferedWriter fileResult = new BufferedWriter(new FileWriter(filenameResult)); 
+			fileResult.write(sbRet.toString());
+			fileResult.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			SysLogger.err(e.getMessage());
+		}
+		
+		return sbRet;
 	}
 	
 }
