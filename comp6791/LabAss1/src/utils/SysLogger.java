@@ -36,12 +36,8 @@ class OutputTextFormat extends Formatter {
 
 public class SysLogger {
 	public static Logger log = Logger.getLogger("COMP6791Project");
-	public static Logger result = Logger.getLogger("COMP6791ProjectResult");
 	
 	public static boolean bLexicalAnalyzer = false;
-	
-	private static FileHandler fhLast = null;
-	private static FileHandler fhErrLast = null;
 	
 	private static boolean logEnable = true;
 	
@@ -53,7 +49,6 @@ public class SysLogger {
 	public static void init() {
 		// disable console logging
 		log.setUseParentHandlers(false);
-		result.setUseParentHandlers(false);
 		
 		// add a file handler
 		String path = System.getProperty("user.dir") + "\\logs\\log.txt";
@@ -69,38 +64,10 @@ public class SysLogger {
 		}
 	}
 
-	public static void setOutputFilenames(String filename) {
-		// create a logger to show the results of the program.
-		String path = filename;
-		FileHandler fileHandle;
-		try {
-			fileHandle = new FileHandler(path);
-			fileHandle.setLevel(Level.ALL);
-			fileHandle.setFormatter(new OutputTextFormat());
-			if (fhLast != null) {
-				fhLast.flush();
-				fhLast.close();
-				result.removeHandler(fhLast);
-			}
-			result.addHandler(fileHandle);
-			fhLast = fileHandle;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
-	
-	public static void log(String msg) {
-		if (logEnable) {
-			log.info(msg);
-		}
-	}
-
 	public static void info(String msg) {
 		if (logEnable) {
 			System.out.println(msg);
 			log.info(msg);
-			result.info(msg);
 		}
 	}
 	
