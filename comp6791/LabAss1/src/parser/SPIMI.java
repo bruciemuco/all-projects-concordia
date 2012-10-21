@@ -320,12 +320,6 @@ public class SPIMI {
 		InvertedIndex[] arrPostings = new InvertedIndex[fileCount];
 		memSizeUsed = 0;
 
-		// set null to all terms
-//		for (int i = 0; i < fileCount; i++) {
-//			arrTerm.add(new ByteArrayWrapper(null));
-//			arrPostings.add(new InvertedIndex());
-//		}
-		
 		// keep reading data from SPIMI temp files
 		while (true) {
 			// read data from files if any of arrTerm is null
@@ -347,12 +341,14 @@ public class SPIMI {
 						// parse the string of dictionary and postings
 						String[] tmp = buf.split(",");
 						arrTerm[i].data = tmp[0].getBytes();
+						
 						int cnt = Integer.parseInt(tmp[1]);
 						arrPostings[i].docFreq = cnt;
+						
+						if (cnt > InvertedIndex.POSTINGSLIST_INIT_SIZE) {
+							arrPostings[i].postings = new long[cnt];
+						}
 						for (int j = 2; j < tmp.length; j++) {
-							if (cnt > InvertedIndex.POSTINGSLIST_INIT_SIZE) {
-								arrPostings[i].postings = new long[cnt];
-							}
 							arrPostings[i].postings[j - 2] = Long.parseLong(tmp[j]);
 						}
 						continue;
@@ -366,34 +362,10 @@ public class SPIMI {
 			}
 
 			if (memSizeUsed >= MAX_MEM_SIZE) {
-//				// make sure all of the terms are lexicographically larger than 
-//				// the biggest one in the tree
-//				ByteArrayWrapper largestOne = treeIndex.lastKey();
-//				boolean bWrite = true;
-//				for (int i = 0; i < arrInFile.length; i++) {
-//					if (arrTerm[i] == null) {
-//						continue;
-//					}
-//					if (sorter.compare(arrTerm[i].data, largestOne.data) <= 0) {
-//						// merge it to the tree
-//						SysLogger.info(new String(arrTerm[i].data));
-//						add2Tree(treeIndex, arrTerm[i], arrPostings[i]);
-//
-//						memSizeUsed += InvertedIndex.SIZE_OF_POINTER;		// map key
-//						memSizeUsed += arrTerm[i].data.length;			// term length
-//						memSizeUsed += InvertedIndex.SIZE_OF_LONG * arrPostings[i].docFreq;
-//						arrTerm[i] = null;
-//						arrPostings[i] = null;
-//						bWrite = false;
-//					}
-//				}
-//				
-//				if (bWrite) {
 				// write the result to a new file.
 				writeInvertedIndexFile(treeIndex);
 				treeIndex.clear();
 				memSizeUsed = 0;
-//				}
 
 			} else {
 				// start to merge
