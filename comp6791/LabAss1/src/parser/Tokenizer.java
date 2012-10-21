@@ -20,6 +20,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import retrieval.InfoRetrieval;
+
 import utils.SysLogger;
 
 public class Tokenizer {
@@ -96,6 +98,7 @@ public class Tokenizer {
 	
 	private int openNextFile() {
 		if (lstFilesIndex == lstFiles.size()) {
+			InfoRetrieval.arrDocID2File.add(curDocID + "," + lstFiles.get(lstFilesIndex - 1));
 			return 1;
 		}
 
@@ -110,7 +113,10 @@ public class Tokenizer {
 			SysLogger.err(e.getMessage());
 			return -1;
 		}
-		
+
+		if (lstFilesIndex > 0) {
+			InfoRetrieval.arrDocID2File.add(curDocID + "," + lstFiles.get(lstFilesIndex - 1));
+		}
 		lstFilesIndex++;
 		return 0;
 	}

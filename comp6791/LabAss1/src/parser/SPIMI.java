@@ -21,20 +21,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.lang.reflect.Array;
-import java.nio.Buffer;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import javax.print.DocFlavor;
 
 import retrieval.InfoRetrieval;
 
@@ -43,7 +33,7 @@ import utils.Mergesort;
 import utils.SysLogger;
 
 public class SPIMI {
-	public static final long MAX_MEM_SIZE = 8 * 1024 * 1024;
+	public static final long MAX_MEM_SIZE = 4 * 1024 * 1024; //200*1024;
 	public static final int MAX_FILE_NUMBERS = 100;
 
 	private String curDocID = "";
@@ -175,13 +165,13 @@ public class SPIMI {
 			out.close();
 			
 			// clear data
-			map.clear();			
 			invertedIndexFileCount++;
 			
 			// record the last term with the filename for searching
 			ByteArrayWrapper lastTerm = (ByteArrayWrapper) map.lastKey();
 			InfoRetrieval.arrTerm2File.add((new String(lastTerm.data)) + "," + filename);
 
+			map.clear();			
 			return 0;
 		} catch (Exception e) {
 			e.printStackTrace();

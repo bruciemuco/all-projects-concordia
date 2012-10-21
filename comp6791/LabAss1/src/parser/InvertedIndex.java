@@ -14,7 +14,7 @@
 package parser;
 
 public class InvertedIndex {
-	public static final int POSTINGSLIST_INIT_SIZE = 100; 
+	public static final int POSTINGSLIST_INIT_SIZE = 30; 
 	public static final int SIZE_OF_POINTER = 4;
 	public static final int SIZE_OF_LONG = 4;
 	

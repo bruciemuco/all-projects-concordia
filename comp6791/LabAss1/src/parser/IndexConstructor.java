@@ -13,6 +13,10 @@
 
 package parser;
 
+import java.util.Date;
+
+import retrieval.InfoRetrieval;
+
 public class IndexConstructor {
 	// filter options:
 	public static boolean OP_NONUMBERS = false;
@@ -34,6 +38,9 @@ public class IndexConstructor {
 	
 	public int buildInvertedIndex() {		
 		String path = System.getProperty("user.dir") + "\\input\\";
+		
+		// search result:
+		InfoRetrieval.filenameResult = System.getProperty("user.dir") + "\\output\\search-results.txt";
 		
 		// create SPIMI object
 		spimi = new SPIMI(System.getProperty("user.dir") + "\\output\\");
@@ -86,6 +93,10 @@ public class IndexConstructor {
 		}
 		
 		// merge the temporary files of sorted inverted index
+		Date date = new Date();
+		System.out.println("Start to merge the sorted SPIMI temporary files...\n" + date.toString());
+		System.out.println();
+
 		spimi.mergeSortedFiles();
 		
 		return 0;
