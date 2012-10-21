@@ -1,8 +1,14 @@
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
+
+import parser.InvertedIndex;
+import parser.IndexConstructor;
 import parser.Tokenizer;
  
+import utils.Mergesort;
 import utils.SysLogger;
 
 
@@ -21,9 +27,11 @@ import utils.SysLogger;
 
 public class LabAss1 {
 
-	/**
-	 * @param args
-	 */
+	private static void showCurrentTime() {
+		Date date = new Date();
+		System.out.println(date.toString());
+	}
+	
 	public static void main(String[] args) {
 		// create and initialize the logger
 		try {
@@ -43,18 +51,42 @@ public class LabAss1 {
 //			
 //		}
 	
-		String path = System.getProperty("user.dir") + "\\input\\";;
+		showCurrentTime();
+		IndexConstructor ic = new IndexConstructor();
+		ic.buildInvertedIndex();
+		showCurrentTime();
+//		
+//		System.out.println("\nThe program ends successfully!");
+//		String s1 = "12345";
+//		String s2 = "33345";
+//				
+//		Hashtable<UnsignedBytes[], Integer> htIndex = new Hashtable<UnsignedBytes[], Integer>();
+//		
+//		htIndex.put(new UnsignedBytes(), 111);
+//		htIndex.put(s2.getBytes(), 222);
+//		
+//		SortedSet<UnsignedBytes[]> keys = new TreeSet<UnsignedBytes[]>(htIndex.keySet());
+//		
+//		for (UnsignedBytes[] key: keys) {
+//			Integer idx = htIndex.get(key);
+//			
+//			System.out.println("" +  idx);
+//		}
 		
-		// create a Tokenizer
-		Tokenizer scanner = new Tokenizer();
-		
-		if (scanner.init(path) != 0) {
-			return;
-		}
-		
-		scanner.getAllTokens();
-
-		System.out.println("\nThe program ends successfully!");
+//		Mergesort sorter = new Mergesort();
+//		byte[][] a = new byte[3][];
+//		a[0] = (new String("12345")).getBytes();
+//		a[1] = (new String("12345")).getBytes();
+//		a[2] = (new String("11345")).getBytes();
+//		int ret = sorter.compare(a[1], a[2]);
+//		System.out.println(":" + ret);
+//		System.out.println("" + a[0]);
+//		System.out.println("" + a[1]);
+//		System.out.println("" + a[2]);
+//		
+//		System.out.println("" + (new String(a[0])) + (new String(a[1])) + (new String(a[2])));
+//	    sorter.sort(a);	    
+//		System.out.println("" + (new String(a[0])) + (new String(a[1])) + (new String(a[2])));
 	}
 
 }

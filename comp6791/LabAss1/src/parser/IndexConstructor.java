@@ -22,9 +22,21 @@ public class IndexConstructor {
 	public static boolean OP_STEMMING = false;	
 	
 	private StopWords stopWords = new StopWords();
+	private SPIMI spimi = null;
 
-	public int buildInvertedIndex() {
+//	public void getMemorySize() {
+//		long heapSize = Runtime.getRuntime().totalMemory();
+//		long heapMaxSize = Runtime.getRuntime().maxMemory();
+//		long heapFreeSize = Runtime.getRuntime().freeMemory();
+//		
+//		System.out.println("" + heapSize + ", " + heapMaxSize + ", " + heapFreeSize);
+//	}
+	
+	public int buildInvertedIndex() {		
 		String path = System.getProperty("user.dir") + "\\input\\";
+		
+		// create SPIMI object
+		spimi = new SPIMI(System.getProperty("user.dir") + "\\output\\");
 		
 		// create a Tokenizer
 		Tokenizer tokenizer = new Tokenizer();
@@ -63,11 +75,18 @@ public class IndexConstructor {
 				}				
 			}
 			
-			SPIMI.spimiInvertOneToken(tk, tokenizer.curDocID);
+			spimi.spimiInvertOneToken(tk, tokenizer.curDocID);
 
 			tk = tokenizer.nextToken();
 		}
+		
+		// 
+		if (spimi.memSizeUsed > 0) {
+			spimi.store2File();
+		}
 
+		// merge the temporary files of sorted inverted index
+		
 		return 0;
 	}
 }

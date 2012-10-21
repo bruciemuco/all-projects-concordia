@@ -18,8 +18,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.Character.Subset;
-import java.lang.Thread.State;
 import java.util.ArrayList;
 
 import utils.SysLogger;
@@ -44,7 +42,7 @@ public class Tokenizer {
 	private int curPos = 0;
 	private String curToken = "";
 	
-	public String curDocID = "";
+	public long curDocID = 0;
 	
 	// stopwords
 	StopWords stopWords = new StopWords();
@@ -107,7 +105,7 @@ public class Tokenizer {
 		} catch (FileNotFoundException e) {
 			SysLogger.err("File not found: " + lstFiles.get(lstFilesIndex));
 			return -1;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			SysLogger.err(e.getMessage());
 			return -1;
@@ -126,6 +124,7 @@ public class Tokenizer {
 				nRead = in.read(fileBuf, 0, FILEBUF_SIZE);
 				if (nRead == -1) {
 					// end of file stream, open next file
+					in.close();
 					if (openNextFile() != 0) {
 						return 0;
 					}
@@ -135,6 +134,7 @@ public class Tokenizer {
 				if (nRead == 0) {
 					// blocked...
 					SysLogger.err("nextChar is blocked.");
+					in.close();
 					return 0;
 				}
 
@@ -151,20 +151,6 @@ public class Tokenizer {
 		curPos++;
 		
 		return (char) fileBuf[curIndex++];
-	}
-	
-	private void dump() {
-		SysLogger.info("--------------------");
-		SysLogger.info("strFile = " + lstFiles.get(lstFilesIndex - 1));
-		SysLogger.info("curPos = " + curPos);
-		SysLogger.info("curToken = " + curToken);
-		SysLogger.info("curChar = " + curChar + ", " + (int)curChar);
-		SysLogger.info("--------------------\n");
-	}
-	
-	private int fatalerrorHandler() {
-		dump();
-		return 0;
 	}
 	
 	// get next valid token from the stream.
@@ -310,9 +296,11 @@ public class Tokenizer {
 			String[] temp;
 			temp = ele.split(" ");
 			temp = temp[temp.length - 1].split("=");
-			curDocID = temp[1].substring(1, temp[1].length() - 1);
 			
-			SysLogger.info("get a docID: " + curDocID);
+			String docID = temp[1].substring(1, temp[1].length() - 1);
+			curDocID = Long.parseLong(docID);
+			
+			//SysLogger.info("get a docID: " + curDocID);
 		} else {
 			return -1;
 		}
@@ -334,8 +322,7 @@ public class Tokenizer {
 	// 
 	public int getAllTokens() {
 		Token tk = nextToken();
-		Stemmer s = new Stemmer();
-		
+	
 		while (tk != null) {	
 			printToken(tk);
 
