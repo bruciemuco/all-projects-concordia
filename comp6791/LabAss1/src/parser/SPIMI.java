@@ -29,7 +29,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.print.DocFlavor;
@@ -40,6 +42,7 @@ import utils.SysLogger;
 
 public class SPIMI {
 	public static final long MAX_MEM_SIZE = 8 * 1024 * 1024;
+	public static final int MAX_FILE_NUMBERS = 100;
 
 	private String curDocID = "";
 	public long memSizeUsed = 0;
@@ -47,9 +50,12 @@ public class SPIMI {
 	private String filePath = "";
 	private String fileNamePrefix = "spimi-temp-";
 	private int fileCount = 0;
+
+	private String invertedIndexPrefix = "inverted-index-";
+	private int invertedIndexFileCount = 0;
 	
 	// In order to use byte[] as hashmap key, here we wrap the byte[] in ByteArrayWrapper class  
-	private HashMap<ByteArrayWrapper, InvertedIndex> mapIndex = new HashMap<ByteArrayWrapper, InvertedIndex>();
+	private HashMap<ByteArrayWrapper, InvertedIndex> mapUnsortedIndex = new HashMap<ByteArrayWrapper, InvertedIndex>();
 	//private HashMap<String, Index> htIndex = new HashMap<String, Index>();
 	
 	private Mergesort sorter = new Mergesort();
@@ -62,55 +68,114 @@ public class SPIMI {
 	// to be written. Once the buffer reaches a size, or it gets the last element 
 	// of the index, it starts to write the buffer to the file.
 	// Before buffering, it sorts first.
-	public int store2File() {
+	public int writeSPIMITempFile() {
+		if (fileCount > MAX_FILE_NUMBERS) {
+			SysLogger.err("too many temp files");
+			return -1;
+		}
+		
 		try {
 			BufferedWriter out = new BufferedWriter(
 					new FileWriter(filePath + fileNamePrefix + fileCount));
+			int count = 0;
+			StringBuffer buf2File = new StringBuffer();
 			
 			// write the sorted inverted index to file
 			// first sort the dictionary
 			//SortedSet<ByteArrayWrapper> keys = new TreeSet<ByteArrayWrapper>(mapIndex.keySet());
 			ByteArrayWrapper[] keys = sortTerms();
-			
-			int count = 0;
-			StringBuffer strToWrite = new StringBuffer();
-			
-			for (ByteArrayWrapper key: keys) {
-				InvertedIndex idx = mapIndex.get(key);
-				
-				StringBuffer postings = new StringBuffer();
-				
+
+			for (ByteArrayWrapper key : keys) {
+				InvertedIndex idx = (InvertedIndex) mapUnsortedIndex.get(key);
+
+				buf2File.append(new String(key.data));
+				buf2File.append(",");
+				buf2File.append(idx.docFreq);
+				buf2File.append(",");
+
 				// then sort the postings
-				Arrays.sort(idx.postings, 0, idx.docFreq);				
-				
-				// store the postings to buffer				
+				Arrays.sort(idx.postings, 0, idx.docFreq);
+
+				// store the postings to buffer
 				for (int i = 0; i < idx.docFreq; i++) {
-					postings.append(idx.postings[i]);
-					postings.append(",");
+					buf2File.append(idx.postings[i]);
+					buf2File.append(",");
 				}
-				strToWrite.append(new String(key.data));
-				strToWrite.append(",");
-				strToWrite.append(idx.docFreq);
-				strToWrite.append(",");
-				strToWrite.append(postings);
-				strToWrite.append("\n");
+				buf2File.append("\n");
 				count++;
-				
+
 				if (count == 1000) {
-					out.write(strToWrite.toString(), 0, strToWrite.length());
+					out.write(buf2File.toString(), 0, buf2File.length());
+					buf2File = new StringBuffer();
 					count = 0;
 				}
 			}
 			
 			if (count > 0) {
-				out.write(strToWrite.toString(), 0, strToWrite.length());
+				out.write(buf2File.toString(), 0, buf2File.length());
 			}
 			out.close();
 			
 			// clear data
-			mapIndex.clear();
+			mapUnsortedIndex.clear();
 			
 			fileCount++;
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			SysLogger.err(e.getMessage());
+			return -1;
+		}
+	}
+	
+	public int writeInvertedIndexFile(TreeMap map) {
+		if (invertedIndexFileCount > MAX_FILE_NUMBERS) {
+			SysLogger.err("too many files");
+			return -1;
+		}
+
+		try {
+			BufferedWriter out = new BufferedWriter(
+					new FileWriter(filePath + invertedIndexPrefix + invertedIndexFileCount));
+			int count = 0;
+			StringBuffer buf2File = new StringBuffer();
+			
+			// write the sorted inverted index to file
+			for (ByteArrayWrapper key : ((TreeMap<ByteArrayWrapper, InvertedIndex>) map).keySet()) {
+				InvertedIndex idx = (InvertedIndex) map.get(key);
+
+				//SysLogger.info(new String(key.data));
+				buf2File.append(new String(key.data));
+				buf2File.append(",");
+				buf2File.append(idx.docFreq);
+				buf2File.append(",");
+
+				// store the postings to buffer
+				for (int i = 0; i < idx.docFreq; i++) {
+					buf2File.append(idx.postings[i]);
+					buf2File.append(",");
+				}
+				buf2File.append("\n");
+				count++;
+
+				if (count == 1000) {
+					//SysLogger.info(new String(key.data));
+					out.write(buf2File.toString(), 0, buf2File.length());
+					buf2File = new StringBuffer();
+					out.flush();
+					count = 0;
+				}
+			}
+			
+			if (count > 0) {
+				out.write(buf2File.toString(), 0, buf2File.length());
+			}
+			out.close();
+			
+			// clear data
+			map.clear();
+			
+			invertedIndexFileCount++;
 			return 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,11 +232,11 @@ public class SPIMI {
 		ByteArrayWrapper term = new ByteArrayWrapper(tk.token.getBytes());
 		
 		// check if the term has already in the dictionary
-		idx = mapIndex.get(term);
+		idx = mapUnsortedIndex.get(term);
 		if (idx == null) {
 			idx = new InvertedIndex();
 			
-			mapIndex.put(term, idx);
+			mapUnsortedIndex.put(term, idx);
 			
 			// increase memory size that has been used.
 			memSizeUsed += InvertedIndex.SIZE_OF_POINTER;		// hash key
@@ -185,7 +250,7 @@ public class SPIMI {
 		
 		if (memSizeUsed >= MAX_MEM_SIZE) {
 			// create a new file to store the already sorted inverted index
-			store2File();
+			writeSPIMITempFile();
 			memSizeUsed = 0;			
 		}		
 		
@@ -195,9 +260,9 @@ public class SPIMI {
 	// finally using SortedSet for sorting instead of mergesort
 	public ByteArrayWrapper[] sortTerms() {
 		// in order to use mergesort, we need copy the keys into an array first
-		ByteArrayWrapper[] sortedTerms = new ByteArrayWrapper[mapIndex.size()];
+		ByteArrayWrapper[] sortedTerms = new ByteArrayWrapper[mapUnsortedIndex.size()];
 		int i = 0;
-		for (ByteArrayWrapper key : mapIndex.keySet()) {
+		for (ByteArrayWrapper key : mapUnsortedIndex.keySet()) {
 			sortedTerms[i++] = key;
 		}
 		
@@ -225,11 +290,11 @@ public class SPIMI {
 	// last step of SPIMI algorithm: merge the sorted files, generate new files which
 	// have the sorted inverted index.
 	public int mergeSortedFiles() {
-		ArrayList<BufferedReader> lstIn = new ArrayList<BufferedReader>();
-		ArrayList<String> lstBuf = new ArrayList<String>();
-
-		memSizeUsed = 0;
-		mapIndex.clear();
+		if (fileCount < 2) {
+			return 0; 		// do not need to merge
+		}
+		
+		BufferedReader[] arrInFile = new BufferedReader[fileCount];
 
 		// open all the files
 		for (int i = 0; i < fileCount; i++) {
@@ -237,7 +302,7 @@ public class SPIMI {
 				// read one line from each file
 				BufferedReader in = new BufferedReader(new FileReader(filePath
 						+ fileNamePrefix + i));
-				lstIn.add(in);
+				arrInFile[i] = new BufferedReader(in);
 
 			} catch (FileNotFoundException e) {
 				SysLogger.err("File not found: " + filePath + fileNamePrefix
@@ -249,35 +314,160 @@ public class SPIMI {
 				return -1;
 			}
 		}
+		
+		TreeMap<ByteArrayWrapper, InvertedIndex> treeIndex = new TreeMap<ByteArrayWrapper, InvertedIndex>();
+		ByteArrayWrapper[] arrTerm = new ByteArrayWrapper[fileCount];
+		InvertedIndex[] arrPostings = new InvertedIndex[fileCount];
+		memSizeUsed = 0;
 
-		// read one line from each file until the end of file
+		// set null to all terms
+//		for (int i = 0; i < fileCount; i++) {
+//			arrTerm.add(new ByteArrayWrapper(null));
+//			arrPostings.add(new InvertedIndex());
+//		}
+		
+		// keep reading data from SPIMI temp files
 		while (true) {
-			for (int i = 0; i < lstIn.size(); i++) {
+			// read data from files if any of arrTerm is null
+			for (int i = 0; i < arrInFile.length; i++) {
 				try {
-					String buf = lstIn.get(i).readLine();
-					
-					if (buf == null) {	// end of file
-						lstIn.remove(i);
-						lstBuf.remove(i);
-						i--;
-						continue;
-					}					
-					lstBuf.add(buf);
+					if (arrTerm[i] == null && arrInFile[i] != null) {
+						String buf = arrInFile[i].readLine();
+						
+						if (buf == null) {
+							// end of file
+							arrInFile[i].close();
+							arrInFile[i] = null;
+							continue;
+						}
 
+						arrTerm[i] = new ByteArrayWrapper(null);
+						arrPostings[i] = new InvertedIndex();
+						
+						// parse the string of dictionary and postings
+						String[] tmp = buf.split(",");
+						arrTerm[i].data = tmp[0].getBytes();
+						int cnt = Integer.parseInt(tmp[1]);
+						arrPostings[i].docFreq = cnt;
+						for (int j = 2; j < tmp.length; j++) {
+							if (cnt > InvertedIndex.POSTINGSLIST_INIT_SIZE) {
+								arrPostings[i].postings = new long[cnt];
+							}
+							arrPostings[i].postings[j - 2] = Long.parseLong(tmp[j]);
+						}
+						continue;
+					}
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 					SysLogger.err(e.getMessage());
 					return -1;
 				}
 			}
-			if (lstIn.size() < 1) {
-				break;
+
+			if (memSizeUsed >= MAX_MEM_SIZE) {
+//				// make sure all of the terms are lexicographically larger than 
+//				// the biggest one in the tree
+//				ByteArrayWrapper largestOne = treeIndex.lastKey();
+//				boolean bWrite = true;
+//				for (int i = 0; i < arrInFile.length; i++) {
+//					if (arrTerm[i] == null) {
+//						continue;
+//					}
+//					if (sorter.compare(arrTerm[i].data, largestOne.data) <= 0) {
+//						// merge it to the tree
+//						SysLogger.info(new String(arrTerm[i].data));
+//						add2Tree(treeIndex, arrTerm[i], arrPostings[i]);
+//
+//						memSizeUsed += InvertedIndex.SIZE_OF_POINTER;		// map key
+//						memSizeUsed += arrTerm[i].data.length;			// term length
+//						memSizeUsed += InvertedIndex.SIZE_OF_LONG * arrPostings[i].docFreq;
+//						arrTerm[i] = null;
+//						arrPostings[i] = null;
+//						bWrite = false;
+//					}
+//				}
+//				
+//				if (bWrite) {
+				// write the result to a new file.
+				writeInvertedIndexFile(treeIndex);
+				treeIndex.clear();
+				memSizeUsed = 0;
+//				}
+
+			} else {
+				// start to merge
+				// first find out the lexicographically smallest one
+				int k = -1;
+				for (int i = 0; i < arrInFile.length; i++) {
+					if (arrTerm[i] == null) {
+						continue;
+					}
+					k = i;
+					break;
+				}
+				if (k == -1) {
+					break; 		// end of all files.
+				}
+				
+				for (int i = k + 1; i < arrInFile.length; i++) {
+					if (arrTerm[i] == null) {
+						continue;
+					}
+					if (sorter.compare(arrTerm[k].data, arrTerm[i].data) > 0) {
+						k = i;
+					}
+				}
+				
+				// merge the smallest one to the tree
+				add2Tree(treeIndex, arrTerm[k], arrPostings[k]);
+
+				// reset the memory size used
+				memSizeUsed += InvertedIndex.SIZE_OF_POINTER;		// map key
+				memSizeUsed += arrTerm[k].data.length;			// term length
+				memSizeUsed += InvertedIndex.SIZE_OF_LONG * arrPostings[k].docFreq;
+				
+				// reset term and postings
+				arrTerm[k] = null;
+				arrPostings[k] = null;
 			}
-			
-			// start to merge
-			
+		}
+		
+		if (memSizeUsed > 0) {
+			// write the result to a new file.
+			writeInvertedIndexFile(treeIndex);
+			//SysLogger.info("memSize: " + memSizeUsed);
+			memSizeUsed = 0;
 		}
 		
 		return 0;
+	}
+	
+	private void add2Tree(TreeMap<ByteArrayWrapper, InvertedIndex> t, 
+			ByteArrayWrapper term, InvertedIndex idx) {
+		//SysLogger.info(new String(term.data) + ", " + idx.docFreq);
+		
+		InvertedIndex oldIdx = (InvertedIndex) t.get(term);
+		if (oldIdx == null) {
+			t.put(term, idx);
+			return;
+		}
+		
+		// merge the postings
+		TreeSet<Long> treePostings = new TreeSet<Long>();
+		
+		for (int i = 0; i < oldIdx.docFreq; i++) {
+			treePostings.add(oldIdx.postings[i]);
+		}
+		for (int i = 0; i < idx.docFreq; i++) {
+			treePostings.add(idx.postings[i]);
+		}
+		long[] newPostings = new long[treePostings.size()];
+		int i = 0;
+		for (Long key : treePostings) {
+			newPostings[i++] = key;
+		}
+		oldIdx.docFreq = newPostings.length;
+		oldIdx.postings = newPostings;
 	}
 }
