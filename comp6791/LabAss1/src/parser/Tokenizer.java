@@ -93,6 +93,11 @@ public class Tokenizer {
             	lstFiles.add(inputDir + list[i].getName());
             }
         }
+        
+        if (lstFiles.size() < 1) {
+			SysLogger.err("No input files");
+			return -1;
+		}
 		return 0;
 	}
 	

@@ -71,6 +71,7 @@ public class SysLogger {
 	
 	public static void err(String msg) {
 		if (logEnable) {
+			System.out.println(msg);
 			log.severe(msg);
 		}
 	}
