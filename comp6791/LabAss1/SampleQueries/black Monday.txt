@@ -1,0 +1,326 @@
+Query: black Monday
+
+Search result:
+Document ID list (In total: 7): 
+ 6957  7023 20007 20855 20955 20987 21422 
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="11870" NEWID="6957">
+<DATE>19-MAR-1987 02:21:29.97</DATE>
+<TOPICS><D>gold</D></TOPICS>
+<PLACES><D>south-africa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM M C
+&#22;&#22;&#1;f0041&#31;reute
+u f BC-SOME-7,000-SOUTH-AFRI   03-19 0105</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SOME 7,000 SOUTH AFRICAN MINERS RETURN TO WORK</TITLE>
+<DATELINE>    JOHANNESBURG, March 19 - </DATELINE><BODY>Some 7,000 black workers returned
+to work after staging one-day strikes at two mines on Monday,
+the National Union of Mineworkers and the companies that own
+the mines said.
+    About 6,000 miners resumed work at the Grootvlei gold mine
+east of Johannesburg after protesting the transfer of
+colleagues to other jobs at the same mine, owners General
+Mining Union Corp Ltd &lt;GENM.J> said.
+    The union said about 1,000 mineworkers at a new coal
+facility owned by Anglo American Corp of South Africa Ltd
+&lt;ANGL.J> also returned to their jobs on Tuesday.
+    The workers at Anglo's Vaal Colliery south of Johannesburg
+had struck to protest the alleged refusal of officials of the
+South African homeland of Transkei to allow miners to attend a
+funeral in the homeland, a union spokesman said.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="11936" NEWID="7023">
+<DATE>19-MAR-1987 07:23:33.05</DATE>
+<TOPICS><D>gold</D></TOPICS>
+<PLACES><D>south-africa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;A
+&#22;&#22;&#1;f0474&#31;reute
+r f BC-SOME-7,000-SOUTH-AFRI   03-19 0104</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SOME 7,000 SOUTH AFRICAN MINERS RETURN TO WORK</TITLE>
+<DATELINE>    JOHANNESBURG, March 19 - </DATELINE><BODY>Some 7,000 black workers returned
+to work after staging one-day strikes at two mines on Monday,
+the National Union of Mineworkers and the companies that own
+the mines said.
+    About 6,000 miners resumed work at the Grootvlei gold mine
+east of Johannesburg after protesting the transfer of
+colleagues to other jobs at the same mine, owners General
+Mining Union Corp Ltd &lt;GENM.J> said.
+    The union said about 1,000 mineworkers at a new coal
+facility owned by Anglo American Corp of South Africa Ltd
+&lt;ANGL.J> also returned to their jobs on Tuesday.
+    The workers at Anglo's Vaal Colliery south of Johannesburg
+had struck to protest the alleged refusal of officials of the
+South African homeland of Transkei to allow miners to attend a
+funeral in the homeland, a union spokesman said.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20602" NEWID="20007">
+<DATE>20-OCT-1987 00:30:35.73</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>japan</D></PLACES>
+<PEOPLE><D>nakasone</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM AI 
+&#22;&#22;&#1;f0036&#31;reute
+b f BC-JAPANESE-PREMIER-SAYS   10-20 0110</UNKNOWN>
+<TEXT>&#2;
+<TITLE>JAPANESE PREMIER SAYS HE WATCHING STOCK SITUATION</TITLE>
+<DATELINE>    TOKYO, Oct 20 - </DATELINE><BODY>Japanese Prime Minister Yasuhiro Nakasone
+was quoted by Kyodo News Service as saying he was watching the
+stock market situation.
+    "We must watch things a little longer. New York is down 22
+pct, London 10 pct, while compared to this Japan is seven pct
+down," Kyodo quoted him as telling reporters.
+    Asked if he agreed with analysts who called the stock
+sell-off "Black Monday," Nakasone said: "Compared with times past,
+economics have changed completely." He rejected a comparison
+between the present situation and the stock market collapse of
+1929 and the recession which followed.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="21450" NEWID="20855">
+<DATE>20-OCT-1987 22:53:18.25</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM AI 
+&#22;&#22;&#1;f3744&#31;reute
+u f BC-POLL-SHOWS-AMERICANS   10-20 0108</UNKNOWN>
+<TEXT>&#2;
+<TITLE>POLL SHOWS AMERICANS HOLD ON TO STOCKS AFTER DROP</TITLE>
+<DATELINE>    WASHINGTON, Oct 20 - </DATELINE><BODY>The "Black Monday" stock market crash
+failed to destroy Americans' faith in the economic soundness of
+the country, according to a poll released on Tuesday.
+    The ABC-Washington Post poll, taken after the close of
+stock trading on Monday, showed 58 pct did not believe the
+unprecedented slide in stock prices foretold an economic
+downturn, and 70 pct rejected the notion the country faced a
+1930s-style Depression.
+    Fifty-three pct of those interviewed said they had owned
+stocks at some point, and only one pct said they had sold any
+as a result of Monday's decline.
+    Of the 40 pct who currently held stocks, only two pct said
+they planned to sell some and four pct said they planned to
+buy.
+    The poll of 507 men and women was taken by telephone on
+Monday night, after the Dow Jones Industrial Average plunged
+more than 500 points, or 22 pct, in record volume.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20482" NEWID="20955">
+<DATE>19-OCT-1987 16:23:56.07</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>yugoslavia</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM A 
+&#22;&#22;&#1;f3045&#31;reute
+r f PM-YUGOSLAVIA   10-19 0078</UNKNOWN>
+<TEXT>&#2;
+<TITLE>YUGOSLAV ECONOMIC PLAN SEEN FACING HURDLES</TITLE>
+<AUTHOR>    By Andrej Gustincic</AUTHOR>
+<DATELINE>    BELGRADE, Oct 19 - </DATELINE><BODY>Yugoslavia's ambitious economic recovery
+and anti-inflation plan faces major hurdles before it can be
+implemented, Yugoslav economists and Western diplomats said.
+    Prime Minister Branko Mikulic on Monday proposed new taxes
+hitting high income earners, moonlighters, property and
+interest on savings as part of new government plans to rein in
+the country's 123 pct inflation.
+    He also proposed price and wage restraint and the trimming
+of repayments on the 20 billion dlr foreign debt in line with
+currency earning abiltiy.
+    "The taxes will anger many Yugoslavs struggling with
+soaring prices and will be resisted in Parliament," a Western
+diplomatic source said. Yugoslav economists said Mikulic's
+draft plans left many questions unanswered.
+    "It was a list of goals, not concrete measures," said a
+senior Yugoslav economist at a leading Yugoslav research
+institute.
+    The state news agency Tanjug was more optimistic. It said
+the proposals indicated "real economic reforms" were coming.
+    Further details of the program, which Mikulic summarised in
+Parliament, are to appear in the days ahead, and the draft has
+to be debated and voted on by deputies in November.
+    "The goals are good," a leading Belgrade economist said.
+"No one can argue with that. But the million dollar question,
+as with all government programs here, is how they will be
+implemented."
+    Zoran Popov, senior research fellow at The Belgrade
+Institute for Industrial Economy said the existing system made
+many of the proposals difficult to put into effect.
+    "A change in the the system of taxation requires changes in
+the constitution," he said. "Mikulic's speech tells us what he
+wants to do, but not how."
+    "It may be anti-inflationary," one diplomat said. "But the
+question is how can you tax a black economy and how will the
+government find out who has two jobs or more than one home."
+    Economists and diplomats said the proposals could be
+resisted by deputies from several of Yugoslavia's constituent
+republics and provinces in defence of regional interests.
+    Such resistance has blocked the nationwide implementation
+of federal government economic policy on many past occasions.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20450" NEWID="20987">
+<DATE>19-OCT-1987 15:51:05.63</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>south-africa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;C M 
+&#22;&#22;&#1;f2936&#31;reute
+d f BC-S.-AFRICA-MINING-HOUS   10-19 0122</UNKNOWN>
+<TEXT>&#2;
+<TITLE>S. AFRICA MINING HOUSE REPORTS HUGE STRIKE LOSSES</TITLE>
+<DATELINE>    JOHANNESBURG, Oct 19 - </DATELINE><BODY>A major South African mining house
+on Monday reported two of its gold mines suffered huge losses
+as a result of a black miners' strike in August which crippled
+about half the country's crucial gold mines.
+    Johannesburg Consolidated Investment Company, one of the
+six major mining houses, said the two mines suffered a combined
+net loss of 9.7 mln dlrs in the three months to end-September
+compared with a profit of 8.6 mln dlrs in the preceding
+quarter.
+    It was the first indication of the real economic impact of
+the biggest wage strike in the history of the gold mining
+industry, which accounts for nearly half the value of South
+Africa's total exports.
+    "The results were pretty disastrous, primarily due to the
+impact of the strike," Ken Maxwell, head of Johannesburg
+Consolidated's gold division, told a news conference in
+Johannesburg.
+    "We haven't recovered from the strike yet," he said, adding
+that 70 percent of underground mining at the group's biggest
+mine, Randfontein Estates, was halted by the three-week strike.
+    Johannesburg Consolidated and its controlling company, the
+giant Anglo American Corp., were hard-hit by the three-week
+miners' strike, but refused to disclose production losses.
+    Anglo American is due to report its quarterly gold-mine
+profits later this week.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20014" NEWID="21422">
+<DATE>19-OCT-1987 10:08:30.32</DATE>
+<TOPICS><D>money-fx</D><D>interest</D></TOPICS>
+<PLACES><D>switzerland</D><D>west-germany</D></PLACES>
+<PEOPLE><D>james-baker</D><D>greenspan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM 
+&#22;&#22;&#1;f1154&#31;reute
+u f BC-SWISS-ANALYSTS-SAY-MO   10-19 0109</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SWISS ANALYSTS SAY MOOD ON MARKETS PRECARIOUS</TITLE>
+<AUTHOR>    By Donald Nordberg and Michael Shields</AUTHOR>
+<DATELINE>    ZURICH, Oct 19 - </DATELINE><BODY>Today's sharp sell-off of Swiss stocks and
+matching falls around Europe may have been overdone, but the
+mood on financial markets is precarious, Swiss securities
+analysts and economists said.
+    Panic selling took Swiss shares down six pct at the opening
+on enormous volume, triggered by the slide on Wall Street and
+the threat of renewed currency instability.
+    "I have never experienced anything like this, and I've been
+in the business for 20 years," said Bernhard Wyttenbach, head of
+European research at Union Bank of Switzerland.
+    The analysts blamed the sell-off in Europe on U.S. Monetary
+authorities. This weekend, U.S. Treasury Secretary James Baker
+publicly voiced his displeasure with West German monetary
+policy. He said the eight-month-old Louvre accord to stabilise
+currencies was still working, but added: "On the other hand, we
+will not sit back and watch surplus countries jack up interest
+rates and squeeze growth on the expectation that the United
+States will raise rates."
+    Hans Peter Ast of Societe Generale Alsacienne (Sogenal) in
+Zurich said: "The situation is very dangerous. Statements by the
+U.S. Authorities have fuelled anxiety about interest rates."
+    Herbert Fritschi, director of Zurich Cantonal Bank's
+financial research department, called the sell-off "overdone,"
+but warned that the situation could worsen unless central banks
+loosen their monetary policy.
+    "I think the trend toward higher interest rates is over," he
+said. "The Federal Reserve and the Bundesbank have to step in
+with an easy money policy, or else there is going to be an
+economic catastrophe. They have to act quickly."
+    Wyttenbach said the "Black Monday" sell-off was clearly
+exaggerated, with Swiss Reinsurance Co participation
+certificates falling 20 pct in value at one point.
+    But Wyttenbach said he did not believe that a correction
+would come soon. First, the bad news will reach small investors
+only in time for tomorrow's market, when there could be
+another, smaller selling wave.
+    "As soon as the dollar stabilises -- and that's the key --
+then we'll get a strong movement upward," Wyttenbach said. But
+that may not come soon.
+    "People are simply worried that in America, where the market
+has now fallen by 18 pct since August, the bull market is over,"
+he said. "People are afraid that we'll have a recession in 1988."
+    Baker was wrong to blame the West Germans for the current
+problems and the weak dollar, Wyttenbach said. "We do not have a
+mark problem, we have a dollar problem," he added, but said the
+biggest culprit was the new chairman of the U.S. Federal
+Reserve Board, Alan Greenspan.
+    Wyttenbach recalled that Greenspan had suggested that the
+dollar might be too high in the medium term and that interest
+rates might have to rise. "As a central banker he shouldn't do
+that," Wyttenbach said. "There is a danger that we will fall back
+into the 1970s," he said. "We have a real crisis of confidence in
+Greenspan. I would much rather have a Volcker."
+    Paul Volcker retired as Fed chairman on August 11.
+    Cantonal Bank's Fritschi said: "I'm relatively optimistic
+because the situation looks too bad. The Fed certainly has to
+intervene."
+    He said he did not expect the Swiss National Bank to take
+any significant steps, adding that the focus of attention
+remains on the United States.
+    "The panic started in New York, it has to end there."
+    The Cantonal Bank sent an advisory to customers suggesting
+they not sell into a panicked market, but wait a while before
+deciding what to do.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+
+
+All the results have been stored to file:
+D:\workspace\COMP6791\LabAss1\output\search-results.txt
+

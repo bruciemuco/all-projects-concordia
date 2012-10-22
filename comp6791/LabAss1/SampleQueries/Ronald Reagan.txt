@@ -1,0 +1,1281 @@
+Query: Ronald Reagan
+
+Search result:
+Document ID list (In total: 25): 
+  231   386  1793  1897  2507  6876  7524  7610  8031 10355 
+10623 11169 11397 11487 14419 16550 16774 16787 17194 17211 
+17270 17279 17304 21006 21563 
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="8316" NEWID="231">
+<DATE> 1-MAR-1987 01:41:26.47</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f0359&#31;reute
+u f BC-POLL-MAJORITY-DISAPPR   03-01 0119</UNKNOWN>
+<TEXT>&#2;
+<TITLE>POLL MAJORITY DISAPPROVE OF REAGAN PRESIDENCY</TITLE>
+<DATELINE>    NEW YORK, March 1 - </DATELINE><BODY>A majority of Americans disapprove of
+the way Ronald Reagan has handled the presidency and one-third
+believe he should resign, a new poll said.
+    The poll conducted by Newsweek magazine said 53 pct of the
+respondents gave Reagan a negative performance rating, nearly
+double his disapproval rating before the Iran/Contra scandal.
+    The magazine said, however, that Reagan remained personally
+popular. By better than a three-to-one ratio, a majority of
+those polled said they liked Reagan on a personal level.
+    And Newsweek said 52 per cent of those questioned believed
+the administration"s accomplishments outweighed its failures.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="12569" NEWID="386">
+<DATE> 2-MAR-1987 09:02:11.51</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>iran</D><D>lebanon</D></PLACES>
+<PEOPLE><D>reagan</D><D>howard-baker</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f0407&#31;reute
+r f PM-REAGAN   03-02 0099</UNKNOWN>
+<TEXT>&#2;
+<TITLE>REAGAN AND BAKER BEGIN TASK OF REBUILDING</TITLE>
+<AUTHOR>    By Peter Szekely</AUTHOR>
+<DATELINE>    WASHINGTON, March 2 - </DATELINE><BODY>After a week that left his presidency
+shaken and his popularity at a new low, Ronald Reagan and his
+new chief of staff today begin trying to revive an
+administration tattered by the Iran-contra arms scandal.
+    Reagan and former Senate Republican leader Howard Baker,
+whose appointment as White House chief of staff won bipartisan
+praise, will begin mapping strategy to deal with scathing
+criticism by a report on his failed bid to trade U.S. arms with
+Iran for help in freeing Ameican hostages in Lebanon.
+    Among the chores facing Reagan's new inner circle is
+assessing the damage the 300-page Tower commission report has
+done to the nomination of Robert Gates to succeed William Casey
+as the new head of the Central Intelligence Agency.
+    White House officials are checking to see how much support
+Gates, a 43-year old career spy agency bureaucrat, would have
+if his nomination is submitted to the full Senate for a vote,
+Senate Republican leader Robert Dole said.
+    Appearing on the NBC News program, "Meet the Press," the
+Kansas senator said the Gates nomination "could be in some
+difficulty."
+    Aides said that Gates' future would be given high priority
+by Baker.
+    Even though he was not deeply implicated in the arms sale
+scandal, lawmakers said Senate confirmation of the Gates
+nomination is not assured and, even if won, would come only
+after months of congressional probes into the affair.
+    "He has the smell of Iran on him," said former Nevada Sen.
+and Reagan confidant Paul Laxalt. "He is a victim."
+    Laxalt, appearing on the ABC News program, "This Week With
+David Brinkley," bluntly admitted "the Gates nomination is in
+trouble." Senate Armed Services Committee Chairman Sam Nunn said
+the odds are now slightly against confirmation of Gates.
+    When asked on the syndicated television program, "John
+McLaughlin: One on One," if he thought Gates would be confirmed,
+the Georgia Democrat shot back: "I wouldn't bet any money on it.
+    "I think this report hurts that," Nunn said. "It indicates
+that the National Security Council had policy-type influence
+over intelligence-type activities and we're going to go into
+that with Mr. Gates.
+    Only a day after it was issued last week, the Tower report
+prompted the abrupt exit of Donald Regan as White House chief
+of staff.
+    Regan, the former Wall Street executive and Treasury
+secretary who has been the president's top aide for the past
+two years, was assigned the lion's share of the blame for the
+botched handling of the Iran arms sale.
+    The report blamed Regan for the "chaos that descended on the
+White House" since it was first revealed last November that
+profits from the Iran arms sales had been diverted to contra
+rebels fighting the leftist Nicaraguan government.
+    The two other victims of the scandal are former National
+Security Adviser Vice Adm. John Poindexter who resigned and
+Marine Lt. Col. Oliver North who was fired after it was
+disclosed last November 23 that profits from the Iran arms sale
+were diverted to the contras. The two, pictured by the Tower
+commission as the key operators of the Iran arms deal, have
+refused to testify.
+    Reagan, who freely admits disliking details, is portrayed
+in the Tower report as a befuddled chief executive whose
+inattention let his aides run away with his foreign policy.
+    That perception has wrecked Reagan's popularity and
+threatened to condemn him to lame duck status until he leaves
+office in January 1989. A recent Newsweek magazine poll found
+that just 40 pct of Americans approved of Reagan's leadership,
+a record low, and a third believed he should consider
+resignation.
+    After meeting with aides over the weekend and poring over
+the meaty report of the commission headed by former Texas Sen.
+John Tower, Reagan is now preparing for a nationwide television
+address this week to respond to the criticisms of his
+presidency.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="18211" NEWID="1793">
+<DATE> 4-MAR-1987 16:11:18.04</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V RM
+&#22;&#22;&#1;f0723&#31;reute
+u f BC-WHITE-HOUSE-CHIEF-HAS   03-04 0083</UNKNOWN>
+<TEXT>&#2;
+<TITLE>WHITE HOUSE CHIEF HAS NO SECRET TAX PLAN</TITLE>
+<DATELINE>    WASHINGTON, March 4 - </DATELINE><BODY>White House chief of staff Howard
+Baker said he has no secret plan to raise taxes.
+    Talking to reporters, he pointed out that, "Ronald Reagan
+is president. I am chief of staff. His program is my program."
+I have no tax plan at all."
+    Baker's comments came in response to a question as to
+whether he planned to support higher taxes to reduce the budget
+deficit. President Reagan has said repeatedly that he opposes
+higher taxes.
+
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="18315" NEWID="1897">
+<DATE> 4-MAR-1987 21:18:04.24</DATE>
+<TOPICS><D>gold</D></TOPICS>
+<PLACES><D>hong-kong</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM C M
+&#22;&#22;&#1;f0160&#31;reute
+u f BC-REAGAN'S-REMARKS-HELP   03-04 0099</UNKNOWN>
+<TEXT>&#2;
+<TITLE>REAGAN'S REMARKS HELP GOLD TO RECOVER IN HONG KONG</TITLE>
+<DATELINE>    HONG KONG, March 5 - </DATELINE><BODY>Gold rose by about 50 U.S. Cents an
+ounce, following a statement by President Ronald Reagan that
+the arms-for-hostages deal with Iran "was a mistake," dealers
+said.
+    Bullion rose to 409.40/90 dlrs from an initial low of
+408.90/409.40. This compares with the opening of 409.00/50 and
+New York's close of 410.00/50.
+    Dealers noted mild short-covering in the metal after some
+initial selling by local investors. Trading was fairly quiet
+this morning partly owed to the slow U.S. Dollar activities,
+they added.
+    However, Reagan's remarks had only a short-lived bullish
+impact on the gold price, which is now stabilising at 409.10/60
+dlrs, dealers said.
+    On the local market, the metal traded in a narrow range of
+3,800 and 3,805 H.K. Dlrs a tael against yesterday's 3,778
+close.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="18925" NEWID="2507">
+<DATE> 5-MAR-1987 17:34:34.65</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f0999&#31;reute
+r f BC-ROSTENKOWSKI-SAYS-TAX   03-05 0112</UNKNOWN>
+<TEXT>&#2;
+<TITLE>ROSTENKOWSKI SAYS TAX HIKE TOUGH WITHOUT REAGAN</TITLE>
+<DATELINE>    WASHINGTON, March 5 - </DATELINE><BODY>House Ways and Means Committee
+chairman Dan Rostenkowski, an Illinois Democrat, said his
+committee would raise taxes if the idea were approved by
+Democrats as part of the 1988 budget, but the committee would
+find it difficult since President Reagan opposes tax increases.
+    "There's always the question of how to do it without Ronald
+Reagan. I'd rather have him than not," he told reporters after a
+meeting with House Speaker James Wright.
+    Wright approached the taxwriters with a tentative plan to
+raise 18 billion dlr in taxes in 1988 as part of a 36 billion
+dlr budget deficit reduction plan.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="11789" NEWID="6876">
+<DATE>18-MAR-1987 17:14:16.56</DATE>
+<TOPICS><D>crude</D><D>nat-gas</D></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;Y F
+&#22;&#22;&#1;f9580&#31;reute
+r f BC-DIVISION-SEEN-ON-HOW   03-18 0097</UNKNOWN>
+<TEXT>&#2;
+<TITLE>DIVISION SEEN ON HOW TO HELP U.S. OIL INDUSTRY</TITLE>
+<AUTHOR>    By TED d'AFFLISIO, Reuters</AUTHOR>
+<DATELINE>    NEW YORK, March 18 - </DATELINE><BODY>The U.S. Congress and the oil industry
+are deeply divided on ways the government should assist the
+industry, hurt by the sharp fall in oil prices, and the
+subsequent growth in oil imports, industry analysts said.
+    "The industry is deeply divided between those who support an
+oil tariff and those who believe tax incentives are better,"
+said Daniel Yergin, director of Cambridge Energy Research
+Associates, which recently completed a survey of the U.S.
+Congress on energy issues.
+    Yergin said he saw mounting support within Congress for tax
+incentives rather than an oil tariff or import fee.
+    Today U.S. Energy Secretary John Herington said he will
+propose tax incentives to increase edomestic oil and natural
+gas exploration and production to the Reagan Administration for
+consideration. White House spokesman Marlin Fitzwater said the
+proposal would be reviewed.
+    Herrington said, "I would like to shoot for one mln barrels
+a day (addition) to U.S. production." U.S. oil output was off to
+8.4 mln bpd in the week of March 13, down six pct from last
+year, the American Petroleum Institute said.
+    Oil industry analysts have forecast oil prices to average
+about 18 dlrs a barrel for the year and many believe that a
+move above that level will be unlikey for the near term.
+    Paul Mlotok, oil analyst for Salomon Brothers Inc said that
+"even with the rise in prices for the last week or two we've
+only altered our average price scenerio to about 17.50 dlrs for
+the year."
+    Analysts said that at that price renewed drilling and
+exploration to reverse the decline in U.S. crude oil output
+will not take place as the companies are waiting for stable
+prices over 20 dlrs to renew exploration.
+    John Lichtblau, president of the Petroleum Industry
+Research Foundation Inc in New york in recent testimony to
+Congress said "The continuing decline in U.S. oil production is
+virtually inevitable under any realistic price scenario. But
+the future rate of decline is very much a function of world oil
+prices and U.S. government policy."
+    Lichtbalu said that tax breaks could be used to raise oil
+production but would only work over time.
+    "Lowering the producing industry's tax burden would probably
+be a slower stimulant (to output) than a price increase but
+would not raise energy costs." Lichtblau said.
+    But the small independent oil companies who do much of the
+drilling in the U.S. are looking for the more immediate relief
+which could be brought on by an oil import fee.
+    Ronald Tappmeyer, president of the International
+Association of Drilling Contractors, said, "The members of our
+trade asssociation are convinced that only a variable oil
+import fee that sets a minimum price trigger can protect our
+nation." The association represents some 1,300 drilling and oil
+service companies.
+    The CERA survey of Congress shows that the oil import fee
+will face a stiff uphill battle.
+    Yergin said that the poll which was conducted in January by
+a former Congressman, Orval Hansen, showed support for the oil
+import fee from 22 pct of the Congressmen surveyed largely as a
+means of protecting the domestic petroleum industry.
+     At the same time 48 pct of the Congressmen surveyed
+opposed the fee with the respondents saying the tariff would
+hurt consumers and some regional interests.
+    But 80 pct of the sample said support for a fee could grow
+if production continued to fall and imports to rise.
+    Yergin said that imports above 50 pct of U.S. requirements
+"is a critical, symbolic level. If they (imports) move above
+that level, a fee may not be legislated but there will
+certainly be pressure for some form of action."
+     But Lichtblau, in a telephone interview, said, "a 50 pct
+rate of import dependency is not likely to happen before 1990.
+    In 1986 U.S. oil imports rose to 33 pct of u.s. energy
+requirements and shopuld be about 34 pct in 1987, he added.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="12437" NEWID="7524">
+<DATE>19-MAR-1987 20:10:49.04</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V RM
+&#22;&#22;&#1;f2793&#31;reute
+b f BC-/PRESIDENT-REAGAN-VOW   03-19 0083</UNKNOWN>
+<TEXT>&#2;
+<TITLE>PRESIDENT REAGAN VOWS TO VETO ANY TAX INCREASE</TITLE>
+<DATELINE>    WASHINGTON, March 19 - </DATELINE><BODY>President Ronald Reagan said he
+would veto any tax increases voted by Congress.
+    "My pledge to veto any tax rate increase remains rock solid,"
+Reagan said during a televised news conference.
+     The president said he opposed efforts by some members of
+Congress to back away from deficit reduction targets set by the
+Gramm-Rudman balanced budget law. He urged passage of a
+constitutional amendment to balance the budget.
+    "It's time Congress cut the federal budget and left the
+family budget alone," Reagan said.
+    He said the congressional budget process was in desperate
+need of reform and urged passage of an amendment to the U.S.
+constitution that would require a balanced federal budget.
+    "This yearly deficit feeding process must stop," he added. "We
+must act now to pass a constitutional amendment to balance the
+budget."
+    In the meantime, he said, Congress cannot back away from
+the deficit reduction goals set by federal law he said.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="13131" NEWID="7610">
+<DATE>20-MAR-1987 08:17:11.31</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f0612&#31;reute
+u f BC-PRESIDENT-REAGAN-VOWS   03-20 0083</UNKNOWN>
+<TEXT>&#2;
+<TITLE>PRESIDENT REAGAN VOWS TO VETO ANY TAX INCREASE</TITLE>
+<DATELINE>    WASHINGTON, March 20 - </DATELINE><BODY>President Ronald Reagan said he
+would veto any tax increases voted by Congress.
+    "My pledge to veto any tax rate increase remains rock solid,"
+Reagan said during a televised news conference.
+     The president said he opposed efforts by some members of
+Congress to back away from deficit reduction targets set by the
+Gramm-Rudman balanced budget law. He urged passage of a
+constitutional amendment to balance the budget.
+    "It's time Congress cut the federal budget and left the
+family budget alone," Reagan said.
+    He said the congressional budget process was in desperate
+need of reform and urged passage of an amendment to the U.S.
+constitution that would require a balanced federal budget.
+    "This yearly deficit feeding process must stop," he added. "We
+must act now to pass a constitutional amendment to balance the
+budget."
+    In the meantime, he said, Congress cannot back away from
+the deficit reduction goals set by federal law he said.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="13552" NEWID="8031">
+<DATE>20-MAR-1987 17:45:24.11</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>indonesia</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;F
+&#22;&#22;&#1;f2606&#31;reute
+r f BC-DELTA-   03-20 0078</UNKNOWN>
+<TEXT>&#2;
+<TITLE>U.S. LAUNCHES INDONESIAN COMMUNICATIONS SATELLITE</TITLE>
+<DATELINE>    CAPE CANAVERAL, March 20 - </DATELINE><BODY>NASA launched an Indonesian
+communications satellite aboard a Delta rocket, marking the
+first international payload to be put into orbit since the
+Challenger disaster more than a year ago.
+    The 43 mln dlr satellite, the Palapa B2-P, was launched as
+the result of an agreement reached last year between President
+Ronald Reagan and Indonesia's President Suharto when they met
+on Bali.
+ 
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="15876" NEWID="10355">
+<DATE>27-MAR-1987 07:27:59.04&#5;&#5;&#5;RM</DATE>
+<UNKNOWN>&#22;&#22;&#1;f0521&#31;reute</UNKNOWN>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>usa</D><D>japan</D></PLACES>
+<PEOPLE><D>nakasone</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+r f BC-NAKASONE-HARD-PRESSED   03-27 0091</UNKNOWN>
+<TEXT>&#2;
+<TITLE>NAKASONE HARD-PRESSED TO SOOTHE U.S ANGER ON TRADE</TITLE>
+<AUTHOR>    By Rich Miller, Reuters</AUTHOR>
+<DATELINE>    TOKYO, March 27 - </DATELINE><BODY>Prime Minister Yasuhiro Nakasone will
+visit Washington next month in a bid to defuse mounting U.S.
+Anger over Japanese trade policies, but Western diplomats said
+they believed his chances of success were slim.
+    Boxed in by powerful political pressure groups and
+widespread opposition to his tax reform plans, Nakasone will be
+hard-pressed to come up with anything new to tell U.S.
+President Ronald Reagan and key U.S. Congressmen, they said.
+    News of the week-long visit starting April 29 coincided
+with news that Japan recorded a 8.14 billion dlr trade surplus
+last month, more than 70 pct higher than a year earlier.
+    It also came one day after the Reagan Administration's
+Economic Policy Council decided to take retaliatory action
+against Japan for its alleged failure to live up to a joint
+trade agreement on computer microchips.
+    Nakasone wants to go armed with two separate packages - one
+designed to pep up Japan's sagging economy and imports in the
+short-term, the other to redirect the country in the medium
+term away from its over-dependence on exports for growth.
+    But government officials said political infighting could
+rob both packages of much of their punch and might even prevent
+one from seeing the light of day.
+    Nakasone has insisted that the government would not draw up
+a package of short-term economic measures until after its
+1987/88 budget passed parliament because he feared that would
+amount to a tacit admission that the budget was inadequate.
+    But his hopes for quick passage of the budget in time for
+his trip have been shattered by a parliamentary boycott by
+opposition parties protesting over the sales tax plan.
+    Faced with the possibility that he might have to go to the
+U.S. Virtually empty-handed, Nakasone today ordered his ruling
+Liberal Democratic Party (LDP) to come up with its own
+measures.
+    He can then tell Reagan the LDP package will form the basis
+of the government's plans, without losing face in parliament
+over the budget, political analysts said.
+    Officials working on the government's short-term economic
+package said it would probably include interest rate cuts on
+loans by government corporations, deregulation, measures to
+pass on some of the benefits of the strong yen to consumers in
+the form of lower prices, and accelerated public investment.
+    They said a record portion of state investment planned for
+the entire 1987/88 fiscal year will take place in the first
+half, probably over 80 pct.
+    Diplomats said that was unlikely to be enough to satisfy
+Reagan, who is under pressure from the Democrat-controlled U.S.
+Congress to take greater action to cut the huge American trade
+deficit.
+    To complement the short-term measures, Nakasone is also
+likely to present Reagan with details of Japan's longer-term
+economic plans.
+    A high-ranking advisory body headed by former Bank of Japan
+governor Haruo Maekawa is expected to come up with a final
+report outlining concrete steps to redirect the economy days
+before Nakasone is scheduled to leave for Washington.
+    Its recommendations are designed as a follow-up to
+Maekawa's report last year on economic restructuring and are
+likely to cover such potentially politically explosive areas as
+agricultural reform and land policy, officials said.
+    While wanting to make the report as explicit and detailed
+as possible, they said the political realities might force them
+to water down some of the committee's recommendations.
+    A subcommittee is considering what the Japanese economy
+might look like in the medium to longer term after it undergoes
+massive restructuring, officials said. The subcommittee
+projects that the current account surplus will fall to less
+than two pct of Japan's total output, or gross national
+product, around 1993 or 1995. Last year the surplus, which
+measures trade in goods and services, amounted to over four pct
+of gnp.
+    The subcommittee also projects annual economic growth for
+Japan of nearly four pct over that period and a very gradual
+appreciation of the yen, to about 130 to the dollar by around
+1993, from 150 now.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="16144" NEWID="10623">
+<DATE>28-MAR-1987 07:04:43.45</DATE>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>usa</D><D>japan</D></PLACES>
+<PEOPLE><D>nakasone</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f2766&#31;reute
+r f BC-NAKASONE-SOUNDS-CONCI   03-28 0107</UNKNOWN>
+<TEXT>&#2;
+<TITLE>NAKASONE SOUNDS CONCILIATORY NOTE IN CHIP DISPUTE</TITLE>
+<DATELINE>    TOKYO, March 28 - </DATELINE><BODY>Prime Minister Yasuhiro Nakasone sounded
+a conciliatory note in Japan's increasingly bitter row with the
+United States over trade in computer microchips.
+    "Japan wants to resolve the issue through consultations by
+explaining its stance thoroughly and correcting the points that
+need to be corrected," he was quoted by Kyodo News Service as
+saying.
+    While expressing regret over America's decision to impose
+tariffs on imports of Japanese electrical goods, Nakasone said
+Tokyo was willing to send a high-level official to Washington
+to help settle the dispute.
+    Government officials said Japan would make a formal request
+next week for emergency talks and that the two sides would
+probably meet the week after, just days before the April 17
+deadline set by Washington for the tariffs to take effect.
+    Tokyo is expected to propose a joint U.S./Japan
+investigation of American claims that Japanese companies are
+dumping cut-price chips in Asian markets.
+    Yesterday, Washington announced plans to put as much as 300
+mln dlrs in tariffs on imports of certain Japanese electronic
+goods in retaliation for what it sees as Tokyo's failure to
+live up to their bilateral chip pact.
+    That agreement, hammered out late last year after months of
+heated negotiations, called on Japan to stop selling cut-price
+chips in world markets and to buy more American-made chips.
+    Nakasone's comments seemed distinctly more conciliatory
+than those of his Trade and Industry Minister, Hajime Tamura,
+who earlier today said Japan was ready to take "appropriate
+measures" if Washington went ahead with the sanctions.
+    Ministry of International Trade and Industry (MITI)
+officials later sought to downplay the significance of Tamura's
+remark and said that his main message was that the two sides
+need to talk urgently about the issue.
+    But they admitted that Japan was considering taking the
+United States to GATT, the Geneva-based international
+organization which polices world trade, if Washington imposed
+the tariffs.
+    Any Japanese action would probably be taken under Article
+23 of the General Agreement on Tariffs and Trade (GATT), they
+said. If that article were invoked, GATT would set up a panel
+to consider the legality of the U.S. Action.
+    But officials here said they hope that can be avoided. "It
+may be wishful thinking but there is a possibility the United
+States may lift its decision at an early date," Tamura said.
+    In announcing the U.S. Sanctions yesterday, President
+Ronald Reagan said he was prepared to lift them once he had
+evidence that Japan was no longer dumping chips in world
+markets and had opened up its own market to imports.
+    Japanese government officials said they are confident they
+can make the pact work.
+    They said that the export of cut-price Japanese chips
+through unregulated distributors has all but dried up after
+MITI instructed domestic makers to cut output.
+    While acknowledging that it is harder to increase Japanese
+imports of American chips, MITI officials said that the
+ministry is doing all it can to ensure that happens.
+    The Ministry recently called on Japan's major chip users,
+some of whom are also leading producers, to step up their
+purchases of foreign semiconductors.
+    A spokesman for one of the companies, Toshiba Corp &lt;TSBA.T>
+said his firm would do just that and could announce its plans
+in the next week or so. He expects other Japanese companies to
+do likewise.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="17230" NEWID="11169">
+<DATE>31-MAR-1987 00:22:15.09</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>japan</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;F
+&#22;&#22;&#1;f0008&#31;reute
+u f BC-JAPAN-TO-DEVELOP-FIGH   03-31 0099</UNKNOWN>
+<TEXT>&#2;
+<TITLE>JAPAN TO DEVELOP FIGHTER PLANE WITH U.S.</TITLE>
+<DATELINE>    TOKYO, March 31 - </DATELINE><BODY>Japan has decided to cooperate with the
+U.S. To develop a new generation of fighter planes, Defence
+Minister Yuko Kurihara said.
+    Japan is now in a major trade dispute with Washington, but
+Kurihara told reporters the decision was not made in response
+to outside pressure and described the project as a Japanese-led
+program with U.S. Cooperation.
+    President Ronald Reagan said last week that the U.S. Would
+impose high tariffs on Japanese imports to retaliate against
+alleged Japanese violation of a computer chip trade pact.
+    The plane, codenamed the FSX, has been the focus of
+competition between Japanese and U.S. Defence contractors. At
+stake is an estimated 6.5 billion dlrs worth of contracts which
+the Japanese government had previously intended to award to
+domestic firms.
+    The Ministry has said the plane, part of Japan's self
+defence forces, will be equipped with high technology radar
+dodging equipment, and will be able to fly at very low
+altitudes. It will have a combat radius of 830 kms.
+    The ministry plans to build 100 FSX fighters to replace all
+77 of Japan's Mitsubishi-made F-1 planes by the 1990s.
+    A defence ministry spokesman said the timing of the
+announcement had nothing to do with escalating trade friction
+between Japan and the U.S., Its largest trading partner.
+    "This is an objective decision, made after discussions with
+U.S. Defence Secretary Caspar Weinberger," he said.
+    However, with two weeks to go before the U.S. Imposes
+tariffs, Japan's ambassador to the U.S., Nobuo Matsunaga, told
+Foreign Minister Tadashi Kuranari that Japan must address
+individual market-opening issues, such as the FSX, defence
+ministry officials said.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="17459" NEWID="11397">
+<DATE>31-MAR-1987 11:24:13.89</DATE>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>japan</D><D>usa</D></PLACES>
+<PEOPLE><D>nakasone</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f1513&#31;reute
+u f BC-ENVOY-ADVISES-NAKASON   03-31 0109</UNKNOWN>
+<TEXT>&#2;
+<TITLE>ENVOY ADVISES NAKASONE TO PREPARE FOR U.S. VISIT</TITLE>
+<DATELINE>    TOKYO, March 31 - </DATELINE><BODY>The Japanese ambassador to the U.S.
+Suggested that Prime Minister Yasuhiro Nakasone make efforts to
+present "advanced' proposals on trade issues when he visits
+Washington next month.
+    Ambassador Nobuo Matsunaga made the recommendation at a
+meeting with Nakasone, Kyodo News Service said.
+    Matsunaga also advised that the prime minister should be
+prepared to discuss U.S.-Japan economic issues.
+    Matsunaga cited issues such as a U.S.-Japan micro chip
+trade pact, foreign access to the Kansai international airport
+project, and a new international telecommunications firm.
+    Matsunaga returned on Sunday to report to Japanese leaders
+on recent U.S. Developments over trade, in preparation for
+Nakasone's visit to Washington, April 29 to May 5.
+    Kyodo quoted Nakasone as telling reporters after meeting
+the envoy, "I entirely accept what ambassador Matsunaga
+recommended." Nakasone did not elaborate.
+    The U.S.-Japan trade dispute intensified last week when
+President Ronald Reagan said the U.S. Would impose heavy
+tariffs on Japanese imports in retaliation against alleged
+Japanese breach of the computer chip trade pact.
+    Meanwhile, Nakasone's ruling Liberal Democratic Party (LDP)
+is to consider measures to boost imports and open up the
+Japanese market, such as government purchase of supercomputers
+and expanding foreign access to the Kansai airport project,
+party sources said.
+    The LDP international economic affairs council was
+responding to Nakasone's request for measures to reduce Japan's
+increasing trade surpluses with the U.S. And Europe, they said.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="17549" NEWID="11487">
+<DATE>31-MAR-1987 12:50:25.15</DATE>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>usa</D><D>france</D></PLACES>
+<PEOPLE><D>reagan</D><D>chirac</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V RM
+&#22;&#22;&#1;f1869&#31;reute
+u f AM-CHIRAC-1STLD-(WRITET HROUGH)  03-31 0109</UNKNOWN>
+<TEXT>&#2;
+<TITLE>CHIRAC, REAGAN DISCUSS ARMS CONTROL, TRADE</TITLE>
+<DATELINE>    WASHINGTON, March 31 - </DATELINE><BODY>French Prime Minister Jacques Chirac
+opened talks with President Ronald Reagan expected to focus on
+superpower arms control moves and trade issues.
+    French officials said a major aim of Chirac's visit was to
+present France's concern that the United States might ignore
+European security interests in any accord with Moscow on
+removing medium-range nuclear missiles from the continent.
+    But Reagan was expected to assure Chirac that he will not
+agree to a deal at the Geneva superpower talks that would give
+the Russians superiority in shorter-range systems, diplomats
+said.
+    France has expressed doubts about removing U.S. missiles
+from Europe so long as the Soviet Union maintains an edge in
+other weaponry, particularly shorter-range rockets,
+conventional forces and chemical weapons.
+    Speaking last night, Chirac set out the French position
+saying: "Any agreement on intermediate nuclear forces should
+mention how equality can be achieved in short-range missiles."
+    Reagan and Chirac meanwhile signed an agreement ending a
+dispute between two leading research institutes over patent
+rights to a blood screening test for the deadly disease AIDS.
+    In a joint statement, Chirac and Reagan said the Pasteur
+Institute in Paris and the National Cancer Institute, of
+Bethesda, Maryland, agreed to give part of the royalties from
+the test to a new foundation dedicated to the wordwide fight
+against AIDS (Acquired Immune Deficiency Syndrome).
+    "This agreement opens a new era in Franco-American
+cooperation, allowing France and the United States to join
+their efforts to control this terrible disease in the hopes of
+speeding the development of an AIDS vaccine and cure," Reagan
+said at the signing ceremony. 
+    He said the two parties would share the patent and give 80
+per cent of the royalties received to the new foundation.
+    The foundation would also raise private funds and would
+donate 25 per cent of its money to combat AIDS in less
+developed countries. 
+    Both leaders stressed the long ties between France and the
+United States during a welcoming ceremony in the White House
+East Room, with Reagan describing France as "America's oldest
+ally in war and peace." 
+    "I have come to tell you that we are remain motivated by the
+same ideals of freedom, by the same will to face the dangers
+which we both confront -- terrorism, war, hunger, poverty, new
+diseases and drugs," Chirac replied.
+    But the two countries are likely to have less to agree on
+over the issue of trade, where Chirac is worried about a rise
+in protectionism in the U.S. Congress. 
+    A senior U.S. official yesterday dismissed a French idea to
+sell cut-price grain to poor countries in Africa as a way of
+lessening surplus stocks.
+    Chirac is expected to canvass support for the idea, first
+proposed by French Agriculture Minister Francois Guillaume,
+during his two-day visit to Washington.
+    The U.S. official described the idea as a "grain producers'
+OPEC" -- a reference to the Organization of Petroleum Exporting
+Countries -- and said it went against the Reagan
+administration's desire to lessen government intervention in
+trade.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="BYPASS" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="3402" NEWID="14419">
+<DATE> 7-APR-1987 15:03:32.33</DATE>
+<TOPICS></TOPICS>
+<PLACES></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f2151&#31;reute
+u f BC-REUTER-WORLD-NEWS-HIG   04-07 0515</UNKNOWN>
+<TEXT>&#2;
+<TITLE>REUTER WORLD NEWS HIGHLIGHTS 1800 GMT APRIL 7</TITLE>
+<DATELINE>    BEIRUT - </DATELINE><BODY>Scores of Syrian troops marched into the battered
+Shatila Palestinian refugee camp in Beirut in a bid to quell
+five months of fighting in Lebanon's "camps war," witnesses said.
+Beirut radio stations said Syrian troops would deploy at points
+around the camp, besieged by Shi'ite Moslem Amal militia, to
+guarantee freedom of movement for refugees.
+    - - - -
+    WASHINGTON - President Reagan said neither the United
+States nor the Soviet Union would occupy new embassies in each
+other's capitals until he was certain the new U.S. Building in
+Moscow was secure. He added a special review board headed by
+former Defence Secretary Melvin Laird would examine serious
+security breaches at the U.S. Diplomatic mission in Moscow.
+    - - - -
+    BAHRAIN - Iran reported launching a new offensive east of
+Iraq's southern city of Basra, saying troops supported by
+planes had killed over 2,400 Iraqis. Baghdad said its forces
+had repulsed the attack, killing thousands of Iranians.
+    - - - -
+    ZEEBRUGGE, Belgium - A capsized British car ferry with up
+to 140 bodies entombed inside was winched upright in a mammoth
+salvage operation.
+    - - - -
+    BONN - West German Chancellor Helmut Kohl told President
+Ronald Reagan in a letter that Bonn backed a superpower pact to
+ban medium-range missiles from Europe but was concerned about
+any parallel ban on shorter-range missiles.
+    - - - -
+    BRUSSELS - Syria, a key state in Middle East politics, is
+showing flexibility towards the idea of an international
+conference on peace in the region, Belgian Foreign Minister Leo
+Tindemans said after talks with King Hussein of Jordan.
+    - - - -
+    WASHINGTON - Kuwait has asked at least four countries,
+including the United States and Soviet Union, for use of their
+flags or tankers to protect oil shipments in the Gulf, U.S.
+Officials said. Britain and China were also asked, they added.
+    - - - -
+    CHANDIGARH, India - Sikh extremists killed five people and
+set ablaze cigarette, liquor and barber shops in Punjab in a
+new trial of strength with the state's moderate government over
+fundamentalist reforms.
+    - - - -
+    LONDON - Prospects for a June election in Britain rose
+after senior members of Prime Minister Thatcher's Conservative
+party urged her to go to the country a year early in the wake
+of more polls giving the party a commanding lead.
+    - - - -
+    ROME - Italy's government is expected to fall tomorrow
+following a decision by the majority Christian Democrats to
+withdraw their 16 ministers unless Socialist Prime Minister
+Bettino Craxi resigns, political sources said.
+    - - - -
+    BAHIA BLANCA, Argentina - Pope John Paul began a swing
+through Argentina's rich agricultural interior with a strong
+defence of the rights of rural workers, saying they had been
+neglected too long.
+    - - - -
+    ANKARA - A Turkish military court jailed former deputy
+prime minister Alpaslan Turkes for 11 years on charges of
+forming an armed gang and sentenced five supporters to death
+for murder, Anatolian Agency reported.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="1085" NEWID="16550">
+<DATE>13-APR-1987 14:00:31.73</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>ussr</D><D>usa</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f2092&#31;reute
+u f AM-SHULTZ   04-13 0124</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SHULTZ BEGINS ARMS TALKS WITH SHEVARDNADZE</TITLE>
+<DATELINE>    MOSCOW, April 13 - </DATELINE><BODY>U.S. Secretary of State George Shultz
+was holding several hours of talks with Soviet Foreign Minister
+Eduard Shevardnadze today in pursuit of the first superpower
+arms control agreement in nearly a decade.
+    Shultz, accompanied by a panoply of senior advisers and
+technical experts, went directly into a closed-door meeting
+with Shevardnadze and the Soviet delegation after arriving in
+Moscow from Helsinki aboard a U.S. Air Force jet.
+    State Department spokesman Charles Redman told reporters
+traveling with the secretary that as the crucial talks got
+under way, U.S. Arms control advisers were instructed not to
+discuss the substance of the American proposals with the press.
+    It has been reported previously that some of the proposals
+-- such as those dealing with President Ronald Reagan's "Star
+Wars" space shield against enemy missiles -- represent a
+hardening of the U.S. Position.
+    Nevertheless, U.S. Officials have been optimistic about the
+possibility of progress on arms control during the talks, which
+are scheduled to end Wednesday.
+    Reagan, who is believed to want an agreement before he
+leaves office in 1989, said last week that a breakthrough on an
+accord eliminating intermediate-range missiles (INF) in Europe
+was a distinct possibility.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="1309" NEWID="16774">
+<DATE>17-APR-1987 05:18:18.53</DATE>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>usa</D><D>japan</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f0092&#31;reute
+u f BC-JAPAN-DETAILS-PLAN-TO   04-17 0109</UNKNOWN>
+<TEXT>&#2;
+<TITLE>JAPAN DETAILS PLAN TO STAVE OFF TRADE PROBLEMS</TITLE>
+<DATELINE>     TOKYO, April 17 - </DATELINE><BODY>Japan's Liberal Democratic Party (LDP)
+has drawn up a detailed plan calling for large tax cuts and an
+increase in government purchases of foreign goods, the head of
+the committee working out the plan, Junichiro Koizumi, said.
+    The plan will also urge the government to double 1985's
+official development assistance to 7.6 billion dlrs within five
+years instead of seven as the government had promised, senior
+LDP officials said at a press conference.
+    LDP executive council chairman Shintaro Abe will explain
+the plan to U.S. Officials when he visits the U.S. On April 19.
+    Abe's visit is to prepare for Prime Minister Yasuhiro
+Nakasone's talks with President Ronald Reagan later this month.
+    Koizumi said the LDP plan will not specify the size of the
+tax cut or the amount of domestic demand to be stimulated.
+However, top LDP executives will work out figures so that Abe
+will be able to offer specifics to U.S. Officials.
+    The proposed increase in procurement of foreign goods by
+the government will probably include the purchase of super
+computers, LDP officials said.
+
+specific trade problems with other nations and will encourage
+flows of funds to developing countries, the officials said.
+    The LDP expects the measures to prop up the economy and
+lessen trade problems with the U.S., They added.
+    The basic ideas of the LDP's plan were presented to and
+welcomed by monetary authorities of the major industrial
+nations in Washington last week, they said.
+    The LDP plan will form the basis for the last of several
+packages to stimulate Japanese domestic demand and will be
+unveiled by the government in late May.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="1322" NEWID="16787">
+<DATE>17-APR-1987 07:52:49.46</DATE>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>usa</D><D>japan</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f0153&#31;reute
+u f BC-JAPAN-DETAILS-PLAN-TO   04-17 0108</UNKNOWN>
+<TEXT>&#2;
+<TITLE>JAPAN DETAILS PLAN TO STAVE OFF TRADE PROBLEMS</TITLE>
+<DATELINE>     TOKYO, April 17 - </DATELINE><BODY>Japan's Liberal Democratic Party (LDP)
+has drawn up a detailed plan calling for large tax cuts and an
+increase in government purchases of foreign goods, the head of
+the committee working out the plan, Junichiro Koizumi, said.
+    The plan will also urge the government to double 1985's
+official development assistance to 7.6 billion dlrs within five
+years instead of seven as the government had promised, senior
+LDP officials said at a press conference.
+    LDP executive council chairman Shintaro Abe will explain
+the plan to U.S. Officials when he visits the U.S. On April 19.
+    Abe's visit is to prepare for Prime Minister Yasuhiro
+Nakasone's talks with President Ronald Reagan later this month.
+    Koizumi said the LDP plan will not specify the size of the
+tax cut or the amount of domestic demand to be stimulated.
+However, top LDP executives will work out figures so that Abe
+will be able to offer specifics to U.S. Officials.
+    The proposed increase in procurement of foreign goods by
+the government will probably include the purchase of super
+computers, LDP officials said.
+    According to the plan, Japan will also strive to solve
+specific trade problems with other nations and will encourage
+flows of funds to developing countries, the officials said.
+    The LDP expects the measures to prop up the economy and
+lessen trade problems with the U.S., They added.
+    The basic ideas of the LDP's plan were presented to and
+welcomed by monetary authorities of the major industrial
+nations in Washington last week, they said.
+    The LDP plan will form the basis for the last of several
+packages to stimulate Japanese domestic demand and will be
+unveiled by the government in late May.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="NOT-USED" CGISPLIT="PUBLISHED-TESTSET" OLDID="21816" NEWID="17194">
+<DATE>26-APR-1987 00:24:03.40</DATE>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>japan</D></PLACES>
+<PEOPLE><D>nakasone</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f0006&#31;reute
+u f BC-NAKASONE-ADVISED-TO-E   04-26 0104</UNKNOWN>
+<TEXT>&#2;
+<TITLE>NAKASONE ADVISED TO EXPAND PURCHASES ABROAD</TITLE>
+<DATELINE>    TOKYO, April 26 - </DATELINE><BODY>Prime Minister Yasuhiro Nakasone was
+advised to work out a plan for his government to buy more than
+one billion dlrs worth of foreign industrial products as part
+of efforts to defuse Japan's trade frictions with the United
+States, officials said.
+    Former Foreign Minister Shintaro Abe made the
+recommendation at a meeting with Nakasone soon after returning
+from a U.S. Visit designed to pave the way for the prime
+minister's visit to Washington starting next Wednesday.
+    Abe met President Ronald Reagan and U.S. Congressional
+leaders during his visit.
+    It was not known how Nakasone responded to the suggestion.
+    It also included increasing the nation's untied loans to
+developing countries to between 25 billion and 30 billion dlrs
+over the next three years and giving foreign firms greater
+access to a six billion dlr international airport project in
+western Japan, officials said.
+    Abe called for tax cuts and government funds to be funneled
+into public works projects to stimulate domestic demand. Abe
+spoke of the possibility that Nakasone's visit could coincide
+with the passage of a protectionist trade bill by the U.S.
+House of Representatives.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="NOT-USED" CGISPLIT="PUBLISHED-TESTSET" OLDID="21833" NEWID="17211">
+<DATE>26-APR-1987 22:49:27.79</DATE>
+<TOPICS><D>money-fx</D><D>dlr</D></TOPICS>
+<PLACES><D>japan</D></PLACES>
+<PEOPLE><D>miyazawa</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f0164&#31;reute
+b f BC-MIYAZAWA-SAYS-POLICY   04-26 0107</UNKNOWN>
+<TEXT>&#2;
+<TITLE>MIYAZAWA SAYS POLICY COORDINATION KEY TO CURRENCY</TITLE>
+<DATELINE>    OSAKA, April 27 - </DATELINE><BODY>Japanese Finance Minister Kiichi Miyazawa
+told a press conference the basic solution to currency
+instability among major nations is economic policy
+coordination.
+    He said that is a time-consuming process as coordination
+does not always proceed in a way policy makers envisage. "That
+is democracy," he said. Upon that foundation, Miyazawa said,
+there must be coordinated intervention. Major nations have
+sufficient funds to continue concerted intervention, he added.
+    "Without doubt this set-up of coordinated intervention will
+continue to operate," Miyazawa said.
+    Miyazawa said Prime Minister Yasuhiro Nakasone and U.S.
+President Ronald Reagan are likely to reaffirm the Louvre and
+Washington Group of Seven (G-7) agreements on currency
+stability when they meet later this week.
+    Asked whether the dollar is declining against all major
+currencies, not only the yen, Miyazawa declined to make any
+comments.
+    He reiterated that many major nations have undertaken
+coordinated intervention in recent weeks to prop up the dollar,
+including countries who are not members of the G-7.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="NOT-USED" CGISPLIT="PUBLISHED-TESTSET" OLDID="21892" NEWID="17270">
+<DATE>27-APR-1987 07:13:16.65</DATE>
+<TOPICS><D>money-fx</D><D>dlr</D></TOPICS>
+<PLACES><D>japan</D></PLACES>
+<PEOPLE><D>miyazawa</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f0545&#31;reute
+u f BC-MIYAZAWA-SAYS-POLICY   04-27 0107</UNKNOWN>
+<TEXT>&#2;
+<TITLE>MIYAZAWA SAYS POLICY COORDINATION KEY TO CURRENCY</TITLE>
+<DATELINE>    OSAKA, April 27 - </DATELINE><BODY>Japanese Finance Minister Kiichi Miyazawa
+told a press conference the basic solution to currency
+instability among major nations is economic policy
+coordination.
+    He said that is a time-consuming process as coordination
+does not always proceed in a way policy makers envisage. "That
+is democracy," he said. Upon that foundation, Miyazawa said,
+there must be coordinated intervention. Major nations have
+sufficient funds to continue concerted intervention, he added.
+    "Without doubt this set-up of coordinated intervention will
+continue to operate," Miyazawa said.
+    Miyazawa said Prime Minister Yasuhiro Nakasone and U.S.
+President Ronald Reagan are likely to reaffirm the Louvre and
+Washington Group of Seven (G-7) agreements on currency
+stability when they meet later this week.
+    Asked whether the dollar is declining against all major
+currencies, not only the yen, Miyazawa declined to make any
+comments.
+    He reiterated that many major nations have undertaken
+coordinated intervention in recent weeks to prop up the dollar,
+including countries who are not members of the G-7.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="NOT-USED" CGISPLIT="PUBLISHED-TESTSET" OLDID="21901" NEWID="17279">
+<DATE>27-APR-1987 07:27:50.15</DATE>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>japan</D><D>usa</D></PLACES>
+<PEOPLE><D>de-clercq</D><D>yeutter</D></PEOPLE>
+<ORGS><D>ec</D></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;A F
+&#22;&#22;&#1;f0597&#31;reute
+r f BC-U.S.-WARNS-OF-TRADE-B   04-27 0073</UNKNOWN>
+<TEXT>&#2;
+<TITLE>U.S. WARNS OF TRADE BILL, EC ATTACKS JAPAN</TITLE>
+<DATELINE>    KASHIJIMA, Japan, April 27 - </DATELINE><BODY>The U.S. warned its major
+trade partners that its trade deficit must fall by September or
+a protectionist trade bill from Congress would be highly
+likely.
+    Meanwhile, European Community (EC) external trade chief
+Willy de Clercq said that if Japan's trade surplus, which hit
+almost 90 billion dlrs last year, continued so high, there
+would be stormy weather ahead.
+    U.S. Trade representative Clayton Yeutter told trade
+leaders from Japan, the EC and Canada that there was at least a
+50-50 chance that a protectionist bill reaching the House of
+Representatives this week would pass the Senate in September.
+    The U.S. economy badly needed better trade figures by then,
+or President Ronald Reagan would have a difficult time vetoing
+such a bill, he said, according to a series of briefings to
+reporters by official delegates at the weekend meeting.
+    A 15 billion dlr U.S. Trade deficit in March had only
+incensed Congress further, he said.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="NOT-USED" CGISPLIT="PUBLISHED-TESTSET" OLDID="21926" NEWID="17304">
+<DATE>27-APR-1987 08:40:20.43</DATE>
+<TOPICS><D>trade</D></TOPICS>
+<PLACES><D>japan</D><D>usa</D></PLACES>
+<PEOPLE><D>nakasone</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f0852&#31;reute
+u f BC-NAKASONE-ADVISED-TO-E   04-27 0104</UNKNOWN>
+<TEXT>&#2;
+<TITLE>NAKASONE ADVISED TO EXPAND PURCHASES ABROAD</TITLE>
+<DATELINE>    TOKYO, April 27 - </DATELINE><BODY>Prime Minister Yasuhiro Nakasone was
+advised to work out a plan for his government to buy more than
+one billion dlrs worth of foreign industrial products as part
+of efforts to defuse Japan's trade frictions with the United
+States, officials said.
+    Former Foreign Minister Shintaro Abe made the
+recommendation at a meeting with Nakasone soon after returning
+from a U.S. Visit designed to pave the way for the prime
+minister's visit to Washington starting next Wednesday.
+    Abe met President Ronald Reagan and U.S. Congressional
+leaders during his visit.
+    It was not known how Nakasone responded to the suggestion.
+    It also included increasing the nation's untied loans to
+developing countries to between 25 billion and 30 billion dlrs
+over the next three years and giving foreign firms greater
+access to a six billion dlr international airport project in
+western Japan, officials said.
+    Abe called for tax cuts and government funds to be funneled
+into public works projects to stimulate domestic demand. Abe
+spoke of the possibility that Nakasone's visit could coincide
+with the passage of a protectionist trade bill by the U.S.
+House of Representatives.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20431" NEWID="21006">
+<DATE>19-OCT-1987 15:31:35.28</DATE>
+<TOPICS><D>crude</D><D>ship</D></TOPICS>
+<PLACES><D>bahrain</D><D>usa</D><D>iran</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;C 
+&#22;&#22;&#1;f2849&#31;reute
+u f BC-/DIPLOMATS-CALL-U.S.   10-19 0110</UNKNOWN>
+<TEXT>&#2;
+<TITLE>DIPLOMATS CALL U.S. ATTACK ON OIL RIG RESTRAINED</TITLE>
+<AUTHOR>    By Ian MacKenzie</AUTHOR>
+<DATELINE>    BAHRAIN, Oct 19 - </DATELINE><BODY>A U.S. attack on an Iranian oil platform
+in the Gulf on Monday appeared to be a tit-for-tat raid
+carefully orchestrated not to be too provocative or upset Arab
+allies, Western diplomats in the region said.
+    U.S. Defence Secretary Caspar Weinberger said Monday that
+U.S. Warships destroyed the oil platform in the southern Gulf
+in response to a missile strike on the American-registered
+Kuwaiti tanker Sea Isle City in Kuwaiti waters on Friday.
+    "We consider the matter closed," he said, a signal the U.S.
+administration did not want the Gulf crisis to escalate.
+    Iran had warned the United States earlier in the day
+against exacerbating the Gulf crisis, saying military action
+would endanger American interests.
+    Following the raid, a okesman for Tehran's War
+Information Headquarters vowed to avenge the attack with a
+"crushing blow."
+    "The United States has entered a swamp from which it can in
+no way get out safely," Tehran Radio quoted him as saying.
+    Diplomats noted, however, Iran was also seeking to avoid
+ostracism by Arab states due to meet at a summit in Amman on
+November 8 and discuss the Iran-Iraq war.
+    Iranian Prime Minister Mir-Hossein Mousavi is currently in
+Damascus, and diplomats said he would seek Syrian help in
+preventing a total Arab breach with Tehran.
+    Further escalation of the war threatening the Gulf Arab
+states could work against Tehran at the Amman gathering, they
+said.
+    "The ball is in Iran's court now. It's up to Tehran to
+respond one way or the other," a diplomat said.
+    President Ronald Reagan warned Iran of stronger American
+countermeasures if the military escalation continued.
+    Western diplomats and military sources in the area said
+shelling the platform appeared to be the least provocative act
+the United States could have taken once it had decided to
+retaliate for the tanker attack, blamed by both the Americans
+and Kuwaitis on Iran.
+    "It's interesting that they chose something in international
+waters because it doesn't implicate any other nation," one
+diplomat said. "This was better for U.S. Relations with the Gulf
+Arab states, particularly Kuwait."
+    Commented another diplomat: "Kuwait must be happy that the
+U.S. Has done something, but relieved that Faw was not attacked
+on its doorstep."
+    One source said of the attack on the oil platform: "They
+managed to warn off the crew and hit something that was the
+least nuisance to everybody."
+    A diplomat commented: "They were very clever in the place
+they chose. It gets attention, but it hasn't devastated
+anything because it wasn't working in the first place."
+    A senior Arab banker in the area said after the news broke:
+"This was a good, measured response without risking a flare-up
+... It is a face-saving response (for the Americans)."
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="19873" NEWID="21563">
+<DATE>19-OCT-1987 02:25:17.02</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>iran</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM V Y 
+&#22;&#22;&#1;f0109&#31;reute
+u f BC-IRAN-PRESIDENT-DOUBTS   10-19 0113</UNKNOWN>
+<TEXT>&#2;
+<TITLE>IRAN PRESIDENT DOUBTS U.S. ACTION AGAINST IRAN</TITLE>
+<DATELINE>    NICOSIA, Oct 19 - </DATELINE><BODY>Iranian President Ali Khamenei said he
+doubted the U.S. Was in position to take violent action against
+Iran in the Gulf, Tehran Radio reported.
+    The U.S. Government "is in a very difficult situation now
+and it is not clear if it has the necessary elements for a
+violent action," the radio quoted him as saying in an interview
+with the English language daily Tehran Times.
+    In Washington, President Ronald Reagan said he had decided
+on a response to Iran, which the Americans blame for two
+missile attacks on U.S.-related tankers in Kuwaiti waters last
+week, but declined to say what the response was.
+    Khamenei said the U.S. Government had to take some action
+to demonstrate its authority, "but on the other hand any violent
+act in the Persian Gulf will greatly harm long-term U.S.
+Interests," the radio, monitored in Nicosia, reported.
+    On efforts for a ceasefire in the Iran-Iraq war, Khamenei
+said: "Declaration of the aggressor and a ceasefire should be
+concurrent. Formation of a panel to determine the aggressor
+necessarily preceeds the ceasefire."
+    He also rejected a peace-keeping committee or a buffer
+force as instruments to implement a July 20 U.N. Security
+Council order for a ceasefire in the seven-year-old Gulf war.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+
+
+All the results have been stored to file:
+D:\workspace\COMP6791\LabAss1\output\search-results.txt
+

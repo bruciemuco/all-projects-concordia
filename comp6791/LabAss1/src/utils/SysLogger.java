@@ -37,8 +37,6 @@ class OutputTextFormat extends Formatter {
 public class SysLogger {
 	public static Logger log = Logger.getLogger("COMP6791Project");
 	
-	public static boolean bLexicalAnalyzer = false;
-	
 	private static boolean logEnable = true;
 	
 	public static void enableLog(boolean b) {
@@ -66,7 +64,7 @@ public class SysLogger {
 
 	public static void info(String msg) {
 		if (logEnable) {
-			System.out.println(msg);
+			//System.out.println(msg);
 			log.info(msg);
 		}
 	}
