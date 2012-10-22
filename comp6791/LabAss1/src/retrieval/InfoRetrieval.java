@@ -22,6 +22,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import parser.InvertedIndex;
@@ -108,9 +109,8 @@ public class InfoRetrieval {
 					return null;
 				}
 				String[] tmp = buf.split(",");
-				String t = new String(tmp[0].getBytes());
 				
-				if (!t.equals(term)) {
+				if (!tmp[0].equals(term)) {
 					continue;
 				}
 				
@@ -135,7 +135,7 @@ public class InfoRetrieval {
 	}
 	
 	// get the intersection of postings list
-	private ArrayList<Long> findIntersectionOfDocID(InvertedIndex[] arrIdx) {
+	private ArrayList<Long> getIntersectionOfDocID(InvertedIndex[] arrIdx) {
 		// first find the smallest docFreq one
 		int k = 0;
 		for (int i = 1; i < arrIdx.length; i++) {
@@ -164,9 +164,48 @@ public class InfoRetrieval {
 			}
 		}
 		
-//		for (Long l : ret) {
-//			SysLogger.info(l.toString() + " ");
-//		}
+		return ret;
+	}
+	
+	// get union of two postings lists for the terms
+	// e.g. (Black Monday) OR (Wall Street crisis)
+	private ArrayList<Long> getUnionOfDocID(ArrayList<Long> left, ArrayList<Long> right) {
+		ArrayList<Long> ret = new ArrayList<Long>();
+		
+		// we need to sort the postings
+		int i = 0, j = 0;
+		while (true) {
+			if (i < left.size() && j < right.size()) {
+				if (left.get(i).longValue() <= right.get(j).longValue()) {
+					ret.add(left.get(i++));					
+				} else {
+					ret.add(right.get(j++));
+				}
+			} else if (i == left.size() && j < right.size()) {
+				ret.add(right.get(j++));
+			} else if (j == right.size() && i < left.size()) {
+				ret.add(left.get(i++));
+			} else {
+				break;
+			}
+		}
+	
+		return ret;
+	}
+	
+	// get negation between two postings of the terms
+	// e.g. (Black Monday) AND NOT (Wall Street crisis)
+	private ArrayList<Long> getNegationOfDocID(ArrayList<Long> left, ArrayList<Long> right) {
+		ArrayList<Long> ret = new ArrayList<Long>(left);
+		
+		for (int i = 0; i < left.size(); i++) {
+			for (int j = 0; j < right.size(); j++) {
+				if (left.get(i).longValue() == right.get(j).longValue()) {
+					ret.remove(i);
+				}
+			}
+		}
+		
 		return ret;
 	}
 	
@@ -256,26 +295,44 @@ public class InfoRetrieval {
 		return sbRet;
 	}
 	
-	public String[] parseQuery(String query) {
-		String[] terms = query.toLowerCase().split(" ");
-		
-		if (terms.length < 1) {
-			return null;
+	// remove '(' ')'
+	private String removeParens(String terms) {
+		if (terms.charAt(0) == '(') {
+			terms = terms.substring(1, terms.length() - 1);
 		}
 		return terms;
 	}
 	
-	public StringBuffer search(String query) {
-		StringBuffer sbRet = new StringBuffer();
-		String[] terms = parseQuery(query);		
-
-		if (terms == null) {
-			sbRet.append("Wrong query, please check it.");
-			return sbRet;
+	// parse the query to support OR and AND NOT
+	public ArrayList<Long> parseQuery(String query) {
+		String[] subQuery = query.trim().split("OR");
+		
+		if (subQuery.length == 1) {
+			subQuery = query.trim().split("AND NOT");
+			if (subQuery.length == 1) {
+				String[] terms = removeParens(subQuery[0].trim().toLowerCase()).trim().split(" ");
+				return getIntersectionPostingsOfTerms(terms);
+				
+			} else {
+				// a AND NOT b
+				String[] leftTerms = removeParens(subQuery[0].trim().toLowerCase()).trim().split(" ");
+				String[] rightTerms = removeParens(subQuery[1].trim().toLowerCase()).trim().split(" ");
+				
+				return getNegationOfDocID(getIntersectionPostingsOfTerms(leftTerms), 
+						getIntersectionPostingsOfTerms(rightTerms));
+			}
+			
+		} else {
+			// a OR b
+			String[] leftTerms = removeParens(subQuery[0].trim().toLowerCase()).trim().split(" ");
+			String[] rightTerms = removeParens(subQuery[1].trim().toLowerCase()).trim().split(" ");
+			
+			return getUnionOfDocID(getIntersectionPostingsOfTerms(leftTerms), 
+					getIntersectionPostingsOfTerms(rightTerms));
 		}
-		
-		sbRet.append("Query: " + query + "\n\n");
-		
+	}
+	
+	private ArrayList<Long> getIntersectionPostingsOfTerms(String[] terms) {
 		InvertedIndex[] arrIdx = new InvertedIndex[terms.length];
 		Stemmer s = new Stemmer();
 		
@@ -294,29 +351,50 @@ public class InfoRetrieval {
 			if (arrIdx[i] == null) {
 				arrIdx[i] = getPostingsFromFiles(stemmedTerm);
 				if (arrIdx[i] == null) {
-					sbRet.append("Not found any result for the term: " + stemmedTerm);
-					return sbRet;
+					//sbRet.append("Not found any result for the term: " + stemmedTerm);
+					return null;
 				}
 			}
+			
+			// sysloger
+			SysLogger.info("Get postings for " + terms[i] + ":");
+			StringBuffer msg = new StringBuffer();
+			for (int j = 0; j < arrIdx[i].postings.length; j++) {
+				msg.append(arrIdx[i].postings[j] + ", ");
+			}
+			SysLogger.info(msg.toString());
 		}
 		
 		// compare the postings, find the intersection of the docID
-		ArrayList<Long> docIDs = findIntersectionOfDocID(arrIdx);
+		return getIntersectionOfDocID(arrIdx);
+	}
+	
+	public StringBuffer search(String query) {
+		StringBuffer sbRet = new StringBuffer();		
 		
-		if (docIDs.size() < 1) {
-			sbRet.append("Not found any intersection for the terms");
+		sbRet.append("Query: " + query + "\n\n");
+		if (query == null || query.length() < 1) {
+			sbRet.append("Wrong query, please check it.");
+			return sbRet;
+		}
+		
+		ArrayList<Long> docIDs = parseQuery(query);
+
+		if (docIDs == null || docIDs.size() < 1) {
+			sbRet.append("Not found any postings for the terms");
 			return sbRet;
 		}
 		
 		// show the list of doc id to user
-		sbRet.append("Search result:\n");
-		sbRet.append("Document ID list (In total: " + docIDs.size() + "): \n");
+		sbRet.append("Search result:\nDocument ID list (In total: " + docIDs.size() + "): \n");
 		for (int i = 0; i < docIDs.size(); i++) {
 			sbRet.append(String.format("%5s ", docIDs.get(i).toString()));
+			
 			if (i % 10 == 9) {
 				sbRet.append("\n");
-			}			
+			}
 		}
+		SysLogger.info(sbRet.toString());
 		sbRet.append("\n\n");
 		
 		// get doc from raw files

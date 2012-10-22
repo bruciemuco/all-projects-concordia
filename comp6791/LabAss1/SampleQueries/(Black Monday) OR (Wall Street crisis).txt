@@ -1,0 +1,963 @@
+Query: (Black Monday) OR (Wall Street crisis)
+
+Search result:
+Document ID list (In total: 15): 
+  178  6957  7023 14635 16072 20007 20259 20764 20855 20867 
+20928 20955 20987 21422 21422 
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="5721" NEWID="178">
+<DATE>26-FEB-1987 18:00:08.86</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f0261&#31;reute
+r f AM-REAGAN-CABINET   02-26 0091</UNKNOWN>
+<TEXT>&#2;
+<TITLE>REPORT COULD BE FINAL BLOW FOR REGAN</TITLE>
+<AUTHOR>    By Sue Baker, Reuters</AUTHOR>
+<DATELINE>    WASHINGTON, Feb 26 - </DATELINE><BODY>The Tower Commission's scathing   
+comments on President Reagan's embattled chief of staff Donald
+Regan could signal the death knell to his White House tenure,
+but the impact of its strong criticism on two other top
+officials was less clear.
+    Regan has come in for tough criticism for his handling of
+Reagan's worst political crisis since details of the covert
+arms sales to Iran and diversion of profits to Nicaraguan
+rebels first emerged last November.
+    But criticism of the roles of Secretary of State George
+Shultz and Defense Secretary Caspar Weinberger, who said they
+opposed the Iran arms initiative yet failed to end it, had been
+muted until the release of the Tower Commission report.
+    "Their obligation was to give the president their full
+support and continued advice with respect to the program or, if
+they could not in conscience do that, to so inform the
+president," the report said after a three-month probe.
+    "Instead, they simply distanced themselves from the program.
+They protected the record as to their own positions on this
+issue. They were not energetic in attempting to protect the
+president from the consequences of his personal commitment to
+freeing the hostages."
+    The report saved some of its most scathing language for
+Regan, a gruff former Wall Street executive and close personal
+friend of Reagan whose autocratic rule in the White House
+angered some top Reagan officials and, perhaps more
+importantly, Reagan's wife Nancy.
+    "More than almost any chief of staff of recent memory, he
+asserted personal control over the White House staff and sought
+to extend this control to the national security adviser," said
+the report.
+    Washington analysts said Regan's departure now appeared to
+be only a matter of timing. Many expected the president to
+announce it when he addresses the nation on the Tower
+Commission's findings next week.
+    With Regan's departure apparently imminent and Poindexter
+and other key figures in the scandal already out of office, the
+report's tough criticism of Shultz and Weinberger could turn
+the spotlight on their future.
+    Senate Republican leader Robert Dole, a key Reagan ally,
+told reporters the report disclosed "colossal blunders" and said
+people who had not served the president well should step aside,
+but he did not specify who should go.
+    "It would seem to me that if you don't protect the
+president, you don't serve the president well, then you should
+move on," the Kansas Republican, a likely presidential candidate
+next year, said.
+    One Republican strategist said he believed Regan would not
+be the only White House official to leave in the near future.
+   
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="11870" NEWID="6957">
+<DATE>19-MAR-1987 02:21:29.97</DATE>
+<TOPICS><D>gold</D></TOPICS>
+<PLACES><D>south-africa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM M C
+&#22;&#22;&#1;f0041&#31;reute
+u f BC-SOME-7,000-SOUTH-AFRI   03-19 0105</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SOME 7,000 SOUTH AFRICAN MINERS RETURN TO WORK</TITLE>
+<DATELINE>    JOHANNESBURG, March 19 - </DATELINE><BODY>Some 7,000 black workers returned
+to work after staging one-day strikes at two mines on Monday,
+the National Union of Mineworkers and the companies that own
+the mines said.
+    About 6,000 miners resumed work at the Grootvlei gold mine
+east of Johannesburg after protesting the transfer of
+colleagues to other jobs at the same mine, owners General
+Mining Union Corp Ltd &lt;GENM.J> said.
+    The union said about 1,000 mineworkers at a new coal
+facility owned by Anglo American Corp of South Africa Ltd
+&lt;ANGL.J> also returned to their jobs on Tuesday.
+    The workers at Anglo's Vaal Colliery south of Johannesburg
+had struck to protest the alleged refusal of officials of the
+South African homeland of Transkei to allow miners to attend a
+funeral in the homeland, a union spokesman said.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="11936" NEWID="7023">
+<DATE>19-MAR-1987 07:23:33.05</DATE>
+<TOPICS><D>gold</D></TOPICS>
+<PLACES><D>south-africa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;A
+&#22;&#22;&#1;f0474&#31;reute
+r f BC-SOME-7,000-SOUTH-AFRI   03-19 0104</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SOME 7,000 SOUTH AFRICAN MINERS RETURN TO WORK</TITLE>
+<DATELINE>    JOHANNESBURG, March 19 - </DATELINE><BODY>Some 7,000 black workers returned
+to work after staging one-day strikes at two mines on Monday,
+the National Union of Mineworkers and the companies that own
+the mines said.
+    About 6,000 miners resumed work at the Grootvlei gold mine
+east of Johannesburg after protesting the transfer of
+colleagues to other jobs at the same mine, owners General
+Mining Union Corp Ltd &lt;GENM.J> said.
+    The union said about 1,000 mineworkers at a new coal
+facility owned by Anglo American Corp of South Africa Ltd
+&lt;ANGL.J> also returned to their jobs on Tuesday.
+    The workers at Anglo's Vaal Colliery south of Johannesburg
+had struck to protest the alleged refusal of officials of the
+South African homeland of Transkei to allow miners to attend a
+funeral in the homeland, a union spokesman said.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="3619" NEWID="14635">
+<DATE> 7-APR-1987 16:36:25.77</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>brazil</D><D>usa</D></PLACES>
+<PEOPLE><D>sarney</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM V
+&#22;&#22;&#1;f2418&#31;reute
+u f BC-ECONOMIC-SPOTLIGHT--   04-07 0100</UNKNOWN>
+<TEXT>&#2;
+<TITLE>BRAZIL'S DEBT CRISIS BECOMING POLITICAL CRISIS</TITLE>
+<AUTHOR>    By Stephen Powell, Reuters</AUTHOR>
+<DATELINE>    SAO PAULO, April 7 - </DATELINE><BODY>Brazil's financial crisis is rapidly
+becoming a political and social crisis, and President Jose
+Sarney faces increasingly serious questions about his future.
+    As Brazil enters debt talks with creditors in the United
+States this week, political analysts say Sarney's
+administration has never appeared weaker.
+    The full political price which Sarney will have to pay for
+the failure of the much-vaunted anti-inflation Cruzado Plan is
+still not clear. He might have to pay with the presidency.
+    Calls are increasing for direct presidential elections to
+pick a successor to Sarney early next year. The length of his
+term will be decided by a Constituent Assembly, and Sarney has
+been lobbying for a six-year term.
+    Sarney came to power, without facing presidential
+elections, in March 1985, when the military bowed out after 21
+years of rule.
+    Although there was wide public support for direct 
+elections for president, the military as one of their last
+acts, insisted an electoral college, where it felt it had more
+influence, make the choice.
+    The college chose Tancredo Neves, a popular politician who
+headed the Brazilian Democratic Movement Party (PMDB), which
+had opposed military rule.
+    In part to smooth relations with the military, Neves chose
+Sarney, a supporter of the generals, for the purely ceremonial
+post of vice-president. But Neves died before he could take
+office and Sarney took power.
+    He won the grudging support of the PMDB and the Cruzado
+Plan was wildly popular with inflation-weary Brazilians.
+    But the Cruzado Plan failed and politics in Brazil has not
+been the same.
+    "The country is a rudderless ship," said a U.S. Diplomat,
+echoing a common view that the government lacks any clear idea
+of how to tackle the economic crisis.
+    Sarney has appeared increasingly isolated, with criticism
+coming from the business community, the trade unions, some of
+the military, the media and political opponents.
+    Many businessmen are unhappy with Sarney's decision
+announced on February 20 to suspend interest payments on 68
+billion dlrs of foreign debt.
+    A motor industry executive said: "The business community
+thinks Brazil should go to the IMF. Their rules are sometimes
+harsh and strict, but this is the only way to put the house in
+order."
+    Trade unions generally support the debt moratorium, but
+disagree with other aspects of government policy. Since the end
+of February they have organized national strikes of seamen,
+bankworkers and federal university teachers and countless local
+stoppages and protests.
+    Economic problems have prompted criticism from some
+military figures, including the last army ruler, General Joao
+Figueiredo. It is a sign of the times that almost daily
+military men deny there is going to be a coup.
+    If the army does stay in the barracks, the key arbitors of
+Sarney's fate will be the PMDB's leaders. So far, they have not
+taken a clear stand on the issue of direct elections.
+    But one PMDB leader, Senator Affonso Camargo, pointedly
+said yesterday that it was the sovereign right of the
+Consituent Assembly to call direct elections for the presidency
+whenever it wished.
+    In the media, Sarney has to contend with strong criticism.
+    One senior political commentator, Fernando Pedreira of the
+Jornal do Brasil, wrote in the newspaper last week:
+    "President Sarney is ... a man of good intentions, but it
+is just possible that he himself is not aware of the true state
+of the country and the people since the immense failure of the
+Cruzado Plan.
+    "The disappointment, the frustration, the irritation, the
+enticement have been (and continue to be) too great, too
+profound."He called for direct elections early in 1988 as the
+only way out of the present crisis.
+    One of Sao Paulo's leading news magazines, Senhor, said in
+an editorial this week: "The anarcho-populist government of
+President Jose Sarney has failed. Two years have already been
+too long for such a disastrous experience.
+    "It deserves to be buried as quickly as possible. The
+natural solution: direct elections soon."
+    The government's inability to control inflation is now
+bringing with it serious social problems.
+    An explosion in rents in Sao Paulo has thrown tens of
+thousands of families onto the streets because they can no
+longer afford to pay even for a wooden shack in the slums.
+    The local press says the city is experiencing the biggest
+wave of land invasions in its history.
+   According to rental agencies, rents have increased 500 pct
+in little more than a year. Even the cheapest shacks now cost
+2,000 cruzados (90 dollars) a month, half as much again as the
+minimum wage, which is all that many earn.
+    Cardinal Paulo Evaristo Arns, the Roman Catholic archbishop
+of Sao Paulo, warned yesterday of the possibility of "a social
+conflict of unimaginable proportions."
+    With his back to the wall politically and with social
+tensions rising, Sarney is no position to compromise on debt.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="5111" NEWID="16072">
+<DATE> 9-APR-1987 21:41:33.32</DATE>
+<TOPICS><D>money-fx</D><D>interest</D></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>volcker</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f2915&#31;reute
+u f BC-U.S.-MARKETS-OFFER-GL   04-09 0113</UNKNOWN>
+<TEXT>&#2;
+<TITLE>U.S. MARKETS OFFER GLIMPSE OF VOLCKER NIGHTMARE</TITLE>
+<AUTHOR>    By Alan Wheatley, Reuters</AUTHOR>
+<DATELINE>    NEW YORK, April 9 - </DATELINE><BODY>Today's turmoil in the U.S. Financial
+markets, with bond and stock prices tumbling in the dollar's
+wake, is evidence of a major shift in investor psychology that
+is likely to spell more turbulence ahead, economists said.
+    For two years, the markets had hailed the dollar's decline
+as the cure-all for the U.S. Trade deficit. Interest rates fell
+sharply and Wall Street became a one-way street, up.
+    But that confidence is now cracking as the financial
+markets suddenly believe Fed chairman Paul Volcker's
+often-repeated warnings about the risks of a dollar collapse.
+    "Volcker's been saying for a long time that a dollar
+freefall would be extremely dangerous - now he's got it," said
+David Jones, economist at Aubrey G. Lanston and Co Inc.
+    The dollar fell below 144 yen today for the first time in
+40 years as the Group of Seven finance ministers in Washington
+failed to convince the foreign exchange market that they have a
+credible strategy for redressing global trade imbalances, short
+of further depreciation of the dollar.
+    Bonds suffered their biggest one-day drop in months amid
+worries that the dollar's slide will rekindle inflation, scare
+away foreign investors and force the Fed to tighten credit.
+    The inflationary fears boosted gold bullion by more than 12
+dlrs to a 1987 high of 432.20/70 dlrs an ounce, while the spike
+in interest rates pulled the Dow Jones Industrial Average down
+by 33 points to 2339.
+    Norman Robertson, Mellon Bank chief economist, called the
+markets' instability frightening. He believes economic
+fundamentals do not justify the bearishness but said that "once
+you start the ball rolling it's difficult to stop."
+    "There's a stark possibility that you could get a
+destabilizing drop in the dollar that forces up interest rates
+and drives us into recession. The markets are in a panic."
+    Stephen Marris of the Institute for International Economics
+in Washington, has been warning for a long time that the
+controlled decline of the dollar since peaks of 3.47 marks and
+264 yen in February 1985 could turn into a nightmare.
+    "We're still more or less on track for a hard landing... But
+the agony may be fairly drawn out," Marris told Reuters.
+    Marris does not expect the crisis to peak until later this
+year, but he warned that the situation is so fragile that it
+would take very little to touch off what he calls the second
+phase of the hard landing, whereby a loss of confidence in the
+dollar pushes up interest rates and leads to a recession.
+    The stock market's reaction today and its sharp drop on
+March 30 shows how the loss of confidence could come about.
+    The fact that it has not happened yet is consistent with
+historical experience, which teaches that domestic markets are
+not affected until a currency is in the final stages of its
+decline, Marris said. He has forecast a drop to about 125 yen.
+    Marris felt that a major impetus for the dollar's latest
+weakness was the loss of credibility that central banks
+suffered when they failed to prevent the dollar from falling
+below 150 yen, the floor that the market believes was set as
+part of the G-7 Paris agreement in February.
+    Robertson at Mellon, by contrast, said the loss of
+confidence was triggered last week when Washington announced
+plans to slap 300 mln dlrs of tariffs on Japanese electronic
+imports, raising the specter of a debilitating trade war.
+    Many economists believe that long-run stability will not
+return to the markets until the root cause of the trade gap is
+addressed - excessive consumption in the U.S., Reflected in the
+massive budget deficit.
+    But in the short term, given the failure of the G-7 and of
+central bank intervention, some feel that the Fed will have no
+choice but to tighten credit to restore faith in the dollar.
+    "The only thing that will stop the dollar falling is a
+substantial increase in the discount rate and a corresponding
+cut abroad, at least by Japan," said Lanston's Jones.
+    Marris expects the Fed to act quickly to raise interest
+rates, even at the risk of increasing the debt burden for
+American farmers, Latin American governments and others.
+    But Robert Giordano, chief economist at Goldman Sachs and
+Co, scoffed at the notion. "It's ridiculous to think the Federal
+Reserve will raise interest rates when the dollar is weak
+against just one currency. This is yen strength, not dollar
+weakness," he said.
+    Giordano said the market was ignoring the progress being
+made toward reducing the U.S. Budget deficit.
+    "We're going to have one of the biggest reductions in the
+budget deficit relative to GNP in history this year, and nobody
+cares," he said, noting that only the deficit cut in 1968-69
+will have been greater.
+    He said he does not expect the dollar to collapse and
+thinks interest rates are likely to fall back later this year.
+    But for now, market psychology has changed so abruptly that
+a further drop in the bond market cannot be ruled out. "Put on
+your helmets," Giordano said.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20602" NEWID="20007">
+<DATE>20-OCT-1987 00:30:35.73</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>japan</D></PLACES>
+<PEOPLE><D>nakasone</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM AI 
+&#22;&#22;&#1;f0036&#31;reute
+b f BC-JAPANESE-PREMIER-SAYS   10-20 0110</UNKNOWN>
+<TEXT>&#2;
+<TITLE>JAPANESE PREMIER SAYS HE WATCHING STOCK SITUATION</TITLE>
+<DATELINE>    TOKYO, Oct 20 - </DATELINE><BODY>Japanese Prime Minister Yasuhiro Nakasone
+was quoted by Kyodo News Service as saying he was watching the
+stock market situation.
+    "We must watch things a little longer. New York is down 22
+pct, London 10 pct, while compared to this Japan is seven pct
+down," Kyodo quoted him as telling reporters.
+    Asked if he agreed with analysts who called the stock
+sell-off "Black Monday," Nakasone said: "Compared with times past,
+economics have changed completely." He rejected a comparison
+between the present situation and the stock market collapse of
+1929 and the recession which followed.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20854" NEWID="20259">
+<DATE>20-OCT-1987 10:41:35.67</DATE>
+<TOPICS><D>money-fx</D></TOPICS>
+<PLACES><D>uk</D><D>usa</D><D>west-germany</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;A 
+&#22;&#22;&#1;f1355&#31;reute
+d f BC-LOUVRE-REAFFIRMATION   10-20 0114</UNKNOWN>
+<TEXT>&#2;
+<TITLE>LOUVRE REAFFIRMATION NOT ENOUGH - U.K. ANALYSTS</TITLE>
+<AUTHOR>    By Rowena Whelan</AUTHOR>
+<DATELINE>    LONDON, Oct 20 - </DATELINE><BODY>U.S. And West German reaffirmation of
+support for the Louvre Accord cannot cure the fundamental
+problems bedevilling the world economy which lie behind the
+current collapse in stock markets, London economists said.
+    "There's going to have to be some acknowledgement that the
+dollar is going to be allowed to slip," said Richard Jeffrey of
+Hoare Govett. "If not, there is going to be continued fear that
+when pressure emerges on the dollar, the Fed will be forced to
+tighten. This throws up the economic abyss of recession in the
+U.S. With obvious knock on effects on the rest of the world."
+    But some economists added that Wall Street's crash, which
+dragged other major markets down with it, may help curb the
+very problems that sparked the turmoil - namely world inflation
+fears and the massive and persistent U.S. Trade deficits.
+    "If there is a benefit from a 23 pct fall in Wall Street
+...It's some sort of resistance to inflation worldwide," said
+Geoffrey Dennis of brokers James Capel, echoing comments from
+other London and Tokyo analysts.
+    Lower personal wealth from lower stock prices and fears of
+further falls should dampen credit growth, curbing inflationary
+pressures and import demand in the U.S., They say.
+    Such considerations may be helping bond markets resist the
+equity crash, according to Mike Osborne of Kleinwort Grieveson.
+    "It would be suicidal for any government in the context of
+what happened in the last couple of days to jack up their
+interest rates," he added.
+    Stocks surged after news Chemical Bank cut its prime
+lending rate half a point to 9.25 pct Tuesday and U.S. Fed
+chairman Alan Greenspan pledged support for the financial
+system.
+    The news eroded the most immediate fears that the stock
+collapse would spill over into the economy, via a banking
+crisis for example, thus precipitating recession.
+    It also helped the dollar rally sharply, to a high of
+1.8200 marks from a European low of 1.7880. But economists said
+today's whiplash moves do not have long term significance and
+that markets should try to keep the underlying fundamentals in
+mind.
+    "The United States has been able to live on borrowed time.
+If the effect of this (crash) is to produce slower economic
+growth not recession...It contains good news (and) provides a
+more realistic assessment of the U.S. Economy," said Capel's
+Dennis. But he added that markets are still very much in
+danger.
+    "The liquidity doesn't disappear...All it's doing is
+disappearing from the equity markets," Dennis noted.
+    David Morrison of Goldman Sachs International said world
+market turbulence will be exacerbated if the Group of Seven
+(G-7) leading western nations confirms a base for the dollar,
+as implied by West German Finance Minister Gerhard
+Stoltenberg's remarks that intervention to support currencies
+is still on.
+    Last week's dollar fall was partly triggered by
+expectations that the Germans were more worried about the money
+supply impact of such intervention than maintaining currency
+stability.
+    But rigid adherence to dollar ranges would be bad, said
+Morrison. "The Louvre Accord is fundamentally misconceived. To
+stabilise the dollar at too high a level is wrong," he said.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="21359" NEWID="20764">
+<DATE>20-OCT-1987 17:11:05.37</DATE>
+<TOPICS><D>money-fx</D><D>interest</D></TOPICS>
+<PLACES><D>usa</D><D>west-germany</D></PLACES>
+<PEOPLE><D>james-baker</D><D>lawson</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM A 
+&#22;&#22;&#1;f3332&#31;reute
+r f BC-MARKETS-BAKER SCHEDULED-NEWS-ANALYSIS  10-20 0078</UNKNOWN>
+<TEXT>&#2;
+<TITLE>TREASURY'S BAKER UNDER FIRE FOR WALL STREET DROP</TITLE>
+<AUTHOR>    By Alver Carlson</AUTHOR>
+<DATELINE>    WASHINGTON, Oct 20 - </DATELINE><BODY>As official Washington sought to
+restore investor confidence after Monday's Wall Street
+collapse, Treasury Secretary James Baker came under fire from
+critics who claimed he helped to precipitate the crisis.
+    Baker's weekend blast at the West German Bundesbank for
+boosting interest rates seemed to signal an unraveling of an
+international accord to stabilize currency values.
+    Nigel Lawson, British Chancellor of the Exchequer, was
+among those who said the treasury secretary's statements helped
+spur a wave of stock sales by making already jittery investors
+think that a clash between the two major economic powers would
+damage the world economy.
+    Lawson told a London television interviewer Tuesday, "I
+think the scale of the (stock) fall was very great. That, I
+think, was partly due to statements that have been made by
+senior figures on the other side of the Atlantic." It was a
+dispute that should never have happened, he added.
+    Although Baker appeared to patch over the rift at a
+hastily-called meeting with West German officials Monday, he  
+still faced a storm of criticism on his return to the United
+States on Tuesday. Baker cut short a long-planned trip to
+Scandinavia to return here to deal with the economic crisis.
+    Said one U.S. analyst of Baker's weekend remarks, "His
+timing could not have been worse."
+    One government bond salesman in New York said, "He actually
+thought that yelling at the Germans, and threatening to smack
+the dollar down would work. That doesn't show much
+understanding of international monetary gamesmanship."
+    However, some analysts said West Germany's stubborn march
+toward higher interest rates may have forced Baker's hand.
+    "On the surface Baker may look responsible for this, but if
+you go back to see what caused it (unsettling of financial
+markets), it was West German policy," said Robert Brusca of
+Nikko Securities International in New York.
+    "All Mr. Baker did was to mention the obvious in public, so
+making him responsible for it was a little like killing the
+messenger," he said.
+    After Monday's talks, the U.S. and West German governments
+made it clear that the Louvre currency accord, pieced together
+in Paris in February, was still in effect.
+    Wall Street feared that collapse of the agreement might be
+a prelude to hyper-inflation and economic malaise similar to
+the late 1970s. Analysts believe Monday's Wall Street crash
+wiped out about 500 billion dlrs in stock values.
+   Treasury sources said that Baker, already unhappy about
+Bonn's refusal to stimulate its economy in order to keep the
+global recovery moving, was angered by a Bundesbank interest
+rate boost that seemed destined to do just the opposite.
+    He felt that the U.S. recovery, inching along in its 59th
+month, could no longer be the only engine of global economic
+expansion. A growing U.S. economy has been serving as a huge
+market for debtor country exports.
+    Moreover, Baker, the consummate politician, was worried
+that the Republican party might face next year's presidential
+election with its main showpiece -- a vibrant economy -- badly
+tarnished.
+    A rise in global interest rates might worsen the debt
+crisis and completely choke off U.S. economic growth that has
+already slowed to a tepid 3.2 pct annual rate.
+    "There's no doubt that it can have an adverse effect on the
+economy, and it's important that the psychology turn around
+quickly, or else obviously the panic will feed on itself, and
+eventually there'll be a serious price to pay economically,"
+former deputy Treasury Secretary Richard Darman said in a
+television interview.
+    In many ways, the official response was mild.
+    Washington was stunned by the sudden Wall Street retreat,
+with President Reagan speaking for most people by admitting
+that he was "puzzled."
+    U.S. government sources said the secretary immediately
+returned to the Treasury to be briefed on market developments
+and, presumably, their political impact.
+    For all of this, it seems unlikely that Baker's status in
+Washington will diminish because of the market fall.
+    Asked by reporters if somebody's head should roll because
+of the Wall Street retreat, Texas Democratic Senator Lloyd
+Bentsen said with some irony, "Oh, I think it's much too late to
+be doing that...You have an administration that's taken the
+attitude that we can put the country on automatic pilot and ---
+retire to the living room to take a nap. You just can't do
+that."
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="21450" NEWID="20855">
+<DATE>20-OCT-1987 22:53:18.25</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM AI 
+&#22;&#22;&#1;f3744&#31;reute
+u f BC-POLL-SHOWS-AMERICANS   10-20 0108</UNKNOWN>
+<TEXT>&#2;
+<TITLE>POLL SHOWS AMERICANS HOLD ON TO STOCKS AFTER DROP</TITLE>
+<DATELINE>    WASHINGTON, Oct 20 - </DATELINE><BODY>The "Black Monday" stock market crash
+failed to destroy Americans' faith in the economic soundness of
+the country, according to a poll released on Tuesday.
+    The ABC-Washington Post poll, taken after the close of
+stock trading on Monday, showed 58 pct did not believe the
+unprecedented slide in stock prices foretold an economic
+downturn, and 70 pct rejected the notion the country faced a
+1930s-style Depression.
+    Fifty-three pct of those interviewed said they had owned
+stocks at some point, and only one pct said they had sold any
+as a result of Monday's decline.
+    Of the 40 pct who currently held stocks, only two pct said
+they planned to sell some and four pct said they planned to
+buy.
+    The poll of 507 men and women was taken by telephone on
+Monday night, after the Dow Jones Industrial Average plunged
+more than 500 points, or 22 pct, in record volume.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20570" NEWID="20867">
+<DATE>19-OCT-1987 19:47:36.68</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;F RM A 
+&#22;&#22;&#1;f3460&#31;reute
+u f BC--U.S.-STOCK-DECLINE-R   10-19 0102</UNKNOWN>
+<TEXT>&#2;
+<TITLE>U.S. STOCK DECLINE RENEWS DEBATE ABOUT FUTURES</TITLE>
+<AUTHOR>    BY CAL MANKOWSKI</AUTHOR>
+<DATELINE>    NEW YORK, Oct 19 - </DATELINE><BODY>Wall Street's biggest one-day drop since
+1914 has revived a bitter debate about whether modern
+investment techniques turn shifts in investor psychology into
+colossal moves in share prices.
+    "The market has gotten away from the players," said Dudley
+Eppel, vice president-equity trading at Donaldson Lufkin and
+Jenrette Securities Corp. He says stock index futures and
+options have distorted the investment process.
+    But Wall Street professionals who work with index futures
+and options insist the blame is misplaced.
+    Fischer Black, head of the trading and arbitrage division
+at Goldman, Sachs and Co, says so-called program trading
+strategies involving opposite positions in futures on stock
+indices and the underlying stocks deserve almost no blame for
+today's decline. "People have changed their minds about the
+future of the economy," he said. Another strategy, known as
+portfolio insurance, may have exagerated the decline to a small
+degree, said Black.
+    Eli Wachtel of Bear, Stearns and Co was emphatic. "I do not
+believe the drop was precipitated by portfolio insurance or
+expanded by program trading."
+    "The only thing that will stop it in the end is the value
+investor who comes in and says 'IBM still sells computers', and
+buys for traditional reasons" said Jeffrey Miller of Miller
+Tabak Hirsch and Co.
+    IBM &lt;IBM> fell 31 to 104 as the Dow Jones Industrial
+Average dropped more than 500 points.
+    Several years ago Miller's firm was one of the first to
+pursue program trading strategies, seeking to lock in an
+automatic profit by taking advantage of discrepancies in the
+prices of the futures and the underlying stocks. But he said
+his firm has not been involved in that since late last year.
+    Miller said some investors who were burned in the recent
+market declines may have miscalculated the effects of portfolio
+insurance. He estimated 70 to 80 billion dlrs in invested funds
+prior to the decline were hedged with futures.
+    The way portfolio insurance is used, Miller said, investors
+at the time they protect their portfolios commit themselves to
+a future course of action such as buying a put option. While
+negative news such as trade deficits and budget deficits build
+for months, the put options tend to be crowded into a narrow
+span of time, because they are executed as the market starts to
+fall.
+    Miller said at present people can only guess how much
+portfolio insurance is in use. He suggested some system of
+disclosure could put other investors on guard that the seeds
+were being planted that might add to a future decline.
+    But in any case Miller argued that index futures and
+options do not initiate market trends.
+    People like Eppel of Donaldson, Lufkin and Jenrette were
+steadfast in their criticism. "If I had my way there wouldn't
+be any index futures," he said. "They propelled the market up
+when nothing was going on and now we're paying the price."
+    Another irate trader, referring to IBM's 31 point drop,
+complained "what announcement did IBM make over the weekend
+that made its stock drop 31 points?" IBM was as high as 175-7/8
+earlier this year.
+    Some economists agreed that the stock market could be
+sending signals about the economy.  Allen Sinai, chief
+economist for Shearson Lehman Brothers, told Reuters the 508
+point decline represented "a crisis of confidence.
+    "This is a a bona-fide financial crisis. The market is
+showing panic. I suspect there is a wholesale deserting of our
+markets by a lot of foreign investors."
+    Sinai said the crisis was caused by continuing U.S. budget
+and trade deficits and by rising interest rates. "This is not a
+signal of the start of a recession, but a strong indicator that
+one is coming if nothing is done in Washington to deal with the
+budget and trade deficits," Sinai said.
+    Some market participants said redemptions by investors who
+own mutual funds fueled the decline. But Steve Norwitz, a
+spokesman for T. Rowe Price Associates, a Baltimore-based
+investment management firm, said redemptions and switches into
+money market funds by Price's one mln accounts amounted to less
+than two pct of assets. "It's not a rout by any means."
+   
+    Norwitz said the company normally receives about 3,500
+telephone inquiries from its customers each day. On Friday, he
+said, when the Dow index fell 108 points the volme of calls
+rose to around 7,000 and today it exceeded that although he did
+not have a precise number.
+    Ike Kerridge, an economist with the oilfield service firm
+Baker Hughes Inc., was one of several analysts who said the
+evaporation of billions of dollars of paper profits could alter
+consumer behavior.
+    "This could be the trigger for a national recession which
+would be very unusual in an election year," Kerridge said.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20509" NEWID="20928">
+<DATE>19-OCT-1987 16:49:50.66</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V RM 
+&#22;&#22;&#1;f3132&#31;reute
+b f AM-/REAGAN-SAID-CONVINCE   10-19 0135</UNKNOWN>
+<TEXT>&#2;
+<TITLE>REAGAN SAID CONVINCED ECONOMY STILL SOUND</TITLE>
+<DATELINE>    WASHINGTON, Oct 19 - </DATELINE><BODY>President Reagan is concerned about
+the record drop in stock prices but remains convinced on the
+basis of administration talks with financial experts that the
+economy remains sound, the White House said.
+    White House spokesman Marlin Fitzwater said in a written
+statement that Reagan "watched today with concern" the decline on
+Wall Street, where the Dow Jones industrial average plunged
+more than 500 points.
+    The statement said Reagan had directed administration
+officials to consult with leading financial experts, including
+the chairmen of the Federal Reserve, the Securities and
+Exchance Commission, and the New York Stock Exchange.
+    "These consultations confirm our view that the underlying
+economy remains sound," Fitzwater said.
+    The White House statement, issued about 45 minutes after
+the stock market closed, appeared designed to calm investors
+worried about U.S. economic propects.
+    "We are in the longest peacetime expansion in history.
+Employment is at the highest level ever. Manufacturing output
+is up. The trade deficit, when adjusted for changes in
+currencies, is steadily improving. And, as the chairman of the
+Federal Reserve Board has recently stated, there is no evidence
+of a resurgence of inflation in the United States," Fitzwater
+said.
+   
+    He said Reagan was keeping close watch on the markets in
+the United States and in countries, where waves of selling
+developed on Monday.
+    "We will continue to closely monitor these developments,"
+Fitzwater said.
+    However, his three-paragraph statement gave no hint of
+what, if any, action Reagan might take if the stock market
+plunge continues.
+    The percentage drop of 22.6 percent on Monday was the
+second largest ever, exceeded only by the 24.4 percent drop on
+Dec. 12, 1914.
+   
+    It easily eclipsed the fall of 12.8 percent on Oct. 28,
+1929 which helped spark the Great Depression.
+    Reagan and his top advisers discussed the market crisis,
+which came on the same day American naval forces retaliated for
+last Friday's alleged Iranian missile attack on a U.S. flagged
+Kuwaiti tanker in the Gulf, at a White House issues luncheon.
+    Presidential aides told reporters after the luncheon an
+official statement was likely to be issued when the markets
+closed.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20482" NEWID="20955">
+<DATE>19-OCT-1987 16:23:56.07</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>yugoslavia</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM A 
+&#22;&#22;&#1;f3045&#31;reute
+r f PM-YUGOSLAVIA   10-19 0078</UNKNOWN>
+<TEXT>&#2;
+<TITLE>YUGOSLAV ECONOMIC PLAN SEEN FACING HURDLES</TITLE>
+<AUTHOR>    By Andrej Gustincic</AUTHOR>
+<DATELINE>    BELGRADE, Oct 19 - </DATELINE><BODY>Yugoslavia's ambitious economic recovery
+and anti-inflation plan faces major hurdles before it can be
+implemented, Yugoslav economists and Western diplomats said.
+    Prime Minister Branko Mikulic on Monday proposed new taxes
+hitting high income earners, moonlighters, property and
+interest on savings as part of new government plans to rein in
+the country's 123 pct inflation.
+    He also proposed price and wage restraint and the trimming
+of repayments on the 20 billion dlr foreign debt in line with
+currency earning abiltiy.
+    "The taxes will anger many Yugoslavs struggling with
+soaring prices and will be resisted in Parliament," a Western
+diplomatic source said. Yugoslav economists said Mikulic's
+draft plans left many questions unanswered.
+    "It was a list of goals, not concrete measures," said a
+senior Yugoslav economist at a leading Yugoslav research
+institute.
+    The state news agency Tanjug was more optimistic. It said
+the proposals indicated "real economic reforms" were coming.
+    Further details of the program, which Mikulic summarised in
+Parliament, are to appear in the days ahead, and the draft has
+to be debated and voted on by deputies in November.
+    "The goals are good," a leading Belgrade economist said.
+"No one can argue with that. But the million dollar question,
+as with all government programs here, is how they will be
+implemented."
+    Zoran Popov, senior research fellow at The Belgrade
+Institute for Industrial Economy said the existing system made
+many of the proposals difficult to put into effect.
+    "A change in the the system of taxation requires changes in
+the constitution," he said. "Mikulic's speech tells us what he
+wants to do, but not how."
+    "It may be anti-inflationary," one diplomat said. "But the
+question is how can you tax a black economy and how will the
+government find out who has two jobs or more than one home."
+    Economists and diplomats said the proposals could be
+resisted by deputies from several of Yugoslavia's constituent
+republics and provinces in defence of regional interests.
+    Such resistance has blocked the nationwide implementation
+of federal government economic policy on many past occasions.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20450" NEWID="20987">
+<DATE>19-OCT-1987 15:51:05.63</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>south-africa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;C M 
+&#22;&#22;&#1;f2936&#31;reute
+d f BC-S.-AFRICA-MINING-HOUS   10-19 0122</UNKNOWN>
+<TEXT>&#2;
+<TITLE>S. AFRICA MINING HOUSE REPORTS HUGE STRIKE LOSSES</TITLE>
+<DATELINE>    JOHANNESBURG, Oct 19 - </DATELINE><BODY>A major South African mining house
+on Monday reported two of its gold mines suffered huge losses
+as a result of a black miners' strike in August which crippled
+about half the country's crucial gold mines.
+    Johannesburg Consolidated Investment Company, one of the
+six major mining houses, said the two mines suffered a combined
+net loss of 9.7 mln dlrs in the three months to end-September
+compared with a profit of 8.6 mln dlrs in the preceding
+quarter.
+    It was the first indication of the real economic impact of
+the biggest wage strike in the history of the gold mining
+industry, which accounts for nearly half the value of South
+Africa's total exports.
+    "The results were pretty disastrous, primarily due to the
+impact of the strike," Ken Maxwell, head of Johannesburg
+Consolidated's gold division, told a news conference in
+Johannesburg.
+    "We haven't recovered from the strike yet," he said, adding
+that 70 percent of underground mining at the group's biggest
+mine, Randfontein Estates, was halted by the three-week strike.
+    Johannesburg Consolidated and its controlling company, the
+giant Anglo American Corp., were hard-hit by the three-week
+miners' strike, but refused to disclose production losses.
+    Anglo American is due to report its quarterly gold-mine
+profits later this week.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20014" NEWID="21422">
+<DATE>19-OCT-1987 10:08:30.32</DATE>
+<TOPICS><D>money-fx</D><D>interest</D></TOPICS>
+<PLACES><D>switzerland</D><D>west-germany</D></PLACES>
+<PEOPLE><D>james-baker</D><D>greenspan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM 
+&#22;&#22;&#1;f1154&#31;reute
+u f BC-SWISS-ANALYSTS-SAY-MO   10-19 0109</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SWISS ANALYSTS SAY MOOD ON MARKETS PRECARIOUS</TITLE>
+<AUTHOR>    By Donald Nordberg and Michael Shields</AUTHOR>
+<DATELINE>    ZURICH, Oct 19 - </DATELINE><BODY>Today's sharp sell-off of Swiss stocks and
+matching falls around Europe may have been overdone, but the
+mood on financial markets is precarious, Swiss securities
+analysts and economists said.
+    Panic selling took Swiss shares down six pct at the opening
+on enormous volume, triggered by the slide on Wall Street and
+the threat of renewed currency instability.
+    "I have never experienced anything like this, and I've been
+in the business for 20 years," said Bernhard Wyttenbach, head of
+European research at Union Bank of Switzerland.
+    The analysts blamed the sell-off in Europe on U.S. Monetary
+authorities. This weekend, U.S. Treasury Secretary James Baker
+publicly voiced his displeasure with West German monetary
+policy. He said the eight-month-old Louvre accord to stabilise
+currencies was still working, but added: "On the other hand, we
+will not sit back and watch surplus countries jack up interest
+rates and squeeze growth on the expectation that the United
+States will raise rates."
+    Hans Peter Ast of Societe Generale Alsacienne (Sogenal) in
+Zurich said: "The situation is very dangerous. Statements by the
+U.S. Authorities have fuelled anxiety about interest rates."
+    Herbert Fritschi, director of Zurich Cantonal Bank's
+financial research department, called the sell-off "overdone,"
+but warned that the situation could worsen unless central banks
+loosen their monetary policy.
+    "I think the trend toward higher interest rates is over," he
+said. "The Federal Reserve and the Bundesbank have to step in
+with an easy money policy, or else there is going to be an
+economic catastrophe. They have to act quickly."
+    Wyttenbach said the "Black Monday" sell-off was clearly
+exaggerated, with Swiss Reinsurance Co participation
+certificates falling 20 pct in value at one point.
+    But Wyttenbach said he did not believe that a correction
+would come soon. First, the bad news will reach small investors
+only in time for tomorrow's market, when there could be
+another, smaller selling wave.
+    "As soon as the dollar stabilises -- and that's the key --
+then we'll get a strong movement upward," Wyttenbach said. But
+that may not come soon.
+    "People are simply worried that in America, where the market
+has now fallen by 18 pct since August, the bull market is over,"
+he said. "People are afraid that we'll have a recession in 1988."
+    Baker was wrong to blame the West Germans for the current
+problems and the weak dollar, Wyttenbach said. "We do not have a
+mark problem, we have a dollar problem," he added, but said the
+biggest culprit was the new chairman of the U.S. Federal
+Reserve Board, Alan Greenspan.
+    Wyttenbach recalled that Greenspan had suggested that the
+dollar might be too high in the medium term and that interest
+rates might have to rise. "As a central banker he shouldn't do
+that," Wyttenbach said. "There is a danger that we will fall back
+into the 1970s," he said. "We have a real crisis of confidence in
+Greenspan. I would much rather have a Volcker."
+    Paul Volcker retired as Fed chairman on August 11.
+    Cantonal Bank's Fritschi said: "I'm relatively optimistic
+because the situation looks too bad. The Fed certainly has to
+intervene."
+    He said he did not expect the Swiss National Bank to take
+any significant steps, adding that the focus of attention
+remains on the United States.
+    "The panic started in New York, it has to end there."
+    The Cantonal Bank sent an advisory to customers suggesting
+they not sell into a panicked market, but wait a while before
+deciding what to do.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+
+
+
+All the results have been stored to file:
+D:\workspace\COMP6791\LabAss1\output\search-results.txt
+
