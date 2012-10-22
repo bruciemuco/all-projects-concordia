@@ -48,7 +48,9 @@ public class Project1 {
 		System.out.println();
 		
 		IndexConstructor ic = new IndexConstructor();
-		ic.buildInvertedIndex();
+		if (ic.buildInvertedIndex() != 0) {
+			return;
+		}
 
 		// load one inverted index file to memory
 		date = new Date();
