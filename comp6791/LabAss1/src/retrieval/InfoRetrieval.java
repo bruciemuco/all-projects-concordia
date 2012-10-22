@@ -13,21 +13,16 @@
 
 package retrieval;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import parser.InvertedIndex;
 import parser.Stemmer;
-import parser.Tokenizer;
 
 import utils.ByteArrayWrapper;
 import utils.SysLogger;
@@ -54,12 +49,15 @@ public class InfoRetrieval {
 	public int init() {
 		// load the inverted index into memory from the first file
 		String[] tmp = arrTerm2File.get(0).split(","); 
+		long numTerms = 0, numPostings = 0;
+		
 		try {									
 			BufferedReader in = new BufferedReader(new FileReader(tmp[1]));
 			while(true) {
 				String buf = in.readLine();
 				if (buf == null) {
 					in.close();
+					//System.out.println("--" + numTerms + ", " + numPostings);
 					return -1;
 				}
 				tmp = buf.split(",");
@@ -75,6 +73,8 @@ public class InfoRetrieval {
 				idx.postings = postings;
 
 				mapDic.put(term, idx);
+				numTerms++;
+				numPostings += cnt;
 			}
 			
 		} catch (Exception e) {
