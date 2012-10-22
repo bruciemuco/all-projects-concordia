@@ -268,7 +268,7 @@ public class SPIMI {
 	    sorter.sort(sortedTerms);
 	    
 	    // around 88 milliseconds for 52980 terms
-		//SortedSet<ByteArrayWrapper> keys = new TreeSet<ByteArrayWrapper>(mapIndex.keySet()); 
+		//SortedSet<String> keys = new TreeSet<String>(mapIndex.keySet()); 
 		
 //	    long stopTime = System.currentTimeMillis();
 //	    long elapsedTime = stopTime - startTime;
