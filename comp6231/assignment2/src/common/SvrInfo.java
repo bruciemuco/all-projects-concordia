@@ -4,10 +4,10 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
- * $Author: ewan.msn@gmail.com $
- * $Date: 2012-10-08 23:55:15 -0400 (Mon, 08 Oct 2012) $
- * $Rev: 148 $
- * $HeadURL: https://all-projects-concordia.googlecode.com/svn/comp6231/project1/drs-common/src/common/SvrInfo.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  * 
  */
 

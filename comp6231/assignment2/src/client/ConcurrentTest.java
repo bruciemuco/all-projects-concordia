@@ -4,10 +4,10 @@
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
  * 
- * $Author: ewan.msn@gmail.com $
- * $Date: 2012-10-09 02:44:33 -0400 (Tue, 09 Oct 2012) $
- * $Rev: 154 $
- * $HeadURL: https://all-projects-concordia.googlecode.com/svn/comp6231/project1/drs-client/src/client/ConcurrentTest.java $
+ * $Author$
+ * $Date$
+ * $Rev$
+ * $HeadURL$
  * 
  */
 
