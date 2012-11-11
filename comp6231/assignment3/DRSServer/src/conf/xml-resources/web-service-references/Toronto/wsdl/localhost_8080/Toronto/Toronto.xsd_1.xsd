@@ -8,6 +8,10 @@
 
 <xs:element name="checkStockResponse" type="tns:checkStockResponse"/>
 
+<xs:element name="chkStockFromSvr" type="tns:chkStockFromSvr"/>
+
+<xs:element name="chkStockFromSvrResponse" type="tns:chkStockFromSvrResponse"/>
+
 <xs:element name="exchange" type="tns:exchange"/>
 
 <xs:element name="exchangeResponse" type="tns:exchangeResponse"/>
@@ -67,6 +71,18 @@
 </xs:complexType>
 
 <xs:complexType name="checkStockResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="chkStockFromSvr">
+<xs:sequence>
+<xs:element name="itemID" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="chkStockFromSvrResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>

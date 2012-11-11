@@ -28,6 +28,12 @@
 <message name="buyResponse">
 <part name="parameters" element="tns:buyResponse"/>
 </message>
+<message name="chkStockFromSvr">
+<part name="parameters" element="tns:chkStockFromSvr"/>
+</message>
+<message name="chkStockFromSvrResponse">
+<part name="parameters" element="tns:chkStockFromSvrResponse"/>
+</message>
 <portType name="Montreal">
 <operation name="checkStock">
 <input wsam:Action="http://WS/Montreal/checkStockRequest" message="tns:checkStock"/>
@@ -44,6 +50,10 @@
 <operation name="buy">
 <input wsam:Action="http://WS/Montreal/buyRequest" message="tns:buy"/>
 <output wsam:Action="http://WS/Montreal/buyResponse" message="tns:buyResponse"/>
+</operation>
+<operation name="chkStockFromSvr">
+<input wsam:Action="http://WS/Montreal/chkStockFromSvrRequest" message="tns:chkStockFromSvr"/>
+<output wsam:Action="http://WS/Montreal/chkStockFromSvrResponse" message="tns:chkStockFromSvrResponse"/>
 </operation>
 </portType>
 <binding name="MontrealPortBinding" type="tns:Montreal">
@@ -76,6 +86,15 @@
 </output>
 </operation>
 <operation name="buy">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="chkStockFromSvr">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

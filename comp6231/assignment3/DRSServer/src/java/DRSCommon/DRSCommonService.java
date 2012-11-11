@@ -65,4 +65,12 @@ public class DRSCommonService {
         return vport.returnNumOfItem(customerID, itemID, numberOfItem);
     }
 
+        public String chkStockFromSvr(java.lang.String itemID) {
+        if (svrName.equals(SvrInfo.SVR_NAME_MONTREAL)) {
+            return mport.chkStockFromSvr(itemID);
+        } else if (svrName.equals(SvrInfo.SVR_NAME_TORONTO)) {
+            return tport.chkStockFromSvr(itemID);
+        }         
+        return vport.chkStockFromSvr(itemID);
+    }
 }
