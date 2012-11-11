@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/Montreal/Montreal?wsdl" uri="xml-resources/web-service-references/Montreal/wsdl/localhost_8080/Montreal/Montreal.wsdl"/>
+    <system systemId="http://localhost:8080/Montreal/Montreal?xsd=1" uri="xml-resources/web-service-references/Montreal/wsdl/localhost_8080/Montreal/Montreal.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/Toronto/Toronto?wsdl" uri="xml-resources/web-service-references/Toronto/wsdl/localhost_8080/Toronto/Toronto.wsdl"/>
+    <system systemId="http://localhost:8080/Toronto/Toronto?xsd=1" uri="xml-resources/web-service-references/Toronto/wsdl/localhost_8080/Toronto/Toronto.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/Vancouver/Vancouver?wsdl" uri="xml-resources/web-service-references/Vancouver/wsdl/localhost_8080/Vancouver/Vancouver.wsdl"/>
+    <system systemId="http://localhost:8080/Vancouver/Vancouver?xsd=1" uri="xml-resources/web-service-references/Vancouver/wsdl/localhost_8080/Vancouver/Vancouver.xsd_1.xsd"/>
+</catalog>
