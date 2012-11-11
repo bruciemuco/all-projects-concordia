@@ -50,4 +50,64 @@
                 JAX-WS WSIMPORT SECTION
                 ===================
             -->
+    <target name="wsimport-init" depends="init">
+        <fail if="${wsimport.bad.version}" message="WsImport ant task defined in the classpath ${j2ee.platform.wsimport.classpath} has a serious bug. See http://wiki.netbeans.org/MetroIssue for details."/>
+        <mkdir dir="${build.generated.sources.dir}/jax-ws"/>
+        <property name="j2ee.platform.wsimport.classpath" value="${libs.jaxws21.classpath}"/>
+        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+            <classpath path="${java.home}/../lib/tools.jar:${j2ee.platform.wsimport.classpath}:${javac.classpath}"/>
+        </taskdef>
+        <condition property="conf-dir" value="${conf.dir}/" else="">
+            <isset property="conf.dir"/>
+        </condition>
+    </target>
+    <target name="wsimport-client-Montreal" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/Montreal"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/Montreal" destdir="${build.generated.dir}/jax-wsCache/Montreal" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/Montreal/wsdl/localhost_8080/Montreal/Montreal.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="http://localhost:8080/Montreal/Montreal?wsdl" xnocompile="true" xendorsed="true" package="WS_client">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/Montreal/wsdl/localhost_8080/Montreal/Montreal.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/Montreal"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/Montreal">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-Montreal" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/WS_client"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/Montreal"/>
+    </target>
+    <target name="wsimport-client-Toronto" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/Toronto"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/Toronto" destdir="${build.generated.dir}/jax-wsCache/Toronto" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/Toronto/wsdl/localhost_8080/Toronto/Toronto.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="http://localhost:8080/Toronto/Toronto?wsdl" xnocompile="true" xendorsed="true" package="WS_client1">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/Toronto/wsdl/localhost_8080/Toronto/Toronto.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/Toronto"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/Toronto">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-Toronto" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/WS_client1"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/Toronto"/>
+    </target>
+    <target name="wsimport-client-Vancouver" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/Vancouver"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/Vancouver" destdir="${build.generated.dir}/jax-wsCache/Vancouver" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/Vancouver/wsdl/localhost_8080/Vancouver/Vancouver.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="http://localhost:8080/Vancouver/Vancouver?wsdl" xnocompile="true" xendorsed="true" package="WS_client2">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/Vancouver/wsdl/localhost_8080/Vancouver/Vancouver.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/Vancouver"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/Vancouver">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-Vancouver" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/WS_client2"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/Vancouver"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-Montreal, wsimport-client-Toronto, wsimport-client-Vancouver"/>
 </project>
