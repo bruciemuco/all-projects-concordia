@@ -51,4 +51,13 @@ public class Toronto {
     public int exchange(@WebParam(name = "customerID") String customerID, @WebParam(name = "boughtItemID") String boughtItemID, @WebParam(name = "boughtNumber") int boughtNumber, @WebParam(name = "desiredItemID") String desiredItemID, @WebParam(name = "desiredNumber") int desiredNumber) {
         return svr.exchange(customerID, boughtItemID, boughtNumber, desiredItemID, desiredNumber);
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "chkStockFromSvr")
+    public String chkStockFromSvr(@WebParam(name = "itemID") String itemID) {
+               return svr.chkStockFromSvr(itemID);
+
+    }
 }
