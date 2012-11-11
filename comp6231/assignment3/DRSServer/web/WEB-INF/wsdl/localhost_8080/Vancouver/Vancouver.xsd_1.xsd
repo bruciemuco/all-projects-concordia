@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2.0-1 (tags/2.2.0u1-7139; 2012-06-02T10:55:19+0000) JAXWS-RI/2.2.6-2 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://WS/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://WS/">
+
+<xs:element name="buy" type="tns:buy"/>
+
+<xs:element name="buyResponse" type="tns:buyResponse"/>
+
+<xs:element name="checkStock" type="tns:checkStock"/>
+
+<xs:element name="checkStockResponse" type="tns:checkStockResponse"/>
+
+<xs:element name="exchange" type="tns:exchange"/>
+
+<xs:element name="exchangeResponse" type="tns:exchangeResponse"/>
+
+<xs:element name="returnNumOfItem" type="tns:returnNumOfItem"/>
+
+<xs:element name="returnNumOfItemResponse" type="tns:returnNumOfItemResponse"/>
+
+<xs:complexType name="buy">
+<xs:sequence>
+<xs:element name="customerID" type="xs:string" minOccurs="0"/>
+<xs:element name="itemID" type="xs:string" minOccurs="0"/>
+<xs:element name="numberOfItem" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buyResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="returnNumOfItem">
+<xs:sequence>
+<xs:element name="customerID" type="xs:string" minOccurs="0"/>
+<xs:element name="itemID" type="xs:string" minOccurs="0"/>
+<xs:element name="numberOfItem" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="returnNumOfItemResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="exchange">
+<xs:sequence>
+<xs:element name="customerID" type="xs:string" minOccurs="0"/>
+<xs:element name="boughtItemID" type="xs:string" minOccurs="0"/>
+<xs:element name="boughtNumber" type="xs:int"/>
+<xs:element name="desiredItemID" type="xs:string" minOccurs="0"/>
+<xs:element name="desiredNumber" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="exchangeResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkStock">
+<xs:sequence>
+<xs:element name="itemID" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkStockResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

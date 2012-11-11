@@ -178,53 +178,53 @@ public class DRSServerCommon {
 			customerID = 'V' + customerID;
 		}
 		
-//		try {
-//			int ret = 0;
-//			DRSCommonService svr = null;
-//			
-//			if (svrName.equals(SvrInfo.SVR_NAME_MONTREAL)) {
-//				svr = new DRSClientCommon(SvrInfo.SVR_NAME_TORONTO).getORBInterface();
-//				ret = svr.buy(customerID, itemID, numberOfItem);
-//				if (ret != 0) {
-//					svr = new DRSClientCommon(SvrInfo.SVR_NAME_VANCOUVER).getORBInterface();
-//					ret = svr.buy(customerID, itemID, numberOfItem);
-//				}
-//				if (ret != 0) {
-//					return -1;
-//				}
-//				return ret;
-//				
-//			} else if (svrName.equals(SvrInfo.SVR_NAME_TORONTO)) {
-//				svr = new DRSClientCommon(SvrInfo.SVR_NAME_MONTREAL).getORBInterface();
-//				ret = svr.buy(customerID, itemID, numberOfItem);
-//				if (ret != 0) {
-//					svr = new DRSClientCommon(SvrInfo.SVR_NAME_VANCOUVER).getORBInterface();
-//					ret = svr.buy(customerID, itemID, numberOfItem);
-//				}
-//				if (ret != 0) {
-//					return -1;
-//				}
-//				return ret;
-//				
-//			} else if (svrName.equals(SvrInfo.SVR_NAME_VANCOUVER)) {
-//				svr = new DRSClientCommon(SvrInfo.SVR_NAME_MONTREAL).getORBInterface();
-//				ret = svr.buy(customerID, itemID, numberOfItem);
-//				if (ret != 0) {
-//					svr = new DRSClientCommon(SvrInfo.SVR_NAME_TORONTO).getORBInterface();
-//					ret = svr.buy(customerID, itemID, numberOfItem);
-//				}
-//				if (ret != 0) {
-//					return -1;
-//				}
-//				return ret;
-//			}
-//
-//		} catch (Exception e) {
-//			StringWriter err = new StringWriter();
-//			e.printStackTrace(new PrintWriter(err));
-//			SysLogger.err(err.toString());
-//			return -1;
-//		}
+		try {
+			int ret = 0;
+			DRSCommonService svr = null;
+			
+			if (svrName.equals(SvrInfo.SVR_NAME_MONTREAL)) {
+				svr = new DRSCommonService(SvrInfo.SVR_NAME_TORONTO);
+				ret = svr.buy(customerID, itemID, numberOfItem);
+				if (ret != 0) {
+					svr = new DRSCommonService(SvrInfo.SVR_NAME_VANCOUVER);
+					ret = svr.buy(customerID, itemID, numberOfItem);
+				}
+				if (ret != 0) {
+					return -1;
+				}
+				return ret;
+				
+			} else if (svrName.equals(SvrInfo.SVR_NAME_TORONTO)) {
+				svr = new DRSCommonService(SvrInfo.SVR_NAME_MONTREAL);
+				ret = svr.buy(customerID, itemID, numberOfItem);
+				if (ret != 0) {
+					svr = new DRSCommonService(SvrInfo.SVR_NAME_VANCOUVER);
+					ret = svr.buy(customerID, itemID, numberOfItem);
+				}
+				if (ret != 0) {
+					return -1;
+				}
+				return ret;
+				
+			} else if (svrName.equals(SvrInfo.SVR_NAME_VANCOUVER)) {
+				svr = new DRSCommonService(SvrInfo.SVR_NAME_MONTREAL);
+				ret = svr.buy(customerID, itemID, numberOfItem);
+				if (ret != 0) {
+					svr = new DRSCommonService(SvrInfo.SVR_NAME_TORONTO);
+					ret = svr.buy(customerID, itemID, numberOfItem);
+				}
+				if (ret != 0) {
+					return -1;
+				}
+				return ret;
+			}
+
+		} catch (Exception e) {
+			StringWriter err = new StringWriter();
+			e.printStackTrace(new PrintWriter(err));
+			SysLogger.err(err.toString());
+			return -1;
+		}
 		
 		return 0;
 	}
