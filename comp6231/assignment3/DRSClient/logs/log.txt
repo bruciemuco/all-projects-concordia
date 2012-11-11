@@ -1,0 +1,236 @@
+INFO: checkStock 1234: SVR_NAME_MONTREAL=20;
+INFO: checkStock 1235: SVR_NAME_MONTREAL=10;
+INFO: buy successfully. M10001, 1234, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=10;
+INFO: buy successfully. M10001, 1234, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 1234, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 1234, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 1234, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=0;
+INFO: exchange successfully. M10001, 1234, 10, 1235, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=10;
+INFO: checkStock 1235: SVR_NAME_MONTREAL=0;
+INFO: exchange successfully. M10001, 1234, 10, 1235, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=20;
+INFO: checkStock 1235: SVR_NAME_MONTREAL=0;
+INFO: !! failed to exchange. M10001, 1234, 10, 1235, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=20;
+INFO: checkStock 1235: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 1234, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=10;
+INFO: buy successfully. M10001, 1234, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=0;
+INFO: exchange successfully. M10001, 1234, 10, 1235, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=10;
+INFO: checkStock 1235: SVR_NAME_MONTREAL=0;
+INFO: exchange successfully. M10001, 1234, 10, 1235, 10
+INFO: checkStock 1234: SVR_NAME_MONTREAL=20;
+INFO: checkStock 1235: SVR_NAME_MONTREAL=0;
+INFO: -----------------Simple test END-----------------
+INFO: Client test thread starts: svr=SVR_NAME_MONTREAL, customerID=M10001
+INFO: Client test thread starts: svr=SVR_NAME_TORONTO, customerID=T10001
+INFO: Client test thread starts: svr=SVR_NAME_VANCOUVER, customerID=V10001
+INFO: ConcurrentTest: random num1: 12
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=10;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=5;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: ConcurrentTest: random num1: 5
+INFO: ConcurrentTest: random num1: 13
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: ConcurrentTest: random num2: 13
+INFO: buy successfully. V10001, 4321, 5
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=10;
+INFO: checkStock 4321: SVR_NAME_TORONTO=10;
+INFO: exchange successfully. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=5;
+INFO: buy successfully. V10001, 4321, 5
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=5;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=80;
+INFO: checkStock 4321: SVR_NAME_TORONTO=5;
+INFO: buy successfully. V10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=0;
+INFO: buy successfully. V10001, 4321, 5
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=0;
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: buy successfully. V10001, 4321, 5
+INFO: exchange successfully. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=0;
+INFO: ConcurrentTest: random num2: 9
+INFO: checkStock 4321: SVR_NAME_MONTREAL=10;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4322: SVR_NAME_MONTREAL=75;
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: buy successfully. T10001, 4321, 5
+INFO: exchange successfully. V10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=5;
+INFO: buy successfully. T10001, 4321, 5
+INFO: exchange successfully. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=13;
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: exchange successfully. V10001, 4321, 5, 4322, 5
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=10;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=8;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: buy successfully. T10001, 4321, 5
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: exchange successfully. V10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: ConcurrentTest: random num2: 8
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=15;
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=3;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: exchange successfully. T10001, 4321, 5, 4322, 5
+INFO: !! failed to exchange. V10001, 4321, 5, 4322, 5
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=15;
+INFO: checkStock 4321: SVR_NAME_TORONTO=5;
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4322: SVR_NAME_TORONTO=83;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=3;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: !! failed to exchange. V10001, 4321, 5, 4322, 5
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: exchange successfully. T10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=15;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: checkStock 4321: SVR_NAME_TORONTO=10;
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=3;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: !! failed to exchange. V10001, 4321, 5, 4322, 5
+INFO: checkStock 4322: SVR_NAME_TORONTO=78;
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=15;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=3;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: !! failed to exchange. V10001, 4321, 5, 4322, 5
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=15;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: exchange successfully. T10001, 4321, 5, 4322, 5
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=3;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: checkStock 4321: SVR_NAME_TORONTO=15;
+INFO: !! failed to exchange. V10001, 4321, 5, 4322, 5
+INFO: checkStock 4322: SVR_NAME_TORONTO=73;
+INFO: !! failed to exchange. M10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=15;
+INFO: !! failed to exchange. T10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=15;
+INFO: checkStock 4321: SVR_NAME_TORONTO=15;
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=3;
+INFO: checkStock 4322: SVR_NAME_TORONTO=73;
+INFO: checkStock 4322: SVR_NAME_MONTREAL=70;
+INFO: ConcurrentTest: random num3: 10
+INFO: !! failed to exchange. T10001, 4321, 5, 4322, 5
+INFO: !! failed to exchange. V10001, 4321, 5, 4322, 5
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=15;
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=15;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=10;
+INFO: checkStock 4322: SVR_NAME_TORONTO=73;
+INFO: checkStock 4322: SVR_NAME_VANCOUVER=3;
+INFO: ConcurrentTest: random num3: 5
+INFO: !! failed to exchange. T10001, 4321, 5, 4322, 5
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=15;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=5;
+INFO: buy successfully. V10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=10;
+INFO: checkStock 4322: SVR_NAME_TORONTO=73;
+INFO: !! failed to exchange. T10001, 4321, 5, 4322, 5
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=15;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: buy successfully. V10001, 4321, 5
+INFO: checkStock 4322: SVR_NAME_TORONTO=73;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: !! failed to exchange. T10001, 4321, 5, 4322, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=5;
+INFO: checkStock 4321: SVR_NAME_TORONTO=15;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4322: SVR_NAME_TORONTO=73;
+INFO: buy successfully. V10001, 4321, 5
+INFO: ConcurrentTest: random num3: 6
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=0;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. M10001, 4321, 5
+INFO: buy successfully. V10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=0;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=10;
+INFO: buy successfully. M10001, 4321, 5
+INFO: buy successfully. V10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_VANCOUVER=0;
+INFO: checkStock 4321: SVR_NAME_TORONTO=5;
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. T10001, 4321, 5
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: buy successfully. T10001, 4321, 5
+INFO: buy successfully. M10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_MONTREAL=0;
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
+INFO: buy successfully. T10001, 4321, 5
+INFO: checkStock 4321: SVR_NAME_TORONTO=0;
