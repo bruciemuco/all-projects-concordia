@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.SortedSet;
@@ -10,7 +11,9 @@ import parser.InvertedIndex;
 import parser.IndexConstructor;
 import parser.Tokenizer;
 import retrieval.InfoRetrieval;
+import retrieval.OkapiBM25;
  
+import utils.ByteArrayWrapper;
 import utils.Mergesort;
 import utils.SysLogger;
 
@@ -68,6 +71,8 @@ public class Project1 {
 		String query = "";
 		StringBuffer sbResult = null;
 		
+		//testTF();
+		
 		while (true) {
 			try {
 				System.out.println("\nPlease input your query (e.g. Oct 10) [type ! to exit program]:");
@@ -100,6 +105,30 @@ public class Project1 {
 			}
 		}
 		
+	}
+	
+	static void testTF() {
+		for (Long k : OkapiBM25.mapLenOfDocs.keySet()) {
+			System.out.println(k.toString() + ": " + OkapiBM25.mapLenOfDocs.get(k).toString());
+		}
+		System.out.println("avgDocLen: " + OkapiBM25.avgDocLen);
+		
+		ByteArrayWrapper[] sortedTerms = new ByteArrayWrapper[OkapiBM25.mapTF.size()];
+		int i = 0;
+		for (ByteArrayWrapper key : OkapiBM25.mapTF.keySet()) {
+			sortedTerms[i++] = key;
+		}		
+		Mergesort sorter = new Mergesort();
+	    sorter.sort(sortedTerms);
+
+		HashMap<Long, Long> map = null;
+		for (ByteArrayWrapper term : sortedTerms) {
+			map = OkapiBM25.mapTF.get(term);
+			for (Long key : map.keySet()) {
+				Long tf = map.get(key);
+				System.out.println((new String(term.data)) + ", " + key.toString() + ", " + tf.toString());
+			}
+		}
 	}
 
 }
