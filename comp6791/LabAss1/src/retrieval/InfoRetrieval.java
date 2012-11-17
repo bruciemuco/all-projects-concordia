@@ -20,6 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import parser.InvertedIndex;
 import parser.Stemmer;
@@ -43,9 +44,10 @@ public class InfoRetrieval {
 	private HashMap<ByteArrayWrapper, InvertedIndex> mapDic = new HashMap<ByteArrayWrapper, InvertedIndex>();
 	
 	public static final int MAX_NUMBER_FILES_RETRIEVAL = 20;
-	public static String filenameResult = ""; 
-
+	public static String filenameResult = "";
 	
+	//public OkapiBM25 bm25 = new OkapiBM25();
+
 	public int init() {
 		// load the inverted index into memory from the first file
 		String[] tmp = arrTerm2File.get(0).split(","); 
@@ -58,6 +60,8 @@ public class InfoRetrieval {
 				if (buf == null) {
 					in.close();
 					//System.out.println("--" + numTerms + ", " + numPostings);
+					
+					OkapiBM25.calcAvgDocLen();
 					return -1;
 				}
 				tmp = buf.split(",");
@@ -81,7 +85,8 @@ public class InfoRetrieval {
 			e.printStackTrace();
 			SysLogger.err(e.getMessage());
 			return -1;
-		}		
+		}
+		
 	}
 	
 	public InvertedIndex getPostingsFromFiles(String term) {
@@ -211,12 +216,15 @@ public class InfoRetrieval {
 	
 	private BufferedReader fileIn = null;
 	private String lastFilename = "";
-	private StringBuffer getDocDataFromFile(String filename, String docID) {
+	private String preDocID = "";
+	private StringBuffer getDocContentFromFile(String filename, String docID) {
 		StringBuffer sbRet = new StringBuffer();
 		String docIDXMLTag = "NEWID=\"" + docID + "\">";
 
 		// if the file has not been opened, open it
-		if (fileIn == null || !lastFilename.equals(filename)) {
+		// if the docID < preDocID, reopen it
+		if (fileIn == null || !lastFilename.equals(filename)
+				|| preDocID.compareToIgnoreCase(docID) > 0) {
 			try {			
 				if (fileIn != null) {
 					fileIn.close();
@@ -230,6 +238,7 @@ public class InfoRetrieval {
 				return sbRet;
 			}
 		}
+		preDocID = docID;
 		
 		if (fileIn == null) {
 			SysLogger.err("getDocDataFromFile: file == null");
@@ -271,25 +280,26 @@ public class InfoRetrieval {
 		return sbRet;
 	}
 	
-	private StringBuffer getDocData(ArrayList<Long> docIDs) {
+	// get doc content
+	private StringBuffer getDocContent(ArrayList<Long> docIDs) {
 		StringBuffer sbRet = new StringBuffer();
 		
 		int j = 0;
 		
-		// traverse all raw files
-		for (int i = 0; i < arrDocID2File.size(); i++) {
-			String[] tmp = arrDocID2File.get(i).split(",");
-			long docID = Long.parseLong(tmp[0]);
+		// traverse list of docID 
+		for (; j < docIDs.size(); j++) {
+			long dID = docIDs.get(j);
 
-			// traverse list of docID 
-			for (; j < docIDs.size(); j++) {
-				long dID = docIDs.get(j);
+			// traverse all raw files
+			for (int i = 0; i < arrDocID2File.size(); i++) {
+				String[] tmp = arrDocID2File.get(i).split(",");
+				long docID = Long.parseLong(tmp[0]);
+
 				if (dID <= docID) {
-					sbRet.append(getDocDataFromFile(tmp[1], dID + ""));
+					sbRet.append(getDocContentFromFile(tmp[1], dID + ""));
 					sbRet.append("\n");
-					continue;
+					break;
 				}
-				break;
 			}
 		}
 		return sbRet;
@@ -304,22 +314,23 @@ public class InfoRetrieval {
 	}
 	
 	// parse the query to support OR and AND NOT
-	public ArrayList<Long> parseQuery(String query) {
+	public ArrayList<Long> parseQuery(String query, 
+			HashMap<String, Integer> termDocFreq) {
 		String[] subQuery = query.trim().split("OR");
 		
 		if (subQuery.length == 1) {
 			subQuery = query.trim().split("AND NOT");
 			if (subQuery.length == 1) {
 				String[] terms = removeParens(subQuery[0].trim().toLowerCase()).trim().split(" ");
-				return getIntersectionPostingsOfTerms(terms);
+				return getIntersectionPostingsOfTerms(terms, termDocFreq);
 				
 			} else {
 				// a AND NOT b
 				String[] leftTerms = removeParens(subQuery[0].trim().toLowerCase()).trim().split(" ");
 				String[] rightTerms = removeParens(subQuery[1].trim().toLowerCase()).trim().split(" ");
 				
-				return getNegationOfDocID(getIntersectionPostingsOfTerms(leftTerms), 
-						getIntersectionPostingsOfTerms(rightTerms));
+				return getNegationOfDocID(getIntersectionPostingsOfTerms(leftTerms, termDocFreq), 
+						getIntersectionPostingsOfTerms(rightTerms, termDocFreq));
 			}
 			
 		} else {
@@ -327,12 +338,13 @@ public class InfoRetrieval {
 			String[] leftTerms = removeParens(subQuery[0].trim().toLowerCase()).trim().split(" ");
 			String[] rightTerms = removeParens(subQuery[1].trim().toLowerCase()).trim().split(" ");
 			
-			return getUnionOfDocID(getIntersectionPostingsOfTerms(leftTerms), 
-					getIntersectionPostingsOfTerms(rightTerms));
+			return getUnionOfDocID(getIntersectionPostingsOfTerms(leftTerms, termDocFreq), 
+					getIntersectionPostingsOfTerms(rightTerms, termDocFreq));
 		}
 	}
 	
-	private ArrayList<Long> getIntersectionPostingsOfTerms(String[] terms) {
+	private ArrayList<Long> getIntersectionPostingsOfTerms(String[] terms, 
+			HashMap<String, Integer> termDocFreq) {
 		InvertedIndex[] arrIdx = new InvertedIndex[terms.length];
 		Stemmer s = new Stemmer();
 		
@@ -356,6 +368,9 @@ public class InfoRetrieval {
 				}
 			}
 			
+			// store data for bm25
+			termDocFreq.put(stemmedTerm, arrIdx[i].docFreq);
+			
 			// sysloger
 			SysLogger.info("Get postings for " + terms[i] + ":");
 			StringBuffer msg = new StringBuffer();
@@ -378,19 +393,30 @@ public class InfoRetrieval {
 			return sbRet;
 		}
 		
-		ArrayList<Long> docIDs = parseQuery(query);
+		// doc frequency of terms in query
+		HashMap<String, Integer> termDocFreq = new HashMap<String, Integer>();
+		ArrayList<Long> docIDs = parseQuery(query, termDocFreq);
 
 		if (docIDs == null || docIDs.size() < 1) {
 			sbRet.append("Not found any postings for the terms");
 			return sbRet;
 		}
+
+		// get scored doc list
+		HashMap<Long, Double> mapScoredDocIDs = OkapiBM25.getScoredDocIDs(termDocFreq, docIDs);
+		ArrayList<Long> scoredDocIDs = new ArrayList<Long>();
+		for (Long key : mapScoredDocIDs.keySet()) {
+			scoredDocIDs.add(key);
+		}
 		
 		// show the list of doc id to user
-		sbRet.append("Search result:\nDocument ID list (In total: " + docIDs.size() + "): \n");
-		for (int i = 0; i < docIDs.size(); i++) {
-			sbRet.append(String.format("%5s ", docIDs.get(i).toString()));
+		sbRet.append("Search result:\nDocument ID list (In total: " + scoredDocIDs.size() + "): \n");
+		for (int i = 0; i < scoredDocIDs.size(); i++) {
+			Long key = scoredDocIDs.get(i); 
+			sbRet.append(String.format("%5s (%7.4f) ", 
+					key.toString(), mapScoredDocIDs.get(key)));
 			
-			if (i % 10 == 9) {
+			if (i % 6 == 5) {
 				sbRet.append("\n");
 			}
 		}
@@ -408,7 +434,7 @@ public class InfoRetrieval {
 			}
 			fileIn = null;
 		}
-		sbRet.append(getDocData(docIDs));
+		sbRet.append(getDocContent(scoredDocIDs));
 
 		//
 		sbRet.append("\n\nAll the results have been stored to file:\n");
@@ -427,5 +453,5 @@ public class InfoRetrieval {
 		
 		return sbRet;
 	}
-	
+
 }

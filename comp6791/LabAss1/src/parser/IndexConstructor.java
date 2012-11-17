@@ -14,8 +14,11 @@
 package parser;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import retrieval.InfoRetrieval;
+import retrieval.OkapiBM25;
+import utils.ByteArrayWrapper;
 
 public class IndexConstructor {
 	// filter options:
@@ -36,7 +39,10 @@ public class IndexConstructor {
 //		System.out.println("" + heapSize + ", " + heapMaxSize + ", " + heapFreeSize);
 //	}
 	
-	public int buildInvertedIndex() {		
+	public int buildInvertedIndex() {
+		long preDocLen = 0;		// the length of doc
+		long preDocID = -1;
+
 		String path = System.getProperty("user.dir") + "\\input\\";
 		
 		// search result:
@@ -83,8 +89,26 @@ public class IndexConstructor {
 			}
 			
 			spimi.spimiInvertOneToken(tk, tokenizer.curDocID);
+			
+			// update doc length
+			if (preDocID != tokenizer.curDocID) {
+				if (preDocID != -1) {
+					OkapiBM25.mapLenOfDocs.put(preDocID, preDocLen);
+				}
+				preDocID = tokenizer.curDocID;
+				preDocLen = 0;
+			}
+			preDocLen++;
 
+			// calculate and store term frequency
+			OkapiBM25.calcTF(tk.token, tokenizer.curDocID);
+			
 			tk = tokenizer.nextToken();
+		}
+		
+		// update length for the last doc
+		if (preDocID != -1) {
+			OkapiBM25.mapLenOfDocs.put(preDocID, preDocLen);
 		}
 		
 		// 
@@ -101,4 +125,5 @@ public class IndexConstructor {
 		
 		return 0;
 	}
+
 }
