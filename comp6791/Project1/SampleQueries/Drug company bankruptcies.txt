@@ -1,0 +1,78 @@
+Query: Drug company bankruptcies
+
+Search result:
+Document ID list (In total: 2): 
+ 3091 (14.2894)  2127 (11.8888) 
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="19507" NEWID="3091">
+<DATE> 9-MAR-1987 10:27:25.11</DATE>
+<TOPICS><D>earn</D></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;F
+&#22;&#22;&#1;f0264&#31;reute
+r f BC-A.H.-ROBINS'S-&lt;QRAH>   03-09 0077</UNKNOWN>
+<TEXT>&#2;
+<TITLE>A.H. ROBINS'S &lt;QRAH> JANUARY EARNINGS UP</TITLE>
+<DATELINE>    RICHMOND, Va., March 9 - </DATELINE><BODY>A. H. Robins Co, the drug company
+in bankruptcy proceedings due to litigation over its Dalkon
+Shield contraceptive device, reported consolidated net earnings
+for the month ended January 31 of 17.3 mln dlrs.
+    In the corresponding year-ago period it reported net
+earnings of 13.8 mln dlrs.
+    Robins said the filings were made with the U.S. trustee
+overseeing its chapter 11 bankruptcy case.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="18545" NEWID="2127">
+<DATE> 5-MAR-1987 11:04:58.81</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;F
+&#22;&#22;&#1;f0486&#31;reute
+u f BC-/HECK'S-&lt;HEX>-FILES-F   03-05 0056</UNKNOWN>
+<TEXT>&#2;
+<TITLE>HECK'S &lt;HEX> FILES FOR CHAPTER 11 BANKRUPTCY</TITLE>
+<DATELINE>    NITRO, W.Va., March 5 - </DATELINE><BODY>Heck's Inc said it has filed for
+protection from creditors under Chapter 11 of the federal
+bankruptcy act.
+    The company said its wholly owned wholesale subsidiaries,
+its Maloney's subsidiary and its discount drug store operation
+are not included in the filing.
+    Heck's said it made the filing because its bank lending
+group failed to renew on acceptable terms a credit agreement
+that expired February 28.
+    It said the 12 banks provided about 50 mln dlrs in credit
+lines to Heck's, representing all its short-term borrowings.
+    Heck's said some of the banks have demanded repayment.
+    The company said another reason for the filing was a
+developing shortage in merchandise as suppliers reacted to the
+breakdown in bank support.
+    Heck's said two representatives of the bank group, Charles
+B. Gates Jr. and Walter B. Dial Jr., have left its board.
+    Heck's said it is exploring, with its investment banker,
+the possibility of selling all or parts of the company.
+    It said the filing will allow it to work out arrangements
+with suppliers for the delivery of merchandise while permitting
+it to continue its previously-announced programs of
+cost-cutting and the paring of operations.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+
+
+All the results have been stored to file:
+D:\workspace\COMP6791\LabAss1\output\search-results.txt
+
