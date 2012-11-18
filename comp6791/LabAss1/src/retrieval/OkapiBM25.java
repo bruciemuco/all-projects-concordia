@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import utils.ByteArrayWrapper;
+import utils.SysLogger;
 
 public class OkapiBM25 {
 	// docId, the length of the doc
@@ -88,12 +89,12 @@ public class OkapiBM25 {
 		return tf.longValue();
 	}
 
+	public static double k = 1.5;
+	public static double b = 0.75;
 	public static double getScore(HashMap<String, Integer> termDocFreq, long docID) {
 		double ret = 0;
 		long N = mapLenOfDocs.size();
 		long docLen = mapLenOfDocs.get(docID);
-		double k = 1.5;
-		double b = 0.75;
 		
 		for (String term : termDocFreq.keySet()) {
 			int docFreq = termDocFreq.get(term);
@@ -101,10 +102,9 @@ public class OkapiBM25 {
 			long tf = getTF(term, docID);
 			
 			ret += idf * (tf * (k + 1)) / (tf + k * (1 - b + b * (docLen / avgDocLen)));
-//			System.out.println(ret + ":" + N + "," + docFreq + "," 
-//					+ docLen + "," + idf + "," + tf);
+			SysLogger.info("getScore: " + term + ":" + docID + "," + docFreq + "," 
+					+ docLen + "," + idf + "," + tf);
 		}
-		
 		
 		return ret;
 	}
