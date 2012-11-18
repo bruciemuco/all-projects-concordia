@@ -19,7 +19,7 @@ import utils.SysLogger;
 
 
 /*
- * COMP6791 Lab Assignment 1
+ * COMP6791 Project2
  *  
  * This file is created by Yuan Tao (ewan.msn@gmail.com)
  * Licensed under GNU GPL v3
@@ -42,7 +42,7 @@ public class Project1 {
 		}
 		
 		// show greetings
-		System.out.println("COMP 6791 Project 1");
+		System.out.println("COMP 6791 Project 2");
 		System.out.println("Developed by Yuan Tao.\n");
 
 		// build the inverted index
