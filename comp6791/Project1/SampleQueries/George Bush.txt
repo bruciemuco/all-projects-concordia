@@ -1,0 +1,845 @@
+Query: George Bush
+
+Search result:
+Document ID list (In total: 13): 
+20891 (15.9528)  8593 (13.1173)  4008 (12.3950) 16780 (11.4868) 20719 (10.4883)  3560 (10.2646) 
+ 7525 ( 9.1157) 20860 ( 8.9045)  8500 ( 8.8002)  2796 ( 7.7240)   965 ( 6.0912)  5405 ( 6.0723) 
+  854 ( 6.0556) 
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20546" NEWID="20891">
+<DATE>19-OCT-1987 18:09:40.83</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>saudi-arabia</D><D>iran</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;F A RM Y 
+&#22;&#22;&#1;f3338&#31;reute
+r f AM-SAUDI   10-19 0113</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SAUDI CROWN PRINCE MEETS WITH US VICE PRES BUSH</TITLE>
+<DATELINE>    WASHINGTON, Oct 19 - </DATELINE><BODY>Saudi Arabia's Crown Prince Abdullah
+bin Abdul Aziz met for an hour with Vice President George Bush
+on Monday after U.S. naval forces destroyed one Iranian oil
+platform in the Gulf and raided another.
+    Asked at the start of the meeting how he felt about the
+attack, the Crown Prince, who is here on an official visit,
+replied, "I believe what the United States has done is their
+responsibility as a superpower."
+    His remark appeared to be an implicit endorsement of the
+U.S. action, which the Pentagon said came in retaliation for
+last Friday's Iranian missile attack on a U.S.-flagged Kuwaiti
+tanker.
+    Administration officials said Bush had assured the Crown
+Prince the United States would "stay the course" in the Gulf.
+    They said Prince Abdullah, who is deputy prime minister of
+Saudi Arabia and commander of the kingdom's national guard, was
+"very supportive" of the U.S. role in the strategic waterway.
+    Before meeting with Bush, the Crown Prince paid a brief
+courtesy call on President Reagan.
+    During his stay in Washington, he was also scheduled to
+meet with Deputy Secretary of State John Whitehead, Defense
+Secretary Caspar Weinberger and leaders of the House and Senate
+foreign policy committees.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="14114" NEWID="8593">
+<DATE>24-MAR-1987 00:42:43.75</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f0022&#31;reute
+u f BC-HAIG-SAYS-HE-PLANS-TO   03-24 0104</UNKNOWN>
+<TEXT>&#2;
+<TITLE>HAIG SAYS HE PLANS TO RUN FOR U.S. PRESIDENT</TITLE>
+<DATELINE>    NEW YORK, March 24 - </DATELINE><BODY>Former U.S. Secretary of State
+Alexander Haig has announced his intention to run for
+president.
+    Haig, a former general and NATO chief who served seven
+presidents but never held elected office, said he will formally
+announce his bid to run for the Republican presidential
+nomination at a news conference later today.
+    Haig's aides say he starts far back in the field of
+Republican hopefuls, which is currently dominated by
+Vice-President George Bush and Senate Minority Leader Robert
+Dole, neither of whom have yet declared their intentions.
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="8921" NEWID="4008">
+<DATE>11-MAR-1987 18:21:00.31</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>canada</D></PLACES>
+<PEOPLE><D>james-baker</D><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;E
+&#22;&#22;&#1;f0877&#31;reute
+r f AM-CANADA-CLARK   03-11 0105</UNKNOWN>
+<TEXT>&#2;
+<TITLE>CLARK SAYS HE EXPECTS U.S. ACTION ON ACID RAIN</TITLE>
+<DATELINE>    WASHINGTON, March 11 - </DATELINE><BODY>Canadian Foreign Secretary Joe
+Clark, winding up a two-day visit to Washington, said he
+expected the Reagan administration to take some action on
+reducing acid rain.
+    "My impression is there will be some movement by the United
+States administration on acid rain (but) how much movement I
+can't judge or predict," he told reporters.
+    The meetings with American officials are part of a routine
+U.S.-Canada consultation but are also expected to lay the
+groundwork for a summit in Ottawa next month between President
+Reagan and Prime Minister Brian Mulroney.
+    Clark today held discussions with Treasury Secretary James
+Baker and Democratic Sens. Patrick Moynihan of New York,
+Christopher Dodd of Connecticut, Lloyd Bentsen of Texas and
+George Mitchell of Maine.
+    Yesterday, he held talks with Vice President George Bush,
+Secretary of State George Shultz and Commerce Secretary Malcolm
+Baldrige.
+    Among its priorities, Canada is seeking evidence that
+Reagan is prepared to live up to a commitment made last year to
+implement in the United States a five-year 5 billion U.S. dlr
+program to test cleaner ways of burning coal.
+    This issue was discussed at length with Baker and several
+of the senators, including Mitchell who urged Canada to "keep
+the heat on" the Reagan administration to force action, Canadian
+officials said.
+    Also taken up with most of the senators and Baker were
+trade issues, including the need for the United States and
+Canada to establish a better mechanism for settling trade
+disputes between the two countries, who are each other's major
+trading partner, Canadian officials said.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="1315" NEWID="16780">
+<DATE>17-APR-1987 05:58:05.17</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>japan</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+
+&#5;&#5;&#5;RM
+&#22;&#22;&#1;f0118&#31;reute
+b f BC-ABE-SAYS-5,000-BILLIO   04-17 0099</UNKNOWN>
+<TEXT>&#2;
+<TITLE>ABE SAYS 5,000 BILLION YEN PACKAGE TO SATISFY U.S.</TITLE>
+<DATELINE>    TOKYO, April 17 - </DATELINE><BODY>Japan's plan to stimulate its economy
+will inject about 5,000 billion yen into the economy and should
+be appreciated by the U.S., Ruling Liberal Democratic Party
+(LDP) executive council chairman Shintaro Abe told reporters.
+    "I expect considerable U.S. Appreciation of measures I have
+personally prepared with cooperation of the government and the
+LDP to help solve some individual issues pending with the
+United States," he said.
+    Abe, former Foreign Minister, starts a week long visit to
+Washington on Sunday.
+    Abe said he will meet President Reagan, Vice President
+George Bush, Secretary of State George Shultz, Defence
+Secretary Caspar Weinberger, Treasury Secretary James Baker,
+White House Chief of Staff Howard Baker and as many Congressmen
+as possible.
+    Washington is likely to announce today a series of tariff
+sanctions against Japanese electrical products after it accused
+Tokyo of failing to meet terms of a 1986 bilateral pact on
+computer chip trade.
+    "I will ask U.S. Leaders to rescind any sanctions," said Abe.
+    Japanese officials have said Tokyo would appeal to the
+General Agreement on Tariffs and Trade (GATT) for possible
+compensation or the right to retaliate should U.S. Sanctions
+materialise.
+    But Abe said, "We should not repeat retaliatory measures.
+What I would like to say to the United States is retaliation or
+protectionism alone cannot solve our trade disputes."
+ REUTER
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="YES" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="21314" NEWID="20719">
+<DATE>20-OCT-1987 16:21:59.67</DATE>
+<TOPICS><D>ship</D></TOPICS>
+<PLACES><D>usa</D><D>saudi-arabia</D><D>iran</D><D>kuwait</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;RM Y 
+&#22;&#22;&#1;f3166&#31;reute
+r f AM-SAUDI   10-20 0112</UNKNOWN>
+<TEXT>&#2;
+<TITLE>SAUDI ROLE IN GULF PRAISED BY U.S. OFFICIALS</TITLE>
+<DATELINE>    WASHINGTON, Oct 20 - </DATELINE><BODY>Saudi Arabian Crown Prince Abdullah
+bin Abdul Aziz was thanked by the Reagan administration for his
+country's close, and closed-mouthed, cooperation with
+Washington in the Gulf, a senior U.S. official said.
+    "The Saudis are being very cooperative. It would be nice if
+the Saudis would go more public, but it's their real estate,"
+said the official who asked not to be named.
+    He declined to describe what sort of help the Saudis were
+providing, saying that Saudi officials are reluctant to
+acknowledge their role in the Gulf where the United States has
+stationed forces to protect shipping lanes.
+    The prince met Vice President George Bush on Monday after
+U.S. naval forces attacked offshore Iranian oil platforms in
+what Washington said was retaliation for an Iranian attack on a
+ship moored off Kuwait and flying the U.S. flag.
+    Asked at the start of the meeting how he felt about the
+attack, the prince, who is here on an official visit, replied,
+"I believe what the United States has done is their
+responsibility as a superpower."
+    The senior U.S. official said his remark was an endorsement
+of the U.S. attack.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="8473" NEWID="3560">
+<DATE>11-MAR-1987 08:43:20.63</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>canada</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;E F
+&#22;&#22;&#1;f0870&#31;reute
+r f AM-CANADA-CLARK-1STLD   03-11 0114</UNKNOWN>
+<TEXT>&#2;
+<TITLE>CLARK HOLDS TALKS WITH SHULTZ IN WASHINGTON</TITLE>
+<DATELINE>    WASHINGTON, March 11 - </DATELINE><BODY>Foreign Secretary Joe Clark urged
+the United States to take firm action on reducing "acid rain" and
+on sticking with the strict interpretation of the
+Anti-Ballistic Missile Treaty but said he won no promises.
+    After a day of meetings with Vice President George Bush,
+Secretary of State George Shultz and Commerce Secretary Malcolm
+Baldrige, Clark told a press conference he was persuaded the
+Reagan adminstration had begun to deal seriously with Canada
+and its concerns.
+    But he admitted he had won no assurances Washington would
+go along with his government's position on several key
+controversial issues.
+    "There's a lot more attention to Canadian files. What
+remains to be seen is how much progress will be achieved," he
+told reporters.
+    The meetings, which end today with talks on Capitol Hill,
+are part of a routine U.S.-Canadian consultation but are also
+expected to lay groundwork for a summit in Ottawa next month
+between President Reagan and Prime Minister Brian Mulroney.
+    Clark discouraged speculation that lack of a firm American
+committment on the thorny issue of acid rain could render the
+summit a failure.
+    Canada is seeking evidence that Reagan is prepared to live
+up to a commitment made last year to implement in the United
+States a five-year five billion dlr U.S. program to test
+cleaner ways of burning coal.
+    "We expect the U.S. government to honor its commitment" and
+discussed this with Shultz today, Clark said.
+    "There's no question the matter is under serious detailed
+consideration at the highest levels of the U.S. government," he
+said, adding that Shultz "left my meeting today to attend a
+(White House) cabinet meeting that was discussing this as well
+as other questions."
+    "We will wait and see the results of that examination," he
+said.
+    Clark also said he reiterated Canada's position that the
+United States should adhere to a strict interpretation of the
+1972 ABM treaty, the only remaining operative arms control
+agreement.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="12438" NEWID="7525">
+<DATE>19-MAR-1987 20:13:30.97</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>iran</D><D>nicaragua</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V RM
+&#22;&#22;&#1;f2794&#31;reute
+b f AM-REAGAN-2NDLD URGENT  03-19 0071</UNKNOWN>
+<TEXT>&#2;
+<TITLE>REAGAN DENIES TOLD IRAN PROFITS WENT TO CONTRAS</TITLE>
+<DATELINE>    WASHINGTON, March 19 - </DATELINE><BODY>President Reagan denied he had been
+told that profits from sales of arms to Iran had been used to
+aid the U.S.-backed "contra" rebels in Nicaragua.
+    "No, that is not true," he said before a televised news
+conference when asked about reports that he had been told about
+the money diversion by his former National Security Adviser,
+John Poindexter.
+    Reagan was giving his first formal White House press
+conference in four months since the Iran arms affair burst into
+scandal with the disclosure profits from weapons sales had been
+diverted, possibly illegally, to the contras.
+    He said the secret approach to Iran had resulted in the
+release of three American hostages held by pro-Iranian elements
+in Lebanon and that it might have freed more if the operation
+had not been made public.
+    Reagan told reporters -- as he had told a presidential
+commission that investigated the scandal -- that he did not
+remember when he had approved an August, 1985, shipment of U.S.
+arms to Iran through Israel.
+    Reagan opened the news conference -- seen as vital in
+rebuilding his damaged presidency and restoring his authority
+-- with a statement on the yawning U.S. budget deficit.
+    He again stated his opposition to tax increases and called
+for a constitutional amendment to balance the budget.
+    Asked if in hindsight he would again start a secret program
+to sell arms to Iran, Reagan said, "No, I would not go down that
+same road again."
+    Tonight's news conference was widely seen as an opportunity
+for Reagan, 76, to demonstrate he was in command of affairs
+despite the crisis.
+    Reagan said, referring to the Iran arms program, "If I
+hadn't thought it was right in the beginning, I never would
+have started it."
+    He said he went into the deal because he was persuaded that
+he was not dealing directly with the kidnappers.
+    "You cannot do business with them," he said.
+    But "suddenly you have a third party there (Iran) ... and it
+was not trading with the kidnappers," he said.
+    The news conference in the White House East Room lasted 32
+minutes -- two minutes more than normal -- most of which was
+devoted to the Iran affair.
+    At the last minute, a reporter asked whether Vice President
+George Bush had opposed the arms sales as Secretary of State
+George Shultz and Defense Secretary Caspar Weinberger had done.
+    Reagan replied, "No," smiled, waved and walked away from the
+podium toward the White House residence.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TEST" CGISPLIT="TRAINING-SET" OLDID="20577" NEWID="20860">
+<DATE>19-OCT-1987 20:19:58.87</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;F A RM 
+&#22;&#22;&#1;f3505&#31;reute
+r f AM-STOCKS-CAMPAIGN-(NEWS -ANALYSIS)  10-19 0099</UNKNOWN>
+<TEXT>&#2;
+<TITLE>STOCK MARKET'S FALL MAY BE BAD OMEN FOR REPUBLICANS</TITLE>
+<AUTHOR>    By MICHAEL GELB</AUTHOR>
+<DATELINE>    WASHINGTON, Oct 19 - </DATELINE><BODY>Monday's stock market collapse could
+spell disaster for Republican hopes of retaining the White
+House in 1988 -- if it proves to be the start of a general
+economic downturn -- political experts said.
+    "The question is does the stock market (decline) signal an
+impending recession. If that is the case the Republicans will
+have a very difficult time winning," independent political
+analyst William Schneider told Reuters. "If the Democrats
+nominate anyone halfway credible they would win," he added.
+    Schneider's comments, on the heels of a 500-point decline
+in the bellwheter Dow Jones stock market average, reflected the
+old political adage that elections are almost always decided by
+voters' feelings about their financial well being.
+    "There is no doubt people always vote their pocketbook and
+we don't expect 1988 to be any different," says Donald Foley,
+the top spokesman for Missouri Representative Richard
+Gephardt's Democratic presidential campaign.
+    Foley added that the five-year old stock market rally has
+shown amazing resilience and "there's no telling where the
+market will be by the end of the week."
+    President Reagan said he was puzzled by the day's events,
+but is convinced the economy is fundamentally sound.
+    "I think everyone is puzzled ... because all the business
+indices are up. There is nothing wrong with the economy," he
+told reporters.
+    "I don't think anyone should panic because all the economic
+indicators are solid," he added.
+    But for the time being, the decline on Wall Street knocked
+the underpinnings from his boasts that the record bull market
+demonstrates the wisdom of current economic policy.
+    It could also deprive the Republicans of a major argument
+for keeping the White House in their hands when President
+Reagan leaves office in January 1989.
+    It gives a hollow ring to the words used by Vice President
+George Bush just a week ago when he formally entered the White
+House race.
+    "We have weathered the storm. Our economy has recovered to
+be the strongest in history," Bush said in reference to the
+recovery from the 1981-82 recession that pushed unemployment to
+its highest level since the Great Depression of the 1930s.
+    "We mark next week the longest peacetime economic expansion
+in our nation's recorded history," Bush bragged.
+    At midday, even as Wall Street was being battered by a
+record selling panic, Reagan gave a glowing account of the
+economy's performance at a swearing in ceremony for his new
+Commerce Secretary, William Verity.
+    Indeed, the Labor Department reported earlier this month
+that unemployment among American workers had fallen to an
+eight-year low of 5.9 pct in September, compared to seven pct a
+year ago and a Post World War Two peak of 10.7 pct in December
+1982.
+    But with interest rates climbing steadily and no
+improvement in the record U.S. trade deficit with the rest of
+the world, a number of economic experts have expressed doubts
+about the staying power of the current expansion.
+   Warnings of economic danger around the corner have been a
+staple of Democratic campaign speeches this year.
+    And Democratic party leaders here for an organizational
+meeting two weeks ago predicted at that time that the economy
+would be the determining factor in next year's election.
+    "The 1988 election will be decided, as most peacetime
+elections are, on economic issues," said Michigan party chairman
+Richard Weiner.
+    "In Ohio, people are uneasy. They want to know where the
+economy is going," added Ohio Democratic leader James Ruvulo.
+    American political history is replete with examples of
+voters throwing out incumbent officeholders when the economy
+turns sour -- most notably in 1932 when Democrat Franklin
+Roosevelt won a landslide triumph that ended 12 years of
+Republican rule and made the Democrats the nation's majority
+party for more than 40 years.
+    But political experts said that if Monday's stock decline
+turns out to be a temporary phenomena it will have no effect on
+the 1988 election.
+    "Times change, conditions change," Schneider said.
+    Quoting legendary baseball manager Casey Stengel, Schneider
+added, "Never make predictions, especially about the future."
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="14021" NEWID="8500">
+<DATE>23-MAR-1987 16:08:30.79</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;F
+&#22;&#22;&#1;f2335&#31;reute
+u f BC-SHAD   03-23 0112</UNKNOWN>
+<TEXT>&#2;
+<TITLE>JUDGE, EX-SENATOR AMONG CONTENDERS FOR SEC POST</TITLE>
+<DATELINE>    WASHINGTON, March 23 - </DATELINE><BODY>A federal judge and a former U.S.
+senator are among the top contenders to replace John Shad as
+chairman of the federal Securities and Exchange Commission
+(SEC), government sources said.
+    Also on the list of possible replacements are two current
+SEC commissioners, said the sources who asked not to be named.
+    Last week the White House said it would name Shad U.S.
+ambassador to the Netherlands. Among those most frequently
+placed on the short list of Shad's possible successors were
+Kevin Duffy, a New York federal judge, and Nicholas Brady, who
+served about eight months in the Senate in 1981.
+    Brady, currently a managing partner with the New York
+investment banking firm of Dillon, Read and Co Inc, was an
+interim replacement for Sen. Harrison Williams (D-N.J.) after
+Williams resigned in a congressional bribery scandal. Duffy was
+SEC New York regional administrator during 1969-72.
+    However, congressional sources speculated Brady may be
+unwilling to take the SEC post because he is active in Vice
+President George Bush's presidential campaign.
+    The SEC commissioners said to be possible replacements for
+Shad are Charles Cox and Edward Fleischman.
+    Fleischman was a New York securities lawyer before his SEC
+appointment while Cox was the commission's chief economist.
+    Sen. William Proxmire, the Wisconsin Democrat whose Senate
+Banking Committee would hold confirmation hearings on the new
+chairman, said he hoped that Shad's successor "would be very
+supportive of the division of enforcement's on-going
+investigation of the scandals on Wall Street and would be
+someone who did not come directly from the industry."
+    The White House said on Friday it would nominate Shad, 63,
+to succeed L. Paul Bremer as the U.S. ambassador to the
+Netherlands.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="19214" NEWID="2796">
+<DATE> 6-MAR-1987 14:25:55.58</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>iran</D></PLACES>
+<PEOPLE><D>reagan</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V RM
+&#22;&#22;&#1;f0221&#31;reute
+u f AM-REAGAN-TAPES   03-06 0089</UNKNOWN>
+<TEXT>&#2;
+<TITLE>IRAN INVESTIGATORS SEEK REAGAN TAPES</TITLE>
+<DATELINE>    WASHINGTON, March 6 - </DATELINE><BODY>The House and Senate committees
+investigating the Iran arms scandal said they would like to
+review tapes of phone conversations between President Reagan
+and White House officials, if such tapes exist.
+    The committees were responding to a magazine article
+that quoted unidentified "sources with first-hand knowledge of
+U.S. communications intelligence" as saying there is an archive
+of recorded conversations among Reagan administration
+officials, including the president.
+    The article in Progressive magazine also said the
+government had secretly monitored the home telephone of former
+National Security adviser Robert McFarlane after he had left
+government service in late 1985.
+    "According to sources with first hand knowledge of U.S.
+communications intelligence operations," the story said, "the
+McFarlane intercept grew out of a program that has produced a
+still-undisclosed archive of recorded conversations involving
+... Reagan, Vice President George Bush, (fired National
+Security Council aide) Lt Col Oliver North, (former National
+Security Adviser) Adm John Poindexter, (former White House
+Chief of Staff) Donald Regan and other key figures in the
+Iran-contra arms scandal."
+    It said the monitoring was done for security and record
+purposes by the top-secret National Security Agency (NSA), and
+was apparently done with the consent of those monitored.
+    But White House spokesman Marlin Fitzwater denied one
+premise of the article, saying, "The National Security Agency
+said it did not monitor any of McFarlane's conversations."
+    He did not comment on the other recorded conversations the
+Progressive article said were included in the program.
+    "Clearly we would be interested in taking a look if indeed
+such tapes exist," a Senate Iran committee aide told Reuters in
+response to the magazine article.
+    A spokesman for the House Iran committee said the panel
+would consider a request to the NSA for copies of the
+telephone-tap archive described in the article.
+    Several legislators said the tapes, if it is confirmed that
+they exist, could prove invaluable to the special House and
+Senate committees that were created in January to investigate
+Reagan's most damaging political crisis.
+    "This sort of evidence could be absolutely crucial in
+getting to the bottom of the affair," said Rep. Robert
+Kastenmeier, a Wisconsin Democrat and member of the House
+Intelligence Committee, told Reuters.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="16285" NEWID="965">
+<DATE> 3-MAR-1987 08:13:28.05</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>volcker</D><D>james-baker</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f0109&#31;reute
+u f BC-REGAN-DEPARTURE-MAKES   03-03 0083</UNKNOWN>
+<TEXT>&#2;
+<TITLE>REGAN DEPARTURE MAKES 3RD VOLCKER TERM LIKELY</TITLE>
+<AUTHOR>    By Peter Torday, Reuters</AUTHOR>
+<DATELINE>    WASHINGTON, March 3 - </DATELINE><BODY>Last week's White House shake-up has
+increased the odds that Federal Reserve Board chairman Paul
+Volcker, a symbol of strength in a government reeling from the
+arms-to-Iran scandal, will serve a third term, sources close to
+the Fed say.
+    But they said that no decision on the appointment, which
+must be filled this August, has been taken by the White House
+and Volcker too has not made up his mind.
+    Former White House Chief of Staff Donald Regan, who
+resigned last week when ex-senator Howard Baker was named as
+his replacement, was implacably opposed to Volcker and tried
+often to undermine him.
+    It is an open secret in Washington that Regan tried to
+ensure that Volcker, first appointed in 1979 by President
+Carter, will not be offered a third term by President Reagan.
+    Only Volcker's key allies in the Reagan administration,
+Vice-President George Bush and Treasury Secretary James Baker,
+kept Regan's recent maneuvering at bay, the sources said.
+    Sources close to the administration say Regan leaked a
+story, quickly shot down by others in the administration, that
+Beryl Sprinkel, chairman of the council of economic advisers,
+had been chosen to replace Volcker.
+    But as the administration's credibility was increasingly
+under fire, it became clear that Regan's power to bring about
+such changes was on the wane.
+    The sources said New White House Chief of Staff Howard
+Baker has a very good relationship with his namesake at the
+Treasury Department and is likely to respect his views on the
+Fed chairmanship.
+    As a moderate Republican, Baker is also unlikely to share
+the right-wing's opposition to Volcker.
+    "This new White House is going to need all the strength it
+can get," said one source when asked about the possibility of
+Volcker's reappointment.
+    Paul Volcker is deeply respected in financial markets both
+in the United States and around the world. At a time when the
+stability of the dollar and the viability of major debtor
+nations are in question, Volcker's departure would definitely
+undermine U.S. leadership, foreign exchange analysts say.
+    U.S. officials say Volcker works very closely with Treasury
+Secretary Baker on issues like international debt and global
+economic cooperation.
+    The two men seem only to differ on how far to deregulate
+the banking industry, but recent statements by Volcker, in
+which he adopted a more liberal attitude on deregulation,
+signalled the politically-independent central bank is coming
+around at least partially to the Treasury position.
+    And a recent statement by a Reagan administration official
+that the two men saw "exactly eye-to-eye" on the dollar was seen
+as an indication of Baker's support for the Fed chairman.
+    Baker is understood to have played a key role in Volcker's
+reappointment to the Fed in mid-1983.
+    The sources said Baker respects Volcker and when appointed
+Treasury Secretary in February 1985, he decided to ensure a
+good working relationship, in part because he believed the two
+key government economic institutions have to work closely.
+    Regan, Treasury Secretary during President Reagan's first
+term, was formerly head of Wall Street's largest brokerage firm
+Merrill Lynch and came to Washington determined to be America's
+pre-eminent economic spokesman.
+    He developed a deep antipathy for Volcker, whose political
+skills undermined that ambition, and who financial markets took
+much more seriously.
+    But the sources said Volcker would have to be invited to
+stay. "Is the president going to ask him? he wouldn't stay
+otherwise," said one. "He'd have to be asked," said Stephen
+Axilrod, formerly staff director of monetary policy at the Fed
+and now vice-chairman of Nikko Securities Co. International.
+    Otherwise, the list of potential candidates is not
+awe-inspiring. And if Volcker left this Augsut, he would leave
+behind one of the most inexperienced Fed Boards in years.
+    Many analysts believe this lack of collective experience --
+the four sitting members were all appointed within the last
+three years -- is dangerous, coming at a time when the global
+economy is threatened by instability.
+    An experienced successor, therefore, would seem a
+necessity. One widely mentioned possibility is Secretary of
+State George Shultz, whose experience as Treasury Secretary
+under Preesident Nixon and background as a trained economist
+would make him ideal.
+    But Shultz too may have been damaged by the arms-to-Iran
+scandal, while vice-chairman Manuel Johnson is regarded at 37
+years old as too young for the job.
+    Other potential candidates include economist Alan
+Greenspan, frequently an informal presidential economic
+adviser, New York Fed President E. Gerald Corrigan, Federal
+Deposit Insurance Corp chairman William Seidman, and Sprinkel.
+    Long a Regan protege, Sprinkel's chances may be damaged by
+his patron's departure from the White House.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="10318" NEWID="5405">
+<DATE>16-MAR-1987 11:07:00.92</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D><D>iran</D><D>nicaragua</D></PLACES>
+<PEOPLE></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V
+&#22;&#22;&#1;f2403&#31;reute
+u f AM-REAGAN   03-16 0114</UNKNOWN>
+<TEXT>&#2;
+<TITLE>IRAN PROBERS AGREE ON IMMUNITY FOR POINDEXTER</TITLE>
+<AUTHOR>    By Michael Posner</AUTHOR>
+<DATELINE>    WASHINGTON, March 16 - </DATELINE><BODY>Congressional investigators of the
+Iran-contra scandal have tentatively agreed to grant immunity
+from prosecution to a star witness --President Reagan's former
+national security adviser John Poindexter, congressional
+sources said today.
+    Sources told Reuters the chief counsels of the two special
+committees probing the two-year episode that has darkened the
+White House image plan to take their preliminary accord to
+court-appointed special prosecutor Lawrence Walsh, possibly
+today or tomorrow.
+    The tentative accord follows weeks of negotiating with
+Walsh and with committee members.
+   Poindexter would be the highest ranking official to be
+granted immunity in the investigations of the 1985-1986 arms
+sales to Iran to gain release of hostages held in Lebanon and
+the clandestine shifting of arms profits to arm U.S.-backed
+rebels in Nicaragua, at a time aid would have been illegal.
+    If the agreement --reached on Friday by Arthur Liman and
+John Nields, chief legal advisors of the Senate and House
+committees respectively --is ratified as expected by Walsh and
+the full committees, closed door interviews could be held with
+Poindexter in two months with public testimony in about 90 days
+or mid June, sources said.
+    "They have tentatively reached an agreement and are supposed
+to meet with Walsh or his deputies," a source told Reuters of
+the deliberations by the two chief counsels
+    Sources said Poindexter could assist investigators
+determine what Reagan knew about the diversion of funds from
+arms sales to Iran to rebels in Nicaragua, if anything.
+    Reagan has denied knowing about the shift of funds although
+he has admitted he gave orders to sell arms through Israel in
+either August or after the first shipment in September 1985,
+but can't remember when. Congress was kept in the dark about
+the affair until last autumn.
+    "He will be a credible witness," one source said of the
+pipe-smoking Poindexter. 
+    Besides Reagan's knowledge, or lack of it, another key
+unanswered questions lingering from earlier congressional
+investigators and a special presidential review board, is who
+received  millions of dollars from clandestine arms profits.  
+    So far the money trail uncovered by probers stops at secret
+Swiss and Cayman Islands bank accounts.
+    The committees have been privately negotiating with Walsh
+over the immunity matter, and the prosecutor, also called an
+independent counsel, has been urging the committees to hold off
+on their request for at least 90 days.
+    Under the tentative accord, the wishes of Walsh could be
+met since public testimony is not expected before 90 days.
+    Poindexter, a Navy vice admiral, along with his fired
+deputy at the National Security Council, Marine Lt. Col. Oliver
+North, have refused to testify before investigators,
+claiming their fifth amendment rights against self
+incrimination.
+    Yesterday, Vice President George Bush said in a a
+television interview that he disagreed with Maureen about court
+martials, but he too disclaimed any details of diverted funds.
+    So far, granting immunity to compel testimony from
+reluctant witnesses has been granted to five persons--with the
+key figure so far, shadowy California international arms
+merchant Albert Hakim.
+    Also, getting immunity has been North's attractive personal
+secretary, Fawn Hall, who was said to have assisted North in
+shredding documents in his White House basement office after
+the scandal broke.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+<REUTERS TOPICS="NO" LEWISSPLIT="TRAIN" CGISPLIT="TRAINING-SET" OLDID="13037" NEWID="854">
+<DATE> 2-MAR-1987 18:18:59.79</DATE>
+<TOPICS></TOPICS>
+<PLACES><D>usa</D></PLACES>
+<PEOPLE><D>reagan</D><D>volcker</D><D>sprinkel</D><D>howard-baker</D><D>james-baker</D></PEOPLE>
+<ORGS></ORGS>
+<EXCHANGES></EXCHANGES>
+<COMPANIES></COMPANIES>
+<UNKNOWN> 
+&#5;&#5;&#5;V RM
+&#22;&#22;&#1;f0311&#31;reute
+u f BC-REGAN-DEPARTURE-MAKES   03-02 0083</UNKNOWN>
+<TEXT>&#2;
+<TITLE>REGAN DEPARTURE MAKES 3RD VOLCKER TERM LIKELY</TITLE>
+<AUTHOR>    By Peter Torday, Reuters</AUTHOR>
+<DATELINE>    WASHINGTON, March 2 - </DATELINE><BODY>Last week's White House shake-up has
+increased the odds that Federal Reserve Board chairman Paul
+Volcker, a symbol of strength in a government reeling from the
+arms-to-Iran scandal, will serve a third term, sources close to
+the Fed say.
+    But they said that no decision on the appointment, which
+must be filled this August, has been taken by the White House
+and Volcker too has not made up his mind.
+    Former White House Chief of Staff Donald Regan, who
+resigned last week when ex-senator Howard Baker was named as
+his replacement, was implacably opposed to Volcker and tried
+often to undermine him.
+    It is an open secret in Washington that Regan tried to
+ensure that Volcker, first appointed in 1979 by President
+Carter, will not be offered a third term by President Reagan.
+    Only Volcker's key allies in the Reagan administration,
+Vice-President George Bush and Treasury Secretary James Baker,
+kept Regan's recent maneuvering at bay, the sources said.
+    Sources close to the administration say Regan leaked a
+story, quickly shot down by others in the administration, that
+Beryl Sprinkel, chairman of the council of economic advisers,
+had been chosen to replace Volcker.
+    But as the administration's credibility was increasingly
+under fire, it became clear that Regan's power to bring about
+such changes was on the wane.
+    The sources said New White House Chief of Staff Howard
+Baker has a very good relationship with his namesake at the
+Treasury Department and is likely to respect his views on the
+Fed chairmanship.
+    As a moderate Republican, Baker is also unlikely to share
+the right-wing's opposition to Volcker.
+    "This new White House is going to need all the strength it
+can get," said one source when asked about the possibility of
+Volcker's reappointment.
+    Paul Volcker is deeply respected in financial markets both
+in the United States and around the world. At a time when the
+stability of the dollar and the viability of major debtor
+nations are in question, Volcker's departure would definitely
+undermine U.S. leadership, foreign exchange analysts say.
+    U.S. officials say Volcker works very closely with Treasury
+Secretary Baker on issues like international debt and global
+economic cooperation.
+    The two men seem only to differ on how far to deregulate
+the banking industry, but recent statements by Volcker, in
+which he adopted a more liberal attitude on deregulation,
+signalled the politically-independent central bank is coming
+around at least partially to the Treasury position.
+    And a recent statement by a Reagan administration official
+that the two men saw "exactly eye-to-eye" on the dollar was seen
+as an indication of Baker's support for the Fed chairman.
+    Baker is understood to have played a key role in Volcker's
+reappointment to the Fed in mid-1983.
+    The sources said Baker respects Volcker and when appointed
+Treasury Secretary in February 1985, he decided to ensure a
+good working relationship, in part because he believed the two
+key government economic institutions have to work closely.
+    Regan, Treasury Secretary during President Reagan's first
+term, was formerly head of Wall Street's largest brokerage firm
+Merrill Lynch and came to Washington determined to be America's
+pre-eminent economic spokesman.
+    He developed a deep antipathy for Volcker, whose political
+skills undermined that ambition, and who financial markets took
+much more seriously.
+    But the sources said Volcker would have to be invited to
+stay. "Is the president going to ask him? he wouldn't stay
+otherwise," said one. "He'd have to be asked," said Stephen
+Axilrod, formerly staff director of monetary policy at the Fed
+and now vice-chairman of Nikko Securities Co. International.
+    Otherwise, the list of potential candidates is not
+awe-inspiring. And if Volcker left this Augsut, he would leave
+behind one of the most inexperienced Fed Boards in years.
+    Many analysts believe this lack of collective experience --
+the four sitting members were all appointed within the last
+three years -- is dangerous, coming at a time when the global
+economy is threatened by instability.
+    An experienced successor, therefore, would seem a
+necessity. One widely mentioned possibility is Secretary of
+State George Shultz, whose experience as Treasury Secretary
+under Preesident Nixon and background as a trained economist
+would make him ideal.
+    But Shultz too may have been damaged by the arms-to-Iran
+scandal, while vice-chairman Manuel Johnson is regarded at 37
+years old as too young for the job.
+    Other potential candidates include economist Alan
+Greenspan, frequently an informal presidential economic
+adviser, New York Fed President E. Gerald Corrigan, Federal
+Deposit Insurance Corp chairman William Seidman, and Sprinkel.
+    Long a Regan protege, Sprinkel's chances may be damaged by
+his patron's departure from the White House.
+ Reuter
+&#3;</BODY></TEXT>
+</REUTERS>
+
+
+
+All the results have been stored to file:
+D:\workspace\COMP6791\LabAss1\output\search-results.txt
+
