@@ -80,6 +80,13 @@ public class Project1 {
 				Scanner scan = new Scanner(System.in);
 				query = scan.nextLine();
 				
+				// test tuning parameters of k and b
+				if (query.equals("kb")) {
+					OkapiBM25.k = scan.nextDouble();
+					OkapiBM25.b = scan.nextDouble();
+					continue;
+				}
+				
 				if (query.trim().length() < 1) {
 					System.out.println("Invalid query.");
 					continue;
