@@ -1,5 +1,5 @@
 Query: George Bush
-
+ 
 Search result:
 Document ID list (In total: 13): 
 20891 (15.9528)  8593 (13.1173)  4008 (12.3950) 16780 (11.4868) 20719 (10.4883)  3560 (10.2646) 
