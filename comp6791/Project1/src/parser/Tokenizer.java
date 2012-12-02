@@ -19,6 +19,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import retrieval.InfoRetrieval;
 
@@ -35,16 +39,26 @@ public class Tokenizer {
 	private ArrayList<String> lstFiles = new ArrayList<String>();
 	private int lstFilesIndex = 0;
 
-	private BufferedInputStream in = null;
-	private byte[] fileBuf = new byte[FILEBUF_SIZE];
-	private int curIndex = FILEBUF_SIZE;
+//	private BufferedInputStream in = null;
+//	private byte[] fileBuf = new byte[FILEBUF_SIZE];
+//	private int curIndex = FILEBUF_SIZE;
 	private int maxIndex = 0;
+	private String fileBuf;
+	private int curIndex = 0;
 	
 	private char curChar = 0;
-	private int curPos = 0;
+//	private int curPos = 0;
 	private String curToken = "";
 	
 	public long curDocID = 0;
+	
+	public static Semaphore semNextFileBegin = new Semaphore(0);
+	public static Semaphore semNextFileDone = new Semaphore(0);
+	public static String nextFile = null;
+	
+	private URLList urlListWriter = new URLList();
+	private String docPath;
+	private int docPatnLen;
 	
 	// stopwords
 	StopWords stopWords = new StopWords();
@@ -54,11 +68,8 @@ public class Tokenizer {
 			SysLogger.err("LexicalAnalyzer. No such file.");
 			return -1;
 		}
-		
-		// get all input file names
-		if (loadFilenames(dir) != 0) {
-			return -1;
-		}
+		docPath = dir;
+		docPatnLen = docPath.length();
 		
 		// open the first file to be read
 		if (openNextFile() != 0) {
@@ -70,63 +81,63 @@ public class Tokenizer {
 		return 0;
 	}
 	
-	// load all file names under a directory
-	private int loadFilenames(String inputDir) {
-        File filesDir = new File(inputDir);        
-        File list[] = filesDir.listFiles();
-        
-        if (list.length > MAX_FILES) {
-			SysLogger.err("Too many files under directory: " + inputDir);
-			return -1;
-		}
-        
-        for(int i=0;i<list.length;i++)
-        {
-            if(list[i].isFile())
-            {
-            	if (list[i].length() > MAX_FILE_SIZE) {
-            		SysLogger.err("File " + list[i].getName() + " is too large: " 
-            			+ list[i].length());
-            		return -1;
-				}
-            	
-            	lstFiles.add(inputDir + list[i].getName());
-            }
-        }
-        
-        if (lstFiles.size() < 1) {
-			SysLogger.err("No input files");
-			return -1;
-		}
-		return 0;
-	}
-	
 	private int openNextFile() {
-		if (lstFilesIndex == lstFiles.size()) {
-			InfoRetrieval.arrDocID2File.add(curDocID + "," + lstFiles.get(lstFilesIndex - 1));
+		semNextFileBegin.release();
+		try {
+			semNextFileDone.acquire();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if (nextFile == null) {
 			return 1;
 		}
-
+		//SysLogger.info("=======+" + nextFile);
+		
 		try {
-			in = new BufferedInputStream(new FileInputStream(lstFiles.get(lstFilesIndex)));
-				
-		} catch (FileNotFoundException e) {
-			SysLogger.err("File not found: " + lstFiles.get(lstFilesIndex));
-			return -1;
+			File input = new File(nextFile);
+			Document doc = Jsoup.parse(input, "UTF-8");
+			fileBuf = doc.text();
+			maxIndex = fileBuf.length();
+			if (maxIndex == 0) {
+				openNextFile();
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			SysLogger.err(e.getMessage());
 			return -1;
 		}
 
-		if (lstFilesIndex > 0) {
-			InfoRetrieval.arrDocID2File.add(curDocID + "," + lstFiles.get(lstFilesIndex - 1));
-		}
-		lstFilesIndex++;
+		curDocID++;
+		urlListWriter.store2File("http://" + nextFile.substring(docPatnLen));
 		return 0;
 	}
 	
 	private char nextChar() {
+		if (curIndex == maxIndex) {
+			// load a new file
+			if (openNextFile() != 0) {
+				return 0;
+			}
+			curIndex = 0;
+		}
+		
+		char ch = 0;
+		try {
+			ch = fileBuf.charAt(curIndex++);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			SysLogger.err(e.getMessage());
+			SysLogger.err("File: " + nextFile + ", index: " + curIndex);
+		}
+		
+		return ch;
+	}
+	
+/*	private char nextCharOld() {
 		int nRead = -1;
 				
 		try {
@@ -162,7 +173,7 @@ public class Tokenizer {
 		curPos++;
 		
 		return (char) fileBuf[curIndex++];
-	}
+	}*/
 	
 	// get next valid token from the stream.
 	public Token nextToken() {
@@ -208,7 +219,7 @@ public class Tokenizer {
 				break;
 			}
 			
-			if (curChar == '<') {
+/*			if (curChar == '<') {
 				if (tk.type == Token.TK_TYPE_STRING || tk.type == Token.TK_TYPE_NUM) {
 					break;
 				}
@@ -250,6 +261,7 @@ public class Tokenizer {
 				curChar = nextChar();
 				continue;
 			}
+*/			
 			
 			if (tk.type != 0) {
 				// the current character is neither string or number

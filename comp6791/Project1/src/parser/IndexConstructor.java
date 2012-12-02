@@ -13,12 +13,14 @@
 
 package parser;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 
 import retrieval.InfoRetrieval;
 import retrieval.OkapiBM25;
 import utils.ByteArrayWrapper;
+import utils.SysLogger;
 
 public class IndexConstructor {
 	// filter options:
@@ -39,22 +41,41 @@ public class IndexConstructor {
 //		System.out.println("" + heapSize + ", " + heapMaxSize + ", " + heapFreeSize);
 //	}
 	
-	public int buildInvertedIndex() {
+	public int buildInvertedIndex(String inputPath) {
 		long preDocLen = 0;		// the length of doc
 		long preDocID = -1;
 
-		String path = System.getProperty("user.dir") + "\\input\\";
-		
+		String outputPath = System.getProperty("user.dir") + "\\output\\";
+		File file = new File(outputPath);
+
+		if (!file.exists()) {
+			if (!file.mkdirs()) {
+				SysLogger.err("Cannot create path: " + outputPath);
+				return -1;
+			}
+		}
+
 		// search result:
-		InfoRetrieval.filenameResult = System.getProperty("user.dir") + "\\output\\search-results.txt";
+		InfoRetrieval.filenameResult = outputPath + "search-results.txt";
 		
 		// create SPIMI object
-		spimi = new SPIMI(System.getProperty("user.dir") + "\\output\\");
+		spimi = new SPIMI(outputPath);
+		
+		// create directory traversal thread
+		DirTraversal.start(inputPath);
+		
+		// wait for this thread until it has been started
+		try {
+			Tokenizer.semNextFileDone.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// create a Tokenizer
 		Tokenizer tokenizer = new Tokenizer();
 		
-		if (tokenizer.init(path) != 0) {
+		if (tokenizer.init(inputPath) != 0) {
 			return -1;
 		}
 		

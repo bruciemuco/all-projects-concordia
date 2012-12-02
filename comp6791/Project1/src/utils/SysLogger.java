@@ -13,6 +13,7 @@
 
 package utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -49,7 +50,14 @@ public class SysLogger {
 		log.setUseParentHandlers(false);
 		
 		// add a file handler
-		String path = System.getProperty("user.dir") + "\\logs\\log.txt";
+		String path = System.getProperty("user.dir") + "\\logs";
+		File file = new File(path);
+		if (!file.exists()) {
+			if (!file.mkdirs()) {
+				return;
+			}
+		}
+		path += "\\log.txt";
 		FileHandler fileHandle;
 		try {
 			fileHandle = new FileHandler(path);

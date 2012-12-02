@@ -24,6 +24,7 @@ import java.util.TreeMap;
 
 import parser.InvertedIndex;
 import parser.Stemmer;
+import parser.URLList;
 
 import utils.ByteArrayWrapper;
 import utils.SysLogger;
@@ -34,9 +35,9 @@ public class InfoRetrieval {
 	// "term,c:\\inverted-index-1"
 	public static ArrayList<String> arrTerm2File = new ArrayList<String>();
 	
-	// array of the last docID of the raw file and the file name
-	// "3008,c:\\reut2-000.sgm"
-	public static ArrayList<String> arrDocID2File = new ArrayList<String>();
+//	// array of the last docID of the raw file and the file name
+//	// "3008,c:\\reut2-000.sgm"
+//	public static ArrayList<String> arrDocID2File = new ArrayList<String>();
 	
 	// inverted index in memory for the first file
 	// because the memory size only allowed to load one file
@@ -290,6 +291,7 @@ public class InfoRetrieval {
 		for (; j < docIDs.size(); j++) {
 			long dID = docIDs.get(j);
 
+/*
 			// traverse all raw files
 			for (int i = 0; i < arrDocID2File.size(); i++) {
 				String[] tmp = arrDocID2File.get(i).split(",");
@@ -300,7 +302,10 @@ public class InfoRetrieval {
 					sbRet.append("\n");
 					break;
 				}
-			}
+			}*/
+			
+			sbRet.append(URLList.getURL(dID));
+			sbRet.append("\n");
 		}
 		return sbRet;
 	}
@@ -314,6 +319,10 @@ public class InfoRetrieval {
 	}
 	
 	// parse the query to support OR and AND NOT
+	// input params: query
+	// output params: termDocFreq, which is a map. the key is the term, and 
+	// 	              the value of the key is the doc frequency of the term.
+	// return a list of doc IDs
 	public ArrayList<Long> parseQuery(String query, 
 			HashMap<String, Integer> termDocFreq) {
 		String[] subQuery = query.trim().split("OR");
@@ -343,6 +352,10 @@ public class InfoRetrieval {
 		}
 	}
 	
+	// input params: terms, which is an array of terms
+	// output params: termDocFreq, which is a map. the key is the term, and 
+	// 	              the value of the key is the doc frequency of the term.
+	// return a list of doc IDs
 	private ArrayList<Long> getIntersectionPostingsOfTerms(String[] terms, 
 			HashMap<String, Integer> termDocFreq) {
 		InvertedIndex[] arrIdx = new InvertedIndex[terms.length];
@@ -422,7 +435,7 @@ public class InfoRetrieval {
 		}
 		SysLogger.info(sbRet.toString());
 		sbRet.append("\n\n");
-		
+
 		// get doc from raw files
 		// close the filehandle first
 		if (fileIn != null) {
@@ -433,9 +446,9 @@ public class InfoRetrieval {
 				SysLogger.err(e.getMessage());
 			}
 			fileIn = null;
-		}
+		}		
 		sbRet.append(getDocContent(scoredDocIDs));
-
+		
 		//
 		sbRet.append("\n\nAll the results have been stored to file:\n");
 		sbRet.append(filenameResult + "\n");
