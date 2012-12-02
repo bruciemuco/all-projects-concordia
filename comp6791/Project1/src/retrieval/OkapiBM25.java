@@ -74,6 +74,7 @@ public class OkapiBM25 {
 		return 0;
 	}
 	
+	// get the tf for the given term and docID
 	private static long getTF(String tk, long docID) {
 		ByteArrayWrapper term = new ByteArrayWrapper(tk.getBytes());
 		HashMap<Long, Long> mapTFDocs = mapTF.get(term);
@@ -98,7 +99,7 @@ public class OkapiBM25 {
 		
 		for (String term : termDocFreq.keySet()) {
 			int docFreq = termDocFreq.get(term);
-			double idf = Math.log((N - docFreq + 0.5) / (docFreq + 0.5));
+			double idf = Math.log10((N - docFreq + 0.5) / (docFreq + 0.5));
 			long tf = getTF(term, docID);
 			
 			ret += idf * (tf * (k + 1)) / (tf + k * (1 - b + b * (docLen / avgDocLen)));

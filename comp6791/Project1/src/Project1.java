@@ -51,7 +51,12 @@ public class Project1 {
 		System.out.println();
 		
 		IndexConstructor ic = new IndexConstructor();
-		if (ic.buildInvertedIndex() != 0) {
+		
+		// NOTE: inputPath MUST be ended with \\ 
+		String inputPath = "D:\\workspace\\COMP6791\\rootdir\\";
+		//String inputPath = "D:\\workspace\\COMP6791\\Project1\\aa\\";
+		
+		if (ic.buildInvertedIndex(inputPath) != 0) {
 			return;
 		}
 
@@ -62,6 +67,22 @@ public class Project1 {
 		
 		InfoRetrieval ir = new InfoRetrieval();
 		ir.init();
+		
+		/*
+		 * 联调时执行到此即可。注意需要修改上面的 inputPath，此路径必须以 \\ 结尾。
+		 *  
+		 * tf: OkapiBM25.getTF()
+		 * df: InfoRetrieval.getIntersectionPostingsOfTerms，每次传一个term即可，
+		 * doc len: OkapiBM25.mapLenOfDocs.get(docID);
+		 * average doc len: OkapiBM25.avgDocLen
+		 * 
+		 * 计算BM25的例子可以参考代码：OkapiBM25。getScore
+		 * 
+		 * 
+		 * 取URL. URLList.getURL(long docID) 取该docID对应的URL
+		 * 
+		 *  
+		 */
 
 		date = new Date();
 		System.out.println("Done.\n" + date.toString());

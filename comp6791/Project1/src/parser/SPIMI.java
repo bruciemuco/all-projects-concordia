@@ -33,7 +33,7 @@ import utils.Mergesort;
 import utils.SysLogger;
 
 public class SPIMI {
-	public static final long MAX_MEM_SIZE = 4 * 1024 * 1024; //200*1024;
+	public static final long MAX_MEM_SIZE = 100 * 1024 * 1024; //200*1024;
 	public static final int MAX_FILE_NUMBERS = 100;
 
 	private String curDocID = "";
