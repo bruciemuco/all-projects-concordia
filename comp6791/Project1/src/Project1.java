@@ -70,6 +70,7 @@ public class Project1 {
 		
 		/*
 		 * 联调时执行到此即可。注意需要修改上面的 inputPath，此路径必须以 \\ 结尾。
+		 * 创建工程时需要导入 工程目录/libs/jsoup-1.7.1.jar
 		 *  
 		 * tf: OkapiBM25.getTF()
 		 * df: InfoRetrieval.getIntersectionPostingsOfTerms，每次传一个term即可，
