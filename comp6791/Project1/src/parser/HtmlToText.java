@@ -23,9 +23,10 @@ import org.jsoup.select.NodeVisitor;
  */
 
 public class HtmlToText {
+	private static String h1 = "";
 
-	// convert html file to plain text
-	public static String text(String filename) {
+	// convert html file to plain text, and get its title
+	public static String text(String filename, StringBuffer title) {
 		File input = new File(filename);
 		Document doc;
 		try {
@@ -34,10 +35,22 @@ public class HtmlToText {
 			e.printStackTrace();
 			return "";
 		}
+		
+		h1 = "";
 
+		// get plain text		
         FormattingVisitor formatter = new FormattingVisitor();
         NodeTraversor traversor = new NodeTraversor(formatter);
         traversor.traverse(doc); 
+
+		// get title        
+		if (h1.length() == 0) {
+			h1 = doc.title();
+		}
+		if (h1.equals("Moved Permanently")) {
+			h1 = "";
+		}
+		title.append(h1);
 
         return formatter.toString();
 	}
@@ -48,6 +61,7 @@ public class HtmlToText {
         private boolean isA = false;
         private boolean isP = false;
         private boolean isFooter = false;
+        private boolean isH1 = false;
 
 		@Override
 		public void head(Node node, int depth) {
@@ -71,6 +85,10 @@ public class HtmlToText {
 				}
 				return;
 			}
+			if (tagName.equals("h1")) {
+				isH1 = true;
+				return;
+			}
 
 			String idAttr = node.attr("id");
 			String classAttr = node.attr("class");
@@ -79,6 +97,9 @@ public class HtmlToText {
 				return;
 			}
 
+			if (isH1 && node instanceof TextNode) {
+				h1 += ((TextNode) node).text();				
+			}
 			if (!isFooter && !isA && node instanceof TextNode) {
 	           	accum.append(((TextNode) node).text()); 
 			}
@@ -96,6 +117,10 @@ public class HtmlToText {
 				isA = false;
 				return;
 			}			
+			if (tagName.equals("h1")) {
+				isH1 = false;
+				return;
+			}
 		}
 		
         public String toString() {
