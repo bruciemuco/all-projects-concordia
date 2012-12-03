@@ -101,7 +101,10 @@ public class Tokenizer {
 //			fileBuf = doc.text();
 			
 			// do not extract html tags, such <a> (not in <p>), <div id="footer">...
-			fileBuf = HtmlToText.text(nextFile);
+			StringBuffer title = new StringBuffer();
+			
+			fileBuf = HtmlToText.text(nextFile, title);
+			urlListWriter.storeTitle2File(title.toString());
 			
 			maxIndex = fileBuf.length();
 			if (maxIndex == 0) {
