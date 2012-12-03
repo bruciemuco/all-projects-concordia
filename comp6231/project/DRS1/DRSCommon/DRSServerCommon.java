@@ -49,6 +49,8 @@ public class DRSServerCommon {
 	public static final String TEST_ITEMID_EXCHG = "1235";
 	public static final String TEST_ITEMID_CON = "4321";
 	
+	private int udpPort = -1;
+	
 	// initialize the store
 	public int init(String name, int localSvrPort) {
 		// initialize SysLogger
@@ -90,6 +92,7 @@ public class DRSServerCommon {
 		udpLibs.svr = this;
 		//udpLibs.udpLocalSvrPort = localSvrPort;
 		udpLibs.udpServerStart(localSvrPort);
+		udpPort = localSvrPort;
 		
 		// TODO: use semaphore to check if the thread has already started
 		try {
@@ -354,8 +357,16 @@ public class DRSServerCommon {
 				// update user info in file
 				saveUserInfo2File(customerID);
 				
-				SysLogger.info("buy: " + customerID + ", " + itemID + ", " + numberOfItem
-						+ ". Num Before: " + num);
+				if (udpPort - SvrInfo.SVR_PORT_MONTREAL < 5) {
+					SysLogger.info("buy: " + customerID + ", " + itemID + ", " 
+							+ numberOfItem + ". Num Before: " + num);
+				} else if (udpPort - SvrInfo.SVR2_PORT_MONTREAL < 5) {
+					SysLogger.info("customer " + customerID + " bought " + numberOfItem 
+							+ " of " + itemID + " in " + svrName);
+				} else {
+					SysLogger.info("Purchase Success! Custom:" + customerID + " Item:" + itemID + " Num:" + numberOfItem);
+				}
+
 				return 0;
 			}
 		}
@@ -397,8 +408,15 @@ public class DRSServerCommon {
 		// update user info in file
 		saveUserInfo2File(customerID);
 		
-		SysLogger.info("return: " + customerID + ", " + itemID + ", " + numberOfItem
-				+ ". Num Before: " + num);
+		if (udpPort - SvrInfo.SVR_PORT_MONTREAL < 5) {
+			SysLogger.info("return: " + customerID + ", " + itemID + ", " + numberOfItem
+					+ ". Num Before: " + num);
+		} else if (udpPort - SvrInfo.SVR2_PORT_MONTREAL < 5) {
+			SysLogger.info("customer " + customerID + " returned " + numberOfItem 
+					+ " of " + itemID + " in " + svrName);
+		} else {
+			SysLogger.info("Return Success! Custom:" + customerID + " Item:" + itemID + " Num:" + numberOfItem);
+		}
 		return 0;
 	}
 	

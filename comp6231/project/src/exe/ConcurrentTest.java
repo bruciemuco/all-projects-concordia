@@ -154,7 +154,7 @@ public class ConcurrentTest implements Runnable {
 			numberOfItem = 5;
 			
 			Random rd = new Random(System.nanoTime());			
-			int i = 0, max = Math.abs(rd.nextInt() % 15) + 5;
+			int i = 0, max = Math.abs(rd.nextInt() % 10) + 1;
 			
 			SysLogger.info("ConcurrentTest: random num1: " + max);
 			while (i++ < max) {

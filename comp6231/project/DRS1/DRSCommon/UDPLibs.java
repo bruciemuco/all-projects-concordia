@@ -19,6 +19,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import common.SvrInfo;
 import common.SysLogger;
 
 public class UDPLibs implements Runnable {
@@ -45,7 +46,11 @@ public class UDPLibs implements Runnable {
 				udpSock.receive(request);
 				
 				String itemID = new String(request.getData(), 0, request.getLength());
-				SysLogger.info("UDPSVR RECV: checkStock request: " + itemID);
+				if (udpLocalSvrPort - SvrInfo.SVR_PORT_MONTREAL < 5) {
+					SysLogger.info("UDPSVR RECV: checkStock request: " + itemID);
+				} else if (udpLocalSvrPort - SvrInfo.SVR2_PORT_MONTREAL < 5) {
+					SysLogger.info("server udp receive: " + itemID);
+				}
 				if (svr == null) {
 					SysLogger.err("UDPSVR svr == null");
 					break;
@@ -57,7 +62,11 @@ public class UDPLibs implements Runnable {
 				buf = ("" + ret).getBytes();
 				DatagramPacket resp = new DatagramPacket(buf, buf.length, request.getAddress(), request.getPort());
 				udpSock.send(resp);
-				SysLogger.info("UDPSVR SEND: " + new String(resp.getData()) + " to " + request.getAddress() + ":" + request.getPort());
+				if (udpLocalSvrPort - SvrInfo.SVR_PORT_MONTREAL < 5) {
+					SysLogger.info("UDPSVR SEND: " + new String(resp.getData()) + " to " + request.getAddress() + ":" + request.getPort());
+				} else if (udpLocalSvrPort - SvrInfo.SVR2_PORT_MONTREAL < 5) {
+					//SysLogger.info("server udp send: " + new String(resp.getData()));
+				}
 			}
 			udpSock.close();
 		} catch (Exception e) {
@@ -81,7 +90,11 @@ public class UDPLibs implements Runnable {
 			
 			DatagramPacket request = new DatagramPacket(buf, itemID.length(), host, port);
 			udpSock.send(request);
-			SysLogger.info("UDP SEND: checkStock request: " + new String(request.getData()) + " to " + request.getAddress() + ":" + request.getPort());
+			if (udpLocalSvrPort - SvrInfo.SVR_PORT_MONTREAL < 5) {
+				SysLogger.info("UDP SEND: checkStock request: " + new String(request.getData()) + " to " + request.getAddress() + ":" + request.getPort());
+			} else if (udpLocalSvrPort - SvrInfo.SVR2_PORT_MONTREAL < 5) {
+				SysLogger.info("server udp send: " + new String(request.getData()));
+			}
 
 			// wait for the result
 			buf = new byte[UDPBUFSIZE];
@@ -89,7 +102,9 @@ public class UDPLibs implements Runnable {
 			udpSock.receive(reply);
 			
 			String ret = new String(reply.getData(), 0, reply.getLength());
-			SysLogger.info("UDP RECV: " + ret);
+			if (udpLocalSvrPort - SvrInfo.SVR_PORT_MONTREAL < 5) {
+				SysLogger.info("UDP RECV: " + ret);
+			}
 			udpSock.close();
 			
 			return ret;
