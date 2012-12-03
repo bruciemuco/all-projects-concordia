@@ -185,6 +185,8 @@ public class ConcurrentTest implements Runnable {
 //			SysLogger.err(err.toString());
 		}
 		
+		SysLogger.info("------ Thread done.");
+		
 	}
 	
 	public static Thread t1 = null;

@@ -167,8 +167,12 @@ public class RM {
 	private synchronized void delSeq() {
 		seqs.remove();
 	}
-	private synchronized void delReq() {
-		reqs.remove();
+	private synchronized void delReq(String feid) {
+		for (int i = 0; i < reqs.size(); i++) {
+			if (feid.equals(reqs.get(i).split(",")[1])) {
+				reqs.remove(i);
+			}
+		}
 	}
 	
 	private static Sequencer sqcer;
@@ -287,7 +291,7 @@ public class RM {
 		
 		// delete the ordering message and req
 		delSeq();
-		delReq();
+		delReq(feid);
 		
 		return 0;
 	}

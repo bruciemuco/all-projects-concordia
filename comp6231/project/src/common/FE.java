@@ -28,8 +28,10 @@ class FEUDPLibs implements Runnable {
 	public static boolean bExitThread = false;
 	private int udpListenPort;
 	private DatagramSocket udpSock = null;
+	private Semaphore sem = null;
+	private ArrayList<String> feResp = null;
 	
-	public void createSock(int port) {
+	public void createSock(int port, Semaphore s, ArrayList<String> r) {
 		try {			
 			udpSock = new DatagramSocket(port);
 			udpListenPort = udpSock.getLocalPort();
@@ -39,10 +41,14 @@ class FEUDPLibs implements Runnable {
 			e.printStackTrace(new PrintWriter(err));
 			SysLogger.err(err.toString());
 		}
+		sem = s;
+		feResp = r;
 	}
 	
-	public FEUDPLibs(DatagramSocket sock) {
+	public FEUDPLibs(DatagramSocket sock, Semaphore s, ArrayList<String> r) {
 		udpSock = sock;
+		sem = s;
+		feResp = r;
 	}
 	
 	// a thread waiting for the RM's responses
@@ -62,10 +68,10 @@ class FEUDPLibs implements Runnable {
 						request.getLength());
 				SysLogger.info("FE UDP(port:" + udpListenPort + ") RECV: " + resp);
 
-				FE.resp.add(resp);
-				if (FE.resp.size() == 3) {
+				feResp.add(resp);
+				if (feResp.size() == 3) {
 					//notifyAll();
-					FE.sem.release();
+					sem.release();
 				}
 			}
 			udpSock.close();
@@ -79,7 +85,7 @@ class FEUDPLibs implements Runnable {
 
 	public void udpServerStart() {
 		//udpListenPort = port;
-		(new Thread(new FEUDPLibs(udpSock))).start();
+		(new Thread(new FEUDPLibs(udpSock, sem, feResp))).start();
 	}
 
 	public int sendRequest(String req, String hostName, int hostPort) {
@@ -115,8 +121,8 @@ class FEUDPLibs implements Runnable {
 }
 
 public class FE implements DRSServices {
-	public static ArrayList<String> resp = new ArrayList<String>();
-	FEUDPLibs FEUDP = new FEUDPLibs(null);
+	private ArrayList<String> resp = new ArrayList<String>();
+	FEUDPLibs FEUDP = new FEUDPLibs(null, null, null);
 
 	private int FEID;
 
@@ -126,6 +132,8 @@ public class FE implements DRSServices {
 	public boolean testFlag = false;
 	public int RMNo = 0;
 
+	private Semaphore sem = new Semaphore(0);
+
 	public FE() {
 		clearErrs();
 		
@@ -133,7 +141,7 @@ public class FE implements DRSServices {
 		FEID = Math.abs(rd.nextInt());
 		int port = Conf.FE_UDP_PORT_BASE + Math.abs(rd.nextInt()) % 300;
 		
-		FEUDP.createSock(port);
+		FEUDP.createSock(port, sem, resp);
 		FEUDP.udpServerStart();
 		SysLogger.info("FE: " + FEID + ", UDP listening port: " + port);
 
@@ -187,7 +195,6 @@ public class FE implements DRSServices {
 		}
 	}
 
-	public static Semaphore sem = new Semaphore(0);
 	private String respHandler() {
 		while (resp.size() < 3) {
 			try {
