@@ -96,9 +96,13 @@ public class Tokenizer {
 		//SysLogger.info("=======+" + nextFile);
 		
 		try {
-			File input = new File(nextFile);
-			Document doc = Jsoup.parse(input, "UTF-8");
-			fileBuf = doc.text();
+//			File input = new File(nextFile);
+//			Document doc = Jsoup.parse(input, "UTF-8");
+//			fileBuf = doc.text();
+			
+			// do not extract html tags, such <a> (not in <p>), <div id="footer">...
+			fileBuf = HtmlToText.text(nextFile);
+			
 			maxIndex = fileBuf.length();
 			if (maxIndex == 0) {
 				openNextFile();
