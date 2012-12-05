@@ -33,8 +33,8 @@ public class URLList {
 	public URLList() {
 		try {
 			String path = System.getProperty("user.dir") + "\\output\\"; 
-			filename = path + "urllist.txt";
-			filenameTitle = path + "titlelist.txt";
+			filename = path + "url-1.txt";
+			filenameTitle = path + "title-1.txt";
 			out = new FileWriter(filename);
 			outTitle = new FileWriter(filenameTitle);
 				
