@@ -396,7 +396,12 @@ public class InfoRetrieval {
 		// compare the postings, find the intersection of the docID
 		return getIntersectionOfDocID(arrIdx);
 	}
-	
+
+	public int getDF(String term) {
+		InvertedIndex idx = mapDic.get(new ByteArrayWrapper(term.getBytes()));
+		return idx.docFreq;
+	}
+
 	public StringBuffer search(String query) {
 		StringBuffer sbRet = new StringBuffer();		
 		

@@ -49,7 +49,7 @@ public class URLList {
 			// TODO: store into multi files
 			
 			out.write(url + "\n");
-			out.flush();
+			//out.flush();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,7 +80,7 @@ public class URLList {
 			// TODO: store into multi files
 			
 			outTitle.write(title + "\n");
-			outTitle.flush();
+			//outTitle.flush();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -102,6 +102,16 @@ public class URLList {
 			e.printStackTrace();
 			SysLogger.err(e.getMessage());
 			return null;
+		}
+	}
+	
+	public void closeFiles() {
+		try {
+			out.close();
+			outTitle.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

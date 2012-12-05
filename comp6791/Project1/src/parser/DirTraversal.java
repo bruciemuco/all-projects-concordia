@@ -35,7 +35,7 @@ public class DirTraversal implements Runnable {
 			}
 			
 			String filename = file.getAbsolutePath();
-			//SysLogger.info("========" + filename);
+			//System.out.println("========" + filename);
 			
 			if (filename.matches(
 					".+\\.html|.+\\.php|.+\\.shtml|.+\\.htm|.+\\.asp")) {
