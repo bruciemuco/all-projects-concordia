@@ -55,7 +55,8 @@ public class Project1 {
 		
 		// NOTE: inputPath MUST be ended with \\ 
 		//String inputPath = "D:\\workspace\\COMP6791\\rootdir\\";
-		String inputPath = "D:\\workspace\\COMP6791\\Project1\\aa\\";
+		//String inputPath = "D:\\workspace\\COMP6791\\Project1\\aa\\";
+		String inputPath = "D:\\workspace\\COMP6791\\ehs.concordia.ca\\";
 		
 		if (ic.buildInvertedIndex(inputPath) != 0) {
 			return;
@@ -71,7 +72,7 @@ public class Project1 {
 		
 		// traverse all docs again and get all terms
 		DocTermParser docParser = new DocTermParser();
-		docParser.getAllTermsForAllDocs(inputPath);
+		docParser.getAllTermsForAllDocs(inputPath, ir);
 		
 		/*
 		 * 联调时执行到此即可。注意需要修改上面的 inputPath，此路径必须以 \\ 结尾。

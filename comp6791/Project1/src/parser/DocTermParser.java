@@ -1,11 +1,19 @@
 package parser;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import retrieval.InfoRetrieval;
+
 import utils.SysLogger;
 
 public class DocTermParser {
 	private StopWords stopWords = new StopWords();
+	private long preDocID = 1;
+	private HashSet<String> terms = new HashSet<String>();
 
-	public int getAllTermsForAllDocs(String inputPath) {
+	public int getAllTermsForAllDocs(String inputPath, InfoRetrieval ir) {
 		// create directory traversal thread
 		DirTraversal.start(inputPath);
 		
@@ -55,11 +63,35 @@ public class DocTermParser {
 			}
 			
 			// TODO:
-			SysLogger.info("docID: " + tokenizer.curDocID + ", term: " + tk.token);			
+			//SysLogger.info("docID: " + tokenizer.curDocID + ", term: " + tk.token);
+			if (preDocID != tokenizer.curDocID) {
+				// now it is parsing a new doc
+				calcVectorsForADoc(preDocID, ir);
+				
+				preDocID = tokenizer.curDocID;
+			}
+			terms.add(tk.token);
 			
 			tk = tokenizer.nextToken();
 		}
+
+		// the end of the last doc
+		calcVectorsForADoc(preDocID, ir);
 		
-		return 0;	
+		return 0;
 	}
+	
+	public void calcVectorsForADoc(long docID, InfoRetrieval ir) {
+		// e.g. 
+//		for (String t : terms) {
+//			System.out.println("docID: " + docID + ", token: " 
+//					+ t + " , df: " + ir.getDF(t));
+//		}
+
+		
+		// clear the terms of this doc for calculating next doc
+		terms.clear();
+	}
+	
+	
 }

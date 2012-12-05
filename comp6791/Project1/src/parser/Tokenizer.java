@@ -91,20 +91,22 @@ public class Tokenizer {
 		}
 		
 		if (nextFile == null) {
+			//System.out.println("---: " + nextFile);
+			urlListWriter.closeFiles();
 			return 1;
 		}
-		//SysLogger.info("=======+" + nextFile);
+		//System.out.println(nextFile);
 		
+		StringBuffer title = new StringBuffer();
 		try {
 //			File input = new File(nextFile);
 //			Document doc = Jsoup.parse(input, "UTF-8");
 //			fileBuf = doc.text();
 			
 			// do not extract html tags, such <a> (not in <p>), <div id="footer">...
-			StringBuffer title = new StringBuffer();
-			
-			fileBuf = HtmlToText.text(nextFile, title);
-			urlListWriter.storeTitle2File(title.toString());
+
+			title = new StringBuffer();
+			fileBuf = HtmlToText.text(nextFile, title);			
 			
 			maxIndex = fileBuf.length();
 			if (maxIndex == 0) {
@@ -119,6 +121,7 @@ public class Tokenizer {
 
 		curDocID++;
 		urlListWriter.store2File("http://" + nextFile.substring(docPatnLen));
+		urlListWriter.storeTitle2File(title.toString());
 		return 0;
 	}
 	
@@ -134,6 +137,10 @@ public class Tokenizer {
 		char ch = 0;
 		try {
 			ch = fileBuf.charAt(curIndex++);
+			if (ch == 0) {
+				// binary file
+				ch = ' ';
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
